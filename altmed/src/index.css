@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-lavender-500 to-rose-500 hover:from-lavender-600 hover:to-rose-600 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply bg-white/80 backdrop-blur-sm text-sage-700 hover:text-sage-900 font-medium py-3 px-6 rounded-xl border border-sage-200 hover:border-sage-300 transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 border border-sage-200 rounded-xl focus:ring-2 focus:ring-lavender-500 focus:border-transparent transition-all duration-300 bg-white/80 backdrop-blur-sm;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-lavender-600 to-rose-600 bg-clip-text text-transparent;
+  }
+  
+  .bg-gradient-nature {
+    background: linear-gradient(135deg, #f0f9ff 0%, #fef3c7 25%, #fce7f3 50%, #f3e8ff 75%, #ecfdf5 100%);
+  }
+  
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  
+  .modern-shadow {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Smooth animations */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Modern focus states */
+button:focus, input:focus, textarea:focus, select:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #8b5cf6;
+  ring-offset: 2px;
+}
+
+/* Image placeholders */
+.image-placeholder {
+  @apply bg-gradient-to-br from-sage-100 to-lavender-100 rounded-xl flex items-center justify-center;
+  min-height: 200px;
+}
+
+.image-placeholder-small {
+  @apply bg-gradient-to-br from-sage-50 to-lavender-50 rounded-lg flex items-center justify-center;
+  min-height: 120px;
+}
+
+/* Modern card hover effects */
+.modern-card {
+  @apply bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg border border-white/30 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:bg-white;
+}
+
+/* Gradient text animations */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+} 
