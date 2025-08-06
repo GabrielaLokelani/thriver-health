@@ -1,8 +1,0 @@
-id,created_at,name,loacation,contactPerson,contactPhone,contactEmail,organization_id,osgradingsystem_id,creation_date
-08e89563-f7b3-49e7-9ae1-dcbf5326736d,1728423550249,"St Stephens Presby senior high/technical school (STEPSS).","Matsapha, Eswatini","Jace Forsythe",3244979915,notapplicable@example.ca,c31b2d24-57ad-4202-a46f-32ea941d0775,1,2024-10-08
-1cd69ac4-be8d-4bc4-8c19-b3f1d89fef56,1720636850368,"Coronado High School","7501 E Virginia Ave","Jace Forsythe",5626406658,Katherine.Biederman@bgcs.org,b7d0dc33-c7dc-4f68-b21b-e6613463f000,1,2024-07-10
-3009c88b-b423-4ab0-8210-db8c5d91b6c9,1720561486454,"Animo Inglewood Charter High School","3425 W Manchester Blvd","Jace Forsythe",3106588061,diana@jklivin.net,e59a34ed-3c77-4cfd-a6fb-b94cf744c1e5,1,2024-07-09
-4a243a94-aa78-4e96-a8c0-b5d9a14cdb84,1732734037893,"Veritas Preparatory Academy - Great Hearts","3102 N 56th St #100","Jace Forsythe",6022631128,,b7d0dc33-c7dc-4f68-b21b-e6613463f000,1,2024-11-27
-8adb204c-bf4e-46eb-b017-dafcff455a22,1720818069105,"Notre Dame Preparatory High School","9701 E Bell Rd","Jace Forsythe",5626406658,jace.forsythe+SSABGCS@thesff.ca,b7d0dc33-c7dc-4f68-b21b-e6613463f000,1,2024-07-12
-b3823bdf-6d1f-427c-91fe-fbcb931ef2c5,1720580392430,"Demo School Number 1","123 Main Street",996381,2222222222,dev+demo@tachyonlab.ca,da2e9c68-f583-47bb-8c61-7b291c6e3d69,1,2024-07-09
-f5a80fb6-acc0-41ba-9146-78618de9a2cc,1721680296322,"Scott’s House 1","1530 W Puget Ave","Jace Forsythe",4802384352,cliff@gracesoberliving.org,173133d1-513b-49df-b6b8-729e187725cf,2,2024-07-22
