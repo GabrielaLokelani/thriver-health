@@ -104,6 +104,7 @@ const Partners: React.FC<PartnersProps> = () => {
                 <select
                   value={activeFilter}
                   onChange={(e) => setActiveFilter(e.target.value as any)}
+                  aria-label="Filter partners by type"
                   className="border border-sage-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-lavender-500 focus:border-transparent"
                 >
                   <option value="all">All Partners</option>
