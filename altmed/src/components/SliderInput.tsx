@@ -34,11 +34,11 @@ const SliderInput: React.FC<SliderInputProps> = ({
   return (
     <div className={`mb-8 ${className}`}>
       <div className="flex justify-between items-center mb-4">
-        <label htmlFor={name} className="block text-base font-medium text-sage-700">
+        <label htmlFor={name} className="block text-base font-medium text-warm-300">
           {label}
         </label>
         {showValue && (
-          <span className="text-base font-medium text-lavender-600">
+          <span className="text-base font-medium text-electric-400">
             {value} - {getValueLabel(value)}
           </span>
         )}
@@ -52,9 +52,9 @@ const SliderInput: React.FC<SliderInputProps> = ({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-3 bg-sage-200 rounded-lg appearance-none cursor-pointer slider"
+        className="w-full h-3 bg-warm-600 rounded-lg appearance-none cursor-pointer slider"
       />
-      <div className="flex justify-between text-sm text-sage-500 mt-2">
+      <div className="flex justify-between text-sm text-warm-400 mt-2">
         <span>{min}</span>
         <span>{max}</span>
       </div>

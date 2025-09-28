@@ -38,7 +38,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-nature">
+      <div className="min-h-screen bg-warm-800">
         {/* Navigation */}
         <nav className="bg-white/80 backdrop-blur-sm border-b border-sage-200 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-6">
@@ -62,7 +62,7 @@ const App: React.FC = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className="flex items-center space-x-2 text-sage-700 hover:text-lavender-600 transition-colors duration-200 group"
+                    className="flex items-center space-x-2 text-warm-800 hover:text-electric-400 transition-colors duration-200 group"
                   >
                     <item.icon size={18} className="group-hover:scale-110 transition-transform" />
                     <span className="font-medium">{item.label}</span>
@@ -72,7 +72,7 @@ const App: React.FC = () => {
 
               {/* Mobile menu button */}
               <div className="md:hidden">
-                <button className="text-sage-700 hover:text-lavender-600 transition-colors">
+                <button className="text-warm-800 hover:text-electric-400 transition-colors">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                   </svg>

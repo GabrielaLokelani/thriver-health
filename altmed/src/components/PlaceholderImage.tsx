@@ -84,7 +84,7 @@ const PlaceholderImage: React.FC<PlaceholderImageProps> = ({
   if (imageError) {
     return (
       <div className={`${sizeClasses[size]} image-placeholder ${className}`}>
-        <ImageOff size={24} className="text-sage-400" />
+        <ImageOff size={24} className="text-warm-400" />
       </div>
     );
   }

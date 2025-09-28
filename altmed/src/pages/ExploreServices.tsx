@@ -45,18 +45,18 @@ const ExploreServices: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-nature">
+    <div className="min-h-screen bg-warm-800">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-sage-200">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl font-bold text-sage-900 mb-4"
+            className="text-4xl font-bold text-white mb-4"
           >
             Explore Wellness Services
           </motion.h1>
-          <p className="text-lg text-sage-600">
+          <p className="text-lg text-warm-300">
             Discover holistic practitioners and natural healing modalities. Connect with our partner network and earn rewards through our referral program.
           </p>
         </div>
@@ -72,20 +72,20 @@ const ExploreServices: React.FC = () => {
           >
             {/* Search Bar */}
             <div className="relative mb-8">
-              <Search size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-sage-400" />
+              <Search size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-warm-400" />
               <input
                 type="text"
                 placeholder="Search services, practitioners, or modalities..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-6 py-4 border border-sage-200 rounded-xl focus:ring-2 focus:ring-lavender-500 focus:border-transparent transition-all duration-300 bg-white/80 backdrop-blur-sm text-base"
+                className="w-full pl-12 pr-6 py-4 border border-sage-200 rounded-xl focus:ring-2 focus:ring-lavender-500 focus:border-transparent transition-all duration-300 bg-white/80 backdrop-blur-sm text-base text-warm-800"
               />
             </div>
 
             {/* Category Filters */}
             <div className="flex items-center mb-6">
-              <Filter size={20} className="text-sage-600 mr-3" />
-              <span className="text-sage-700 font-medium mr-6">Filter by:</span>
+              <Filter size={20} className="text-warm-300 mr-3" />
+              <span className="text-warm-300 font-medium mr-6">Filter by:</span>
             </div>
             <div className="flex flex-wrap gap-3">
               {categories.map((category) => (
@@ -95,7 +95,7 @@ const ExploreServices: React.FC = () => {
                   className={`px-8 py-4 rounded-full text-base font-medium transition-all duration-300 ${
                     selectedCategory === category.id
                       ? 'bg-gradient-to-r from-lavender-500 to-rose-500 text-white shadow-lg'
-                      : 'bg-white/80 backdrop-blur-sm text-sage-700 hover:bg-white hover:text-sage-900 shadow-md hover:shadow-lg border border-sage-200'
+                      : 'bg-white/80 backdrop-blur-sm text-warm-800 hover:bg-white hover:text-white shadow-md hover:shadow-lg border border-sage-200'
                   }`}
                 >
                   {category.label} ({category.count})
@@ -123,11 +123,11 @@ const ExploreServices: React.FC = () => {
                       {getCategoryIcon(service.category)}
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold text-sage-900 mb-2">
+                      <h3 className="text-xl font-semibold text-white mb-2">
                         {service.title}
                       </h3>
                       {service.practitioner && (
-                        <p className="text-base text-lavender-600 font-medium">
+                        <p className="text-base text-electric-400 font-medium">
                           {service.practitioner}
                         </p>
                       )}
@@ -137,8 +137,8 @@ const ExploreServices: React.FC = () => {
                     onClick={() => toggleFavorite(service.id)}
                     className={`p-3 rounded-full transition-all duration-300 ${
                       favorites.includes(service.id)
-                        ? 'text-rose-500 hover:text-rose-600'
-                        : 'text-sage-400 hover:text-rose-500'
+                        ? 'text-lime-400 hover:text-lime-400'
+                        : 'text-warm-400 hover:text-lime-400'
                     }`}
                   >
                     <Heart 
@@ -149,20 +149,20 @@ const ExploreServices: React.FC = () => {
                 </div>
 
                 {/* Service Description */}
-                <p className="text-sage-600 text-base mb-6 leading-relaxed">
+                <p className="text-warm-300 text-base mb-6 leading-relaxed">
                   {service.description}
                 </p>
 
                 {/* Service Details */}
                 <div className="space-y-3 mb-6">
                   {service.duration && (
-                    <div className="flex items-center text-base text-sage-500">
+                    <div className="flex items-center text-base text-warm-400">
                       <Clock size={18} className="mr-3" />
                       {service.duration}
                     </div>
                   )}
                   {service.price && (
-                    <div className="text-2xl font-bold text-lavender-600">
+                    <div className="text-2xl font-bold text-electric-400">
                       {service.price}
                     </div>
                   )}
@@ -184,7 +184,7 @@ const ExploreServices: React.FC = () => {
                         />
                       ))}
                     </div>
-                    <span className="text-base text-sage-600">
+                    <span className="text-base text-warm-300">
                       {service.rating} ({service.reviews} reviews)
                     </span>
                   </div>
@@ -192,11 +192,11 @@ const ExploreServices: React.FC = () => {
 
                 {/* Benefits */}
                 <div className="mb-8">
-                  <h4 className="text-base font-medium text-sage-700 mb-4">Benefits:</h4>
+                  <h4 className="text-base font-medium text-warm-300 mb-4">Benefits:</h4>
                   <ul className="space-y-3">
                     {service.benefits.slice(0, 3).map((benefit, index) => (
-                      <li key={index} className="text-base text-sage-600 flex items-center">
-                        <div className="w-2 h-2 bg-lavender-500 rounded-full mr-3 flex-shrink-0"></div>
+                      <li key={index} className="text-base text-warm-300 flex items-center">
+                        <div className="w-2 h-2 bg-electric-500/200 rounded-full mr-3 flex-shrink-0"></div>
                         {benefit}
                       </li>
                     ))}
@@ -208,7 +208,7 @@ const ExploreServices: React.FC = () => {
                   <button className="flex-1 bg-gradient-to-r from-lavender-500 to-rose-500 hover:from-lavender-600 hover:to-rose-600 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                     Book Now
                   </button>
-                  <button className="flex-1 bg-white/80 backdrop-blur-sm text-lavender-600 hover:text-lavender-700 font-medium py-3 px-4 rounded-xl border border-lavender-200 hover:border-lavender-300 transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md">
+                  <button className="flex-1 bg-white/80 backdrop-blur-sm text-electric-400 hover:text-electric-400 font-medium py-3 px-4 rounded-xl border border-lavender-200 hover:border-lavender-300 transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md">
                     Learn More
                   </button>
                 </div>
@@ -224,10 +224,10 @@ const ExploreServices: React.FC = () => {
               className="text-center py-12"
             >
               <div className="text-6xl mb-4">🔍</div>
-              <h3 className="text-xl font-semibold text-sage-900 mb-2">
+              <h3 className="text-xl font-semibold text-white mb-2">
                 No services found
               </h3>
-              <p className="text-sage-600">
+              <p className="text-warm-300">
                 Try adjusting your search terms or filters
               </p>
             </motion.div>
@@ -242,7 +242,7 @@ const ExploreServices: React.FC = () => {
             transition={{ delay: 0.4 }}
             className="modern-card p-8"
           >
-            <h2 className="text-3xl font-bold text-sage-900 mb-8">
+            <h2 className="text-3xl font-bold text-white mb-8">
               Featured Practitioners
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
@@ -269,12 +269,12 @@ const ExploreServices: React.FC = () => {
                   image: '✨'
                 }
               ].map((practitioner, index) => (
-                <div key={index} className="text-center p-8 border border-sage-200 rounded-xl hover:bg-sage-50 transition-all duration-300 hover-lift">
+                <div key={index} className="text-center p-8 border border-sage-200 rounded-xl hover:bg-warm-600/30 transition-all duration-300 hover-lift">
                   <div className="text-5xl mb-6">{practitioner.image}</div>
-                  <h3 className="text-xl font-semibold text-sage-900 mb-3">
+                  <h3 className="text-xl font-semibold text-white mb-3">
                     {practitioner.name}
                   </h3>
-                  <p className="text-base text-sage-600 mb-4">
+                  <p className="text-base text-warm-300 mb-4">
                     {practitioner.specialty}
                   </p>
                   <div className="flex items-center justify-center mb-6">
@@ -291,7 +291,7 @@ const ExploreServices: React.FC = () => {
                         />
                       ))}
                     </div>
-                    <span className="text-sm text-sage-600">
+                    <span className="text-sm text-warm-300">
                       {practitioner.rating} ({practitioner.reviews})
                     </span>
                   </div>

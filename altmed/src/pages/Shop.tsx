@@ -184,7 +184,7 @@ const Shop: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-nature">
+    <div className="min-h-screen bg-warm-800">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-sage-200">
         <div className="max-w-7xl mx-auto px-6 py-8">
@@ -192,7 +192,7 @@ const Shop: React.FC = () => {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-4xl font-bold text-sage-900 mb-4"
+              className="text-4xl font-bold text-white mb-4"
             >
               Verified Treatment Suppliers
             </motion.h1>
@@ -200,7 +200,7 @@ const Shop: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-lg text-sage-600 max-w-2xl mx-auto"
+              className="text-lg text-warm-300 max-w-2xl mx-auto"
             >
               Direct access to verified suppliers and providers of alternative therapies. Support thought leaders like Dr. Makis and earn rewards through our referral program.
             </motion.p>
@@ -215,13 +215,13 @@ const Shop: React.FC = () => {
               transition={{ delay: 0.2 }}
               className="relative flex-1 max-w-md"
             >
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sage-400" size={20} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-warm-400" size={20} />
               <input
                 type="text"
                 placeholder="Search services, products, or practitioners..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-sage-200 rounded-xl focus:ring-2 focus:ring-lavender-500 focus:border-transparent transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                className="w-full pl-10 pr-4 py-3 border border-sage-200 rounded-xl focus:ring-2 focus:ring-lavender-500 focus:border-transparent transition-all duration-300 bg-white/80 backdrop-blur-sm text-warm-800"
               />
             </motion.div>
 
@@ -241,14 +241,14 @@ const Shop: React.FC = () => {
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                     activeCategory === category.id
                       ? 'bg-gradient-to-r from-lavender-500 to-rose-500 text-white shadow-lg'
-                      : 'bg-white/80 backdrop-blur-sm text-sage-700 hover:bg-white hover:text-sage-900 shadow-md hover:shadow-lg'
+                      : 'bg-white/80 backdrop-blur-sm text-warm-800 hover:bg-white hover:text-white shadow-md hover:shadow-lg'
                   }`}
                 >
                   {category.label}
                   <span className={`ml-2 px-2 py-0.5 rounded-full text-xs ${
                     activeCategory === category.id 
                       ? 'bg-white/20 text-white' 
-                      : 'bg-lavender-100 text-lavender-700'
+                      : 'bg-electric-500/20 text-electric-400'
                   }`}>
                     {category.count}
                   </span>
@@ -267,7 +267,7 @@ const Shop: React.FC = () => {
           transition={{ delay: 0.4 }}
           className="mb-8"
         >
-          <p className="text-sage-600">
+          <p className="text-warm-300">
             Showing {filteredItems.length} of {shopItems.length} items
           </p>
         </motion.div>
@@ -296,7 +296,7 @@ const Shop: React.FC = () => {
               <div className="flex justify-between items-start mb-6">
                 <div className="flex items-center space-x-2">
                   {item.icon}
-                  <h3 className="text-lg font-semibold text-sage-900 group-hover:text-lavender-600 transition-colors">
+                  <h3 className="text-lg font-semibold text-white group-hover:text-electric-400 transition-colors">
                     {item.title}
                   </h3>
                 </div>
@@ -304,8 +304,8 @@ const Shop: React.FC = () => {
                   onClick={() => toggleFavorite(item.id)}
                   className={`p-2 rounded-full transition-all duration-300 ${
                     favorites.includes(item.id)
-                      ? 'text-rose-500 hover:text-rose-600'
-                      : 'text-sage-400 hover:text-rose-500'
+                      ? 'text-lime-400 hover:text-lime-400'
+                      : 'text-warm-400 hover:text-lime-400'
                   }`}
                 >
                   <Heart 
@@ -317,32 +317,32 @@ const Shop: React.FC = () => {
 
               {/* Provider */}
               {item.provider && (
-                <p className="text-base text-lavender-600 font-medium mb-4">
+                <p className="text-base text-electric-400 font-medium mb-4">
                   {item.provider}
                 </p>
               )}
 
               {/* Description */}
-              <p className="text-sage-600 text-base mb-6 leading-relaxed">
+              <p className="text-warm-300 text-base mb-6 leading-relaxed">
                 {item.description}
               </p>
 
               {/* Duration/Type */}
-              <div className="flex items-center text-base text-sage-500 mb-6">
+              <div className="flex items-center text-base text-warm-400 mb-6">
                 <Clock size={18} className="mr-3" />
                 {item.duration || item.type}
               </div>
 
               {/* Price and Rating */}
               <div className="flex items-center justify-between mb-6">
-                <div className="text-2xl font-bold text-lavender-600">
+                <div className="text-2xl font-bold text-electric-400">
                   ${item.price}
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="flex items-center">
                     {renderStars(item.rating)}
                   </div>
-                  <span className="text-sm text-sage-600">
+                  <span className="text-sm text-warm-300">
                     ({item.reviews})
                   </span>
                 </div>
@@ -350,11 +350,11 @@ const Shop: React.FC = () => {
 
               {/* Benefits */}
               <div className="mb-8">
-                <h4 className="text-base font-medium text-sage-700 mb-4">Benefits:</h4>
+                <h4 className="text-base font-medium text-warm-300 mb-4">Benefits:</h4>
                 <ul className="space-y-3">
                   {item.benefits.map((benefit, idx) => (
-                    <li key={idx} className="text-base text-sage-600 flex items-center">
-                      <div className="w-2 h-2 bg-lavender-500 rounded-full mr-3 flex-shrink-0"></div>
+                    <li key={idx} className="text-base text-warm-300 flex items-center">
+                      <div className="w-2 h-2 bg-electric-500/200 rounded-full mr-3 flex-shrink-0"></div>
                       {benefit}
                     </li>
                   ))}
@@ -366,7 +366,7 @@ const Shop: React.FC = () => {
                 <button className="flex-1 bg-gradient-to-r from-lavender-500 to-rose-500 hover:from-lavender-600 hover:to-rose-600 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                   Book Now
                 </button>
-                <button className="flex-1 bg-white/80 backdrop-blur-sm text-lavender-600 hover:text-lavender-700 font-medium py-3 px-4 rounded-xl border border-lavender-200 hover:border-lavender-300 transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md">
+                <button className="flex-1 bg-white/80 backdrop-blur-sm text-electric-400 hover:text-electric-400 font-medium py-3 px-4 rounded-xl border border-lavender-200 hover:border-lavender-300 transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md">
                   Learn More
                 </button>
               </div>
@@ -381,13 +381,13 @@ const Shop: React.FC = () => {
             animate={{ opacity: 1 }}
             className="text-center py-16"
           >
-            <div className="w-24 h-24 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Search size={32} className="text-sage-400" />
+            <div className="w-24 h-24 bg-warm-700/50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Search size={32} className="text-warm-400" />
             </div>
-            <h3 className="text-xl font-semibold text-sage-900 mb-2">
+            <h3 className="text-xl font-semibold text-white mb-2">
               No items found
             </h3>
-            <p className="text-sage-600">
+            <p className="text-warm-300">
               Try adjusting your search or filter criteria
             </p>
           </motion.div>

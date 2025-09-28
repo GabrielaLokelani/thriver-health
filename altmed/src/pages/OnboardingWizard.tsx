@@ -123,8 +123,8 @@ const OnboardingWizard: React.FC = () => {
             className="space-y-6"
           >
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-sage-900 mb-4">Tell us about yourself</h2>
-              <p className="text-lg text-sage-600 leading-relaxed">Let's start with some basic information to personalize your experience.</p>
+              <h2 className="text-3xl font-bold text-white mb-4">Tell us about yourself</h2>
+              <p className="text-lg text-warm-300 leading-relaxed">Let's start with some basic information to personalize your experience.</p>
             </div>
             
             <div className="space-y-6">
@@ -148,8 +148,8 @@ const OnboardingWizard: React.FC = () => {
               />
               
               <div className="mb-6">
-                <label className="block text-base font-medium text-sage-700 mb-4">
-                  Sex <span className="text-rose-500">*</span>
+                <label className="block text-base font-medium text-warm-300 mb-4">
+                  Sex <span className="text-lime-400">*</span>
                 </label>
                 <div className="grid grid-cols-2 gap-4">
                   {['Male', 'Female', 'Non-binary', 'Prefer not to say'].map((option) => (
@@ -159,8 +159,8 @@ const OnboardingWizard: React.FC = () => {
                       onClick={() => setFieldValue('sex', option)}
                       className={`p-4 rounded-xl border-2 transition-all duration-300 text-base font-medium ${
                         values.sex === option
-                          ? 'border-lavender-500 bg-lavender-50 text-lavender-700 shadow-lg'
-                          : 'border-sage-200 hover:border-sage-300 hover:bg-sage-50'
+                          ? 'border-lavender-500 bg-electric-500/20 text-electric-400 shadow-lg'
+                          : 'border-sage-200 hover:border-sage-300 hover:bg-warm-600/30'
                       }`}
                     >
                       {option}
@@ -191,8 +191,8 @@ const OnboardingWizard: React.FC = () => {
             className="space-y-6"
           >
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-sage-900 mb-4">How are you feeling?</h2>
-              <p className="text-lg text-sage-600 leading-relaxed">Rate your current state on a scale of 1-10.</p>
+              <h2 className="text-3xl font-bold text-white mb-4">How are you feeling?</h2>
+              <p className="text-lg text-warm-300 leading-relaxed">Rate your current state on a scale of 1-10.</p>
             </div>
             
             <div className="space-y-8">
@@ -266,13 +266,13 @@ const OnboardingWizard: React.FC = () => {
             className="space-y-6"
           >
             <div>
-              <h2 className="text-2xl font-bold text-sage-900 mb-2">What would you like to address?</h2>
-              <p className="text-sage-600">Select the primary issues you'd like to work on.</p>
+              <h2 className="text-2xl font-bold text-white mb-2">What would you like to address?</h2>
+              <p className="text-warm-300">Select the primary issues you'd like to work on.</p>
             </div>
             
             <div className="mb-4">
-              <label className="block text-base font-medium text-sage-700 mb-3">
-                Primary Issues <span className="text-rose-500">*</span>
+              <label className="block text-base font-medium text-warm-300 mb-3">
+                Primary Issues <span className="text-lime-400">*</span>
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {primaryIssues.map((issue) => (
@@ -288,7 +288,7 @@ const OnboardingWizard: React.FC = () => {
                     }}
                     className={`p-3 rounded-lg border-2 transition-all flex items-center justify-between ${
                       values.primaryIssues.includes(issue)
-                        ? 'border-lavender-500 bg-lavender-50 text-lavender-700'
+                        ? 'border-lavender-500 bg-electric-500/20 text-electric-400'
                         : 'border-sage-200 hover:border-sage-300'
                     }`}
                   >
@@ -300,7 +300,7 @@ const OnboardingWizard: React.FC = () => {
                 ))}
               </div>
               {touched.primaryIssues && errors.primaryIssues && (
-                <p className="mt-1 text-sm text-rose-600">{errors.primaryIssues}</p>
+                <p className="mt-1 text-sm text-lime-400">{errors.primaryIssues}</p>
               )}
             </div>
             
@@ -323,13 +323,13 @@ const OnboardingWizard: React.FC = () => {
             className="space-y-6"
           >
             <div>
-              <h2 className="text-2xl font-bold text-sage-900 mb-2">What are your goals?</h2>
-              <p className="text-sage-600">Let's understand what you want to achieve.</p>
+              <h2 className="text-2xl font-bold text-white mb-2">What are your goals?</h2>
+              <p className="text-warm-300">Let's understand what you want to achieve.</p>
             </div>
             
             <div className="mb-4">
-              <label className="block text-base font-medium text-sage-700 mb-3">
-                Short-term goals (next 3 months) <span className="text-rose-500">*</span>
+              <label className="block text-base font-medium text-warm-300 mb-3">
+                Short-term goals (next 3 months) <span className="text-lime-400">*</span>
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {shortTermGoals.map((goal) => (
@@ -345,7 +345,7 @@ const OnboardingWizard: React.FC = () => {
                     }}
                     className={`p-3 rounded-lg border-2 transition-all flex items-center justify-between ${
                       values.goals.shortTerm.includes(goal)
-                        ? 'border-lavender-500 bg-lavender-50 text-lavender-700'
+                        ? 'border-lavender-500 bg-electric-500/20 text-electric-400'
                         : 'border-sage-200 hover:border-sage-300'
                     }`}
                   >
@@ -357,7 +357,7 @@ const OnboardingWizard: React.FC = () => {
                 ))}
               </div>
               {touched.goals?.shortTerm && errors.goals?.shortTerm && (
-                <p className="mt-1 text-sm text-rose-600">{errors.goals.shortTerm}</p>
+                <p className="mt-1 text-sm text-lime-400">{errors.goals.shortTerm}</p>
               )}
             </div>
             
@@ -382,13 +382,13 @@ const OnboardingWizard: React.FC = () => {
             className="space-y-6"
           >
             <div>
-              <h2 className="text-2xl font-bold text-sage-900 mb-2">Your wellness philosophy</h2>
-              <p className="text-sage-600">Help us understand your approach to health and healing.</p>
+              <h2 className="text-2xl font-bold text-white mb-2">Your wellness philosophy</h2>
+              <p className="text-warm-300">Help us understand your approach to health and healing.</p>
             </div>
             
             <div className="mb-4">
-              <label className="block text-base font-medium text-sage-700 mb-3">
-                Belief alignment <span className="text-rose-500">*</span>
+              <label className="block text-base font-medium text-warm-300 mb-3">
+                Belief alignment <span className="text-lime-400">*</span>
               </label>
               <div className="grid grid-cols-3 gap-4">
                 {['spiritual', 'scientific', 'both'].map((alignment) => (
@@ -398,7 +398,7 @@ const OnboardingWizard: React.FC = () => {
                     onClick={() => setFieldValue('beliefs.alignment', alignment)}
                     className={`p-4 rounded-lg border-2 transition-all text-center capitalize ${
                       values.beliefs.alignment === alignment
-                        ? 'border-lavender-500 bg-lavender-50 text-lavender-700'
+                        ? 'border-lavender-500 bg-electric-500/20 text-electric-400'
                         : 'border-sage-200 hover:border-sage-300'
                     }`}
                   >
@@ -409,8 +409,8 @@ const OnboardingWizard: React.FC = () => {
             </div>
             
             <div className="mb-4">
-              <label className="block text-base font-medium text-sage-700 mb-3">
-                Preferred modalities <span className="text-rose-500">*</span>
+              <label className="block text-base font-medium text-warm-300 mb-3">
+                Preferred modalities <span className="text-lime-400">*</span>
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {modalities.map((modality) => (
@@ -426,7 +426,7 @@ const OnboardingWizard: React.FC = () => {
                     }}
                     className={`p-3 rounded-lg border-2 transition-all flex items-center justify-between ${
                       values.beliefs.modalities.includes(modality)
-                        ? 'border-lavender-500 bg-lavender-50 text-lavender-700'
+                        ? 'border-lavender-500 bg-electric-500/20 text-electric-400'
                         : 'border-sage-200 hover:border-sage-300'
                     }`}
                   >
@@ -438,7 +438,7 @@ const OnboardingWizard: React.FC = () => {
                 ))}
               </div>
               {touched.beliefs?.modalities && errors.beliefs?.modalities && (
-                <p className="mt-1 text-sm text-rose-600">{errors.beliefs.modalities}</p>
+                <p className="mt-1 text-sm text-lime-400">{errors.beliefs.modalities}</p>
               )}
             </div>
           </motion.div>
@@ -450,7 +450,7 @@ const OnboardingWizard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-nature py-8">
+    <div className="min-h-screen bg-warm-800 py-8">
       <div className="max-w-2xl mx-auto px-6 py-8">
         {/* Progress Bar */}
         <div className="mb-12">
@@ -459,24 +459,24 @@ const OnboardingWizard: React.FC = () => {
               <div key={step.id} className="flex items-center">
                 <div className={`flex items-center justify-center w-10 h-10 rounded-full text-sm font-medium ${
                   currentStep >= step.id
-                    ? 'bg-lavender-600 text-white'
-                    : 'bg-sage-200 text-sage-600'
+                    ? 'bg-electric-500 text-white'
+                    : 'bg-warm-600 text-warm-300'
                 }`}>
                   {currentStep > step.id ? <Check size={18} /> : step.id}
                 </div>
                 {index < steps.length - 1 && (
                   <div className={`w-20 h-1 mx-3 ${
-                    currentStep > step.id ? 'bg-lavender-600' : 'bg-sage-200'
+                    currentStep > step.id ? 'bg-electric-500' : 'bg-warm-600'
                   }`} />
                 )}
               </div>
             ))}
           </div>
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-sage-900 mb-2">
+            <h1 className="text-2xl font-bold text-white mb-2">
               {steps[currentStep - 1].title}
             </h1>
-            <p className="text-lg text-sage-600">
+            <p className="text-lg text-warm-300">
               {steps[currentStep - 1].description}
             </p>
           </div>
@@ -503,8 +503,8 @@ const OnboardingWizard: React.FC = () => {
                     disabled={currentStep === 1}
                     className={`flex items-center px-6 py-3 rounded-xl transition-all duration-300 text-base font-medium ${
                       currentStep === 1
-                        ? 'text-sage-400 cursor-not-allowed'
-                        : 'text-sage-700 hover:text-sage-900 hover:bg-sage-100'
+                        ? 'text-warm-400 cursor-not-allowed'
+                        : 'text-warm-300 hover:text-white hover:bg-warm-700/50'
                     }`}
                   >
                     <ChevronLeft size={20} className="mr-3" />

@@ -94,7 +94,7 @@ const WellnessJournal: React.FC = () => {
   const todayEntry = getTodayEntry();
 
   return (
-    <div className="min-h-screen bg-gradient-nature">
+    <div className="min-h-screen bg-warm-800">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-sage-200">
         <div className="max-w-7xl mx-auto px-6 py-6">
@@ -103,16 +103,16 @@ const WellnessJournal: React.FC = () => {
               <motion.h1
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-3xl font-bold text-sage-900 mb-2"
+                className="text-3xl font-bold text-white mb-2"
               >
                 Wellness Journal
               </motion.h1>
-              <p className="text-sage-600">
+              <p className="text-warm-300">
                 Track your daily wellness journey and celebrate your progress. Share your insights with our community and earn rewards through our referral program.
               </p>
               {isDemoMode && (
                 <div className="mt-2">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-lavender-100 to-rose-100 text-lavender-700 border border-lavender-200">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-lavender-100 to-rose-100 text-electric-400 border border-lavender-200">
                     🎭 Demo Mode
                   </span>
                 </div>
@@ -154,10 +154,10 @@ const WellnessJournal: React.FC = () => {
             className="card p-8"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-sage-900">
+              <h2 className="text-xl font-bold text-white">
                 Select Date
               </h2>
-              <Calendar size={20} className="text-sage-600" />
+              <Calendar size={20} className="text-warm-300" />
             </div>
             <input
               type="date"
@@ -176,7 +176,7 @@ const WellnessJournal: React.FC = () => {
             transition={{ delay: 0.1 }}
             className="card p-8"
           >
-            <h2 className="text-xl font-bold text-sage-900 mb-8">
+            <h2 className="text-xl font-bold text-white mb-8">
               {new Date(selectedDate).toLocaleDateString('en-US', { 
                 weekday: 'long', 
                 year: 'numeric', 
@@ -192,42 +192,42 @@ const WellnessJournal: React.FC = () => {
                   <div className="text-6xl mb-2">
                     {moodEmojis[todayEntry.mood - 1]}
                   </div>
-                  <p className="text-sage-600">Mood: {todayEntry.mood}/10</p>
+                  <p className="text-warm-300">Mood: {todayEntry.mood}/10</p>
                 </div>
 
                 {/* Metrics Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-sage-50 rounded-lg">
-                    <div className="text-2xl font-bold text-lavender-600 mb-1">
+                  <div className="text-center p-4 bg-warm-600/30 rounded-lg">
+                    <div className="text-2xl font-bold text-electric-400 mb-1">
                       {todayEntry.energy}
                     </div>
-                    <div className="text-sm text-sage-600">Energy</div>
+                    <div className="text-sm text-warm-300">Energy</div>
                   </div>
-                  <div className="text-center p-4 bg-sage-50 rounded-lg">
-                    <div className="text-2xl font-bold text-sand-600 mb-1">
+                  <div className="text-center p-4 bg-warm-600/30 rounded-lg">
+                    <div className="text-2xl font-bold text-orange-400 mb-1">
                       {todayEntry.sleep}
                     </div>
-                    <div className="text-sm text-sage-600">Sleep</div>
+                    <div className="text-sm text-warm-300">Sleep</div>
                   </div>
-                  <div className="text-center p-4 bg-sage-50 rounded-lg">
-                    <div className="text-2xl font-bold text-rose-600 mb-1">
+                  <div className="text-center p-4 bg-warm-600/30 rounded-lg">
+                    <div className="text-2xl font-bold text-lime-400 mb-1">
                       {todayEntry.stress}
                     </div>
-                    <div className="text-sm text-sage-600">Stress</div>
+                    <div className="text-sm text-warm-300">Stress</div>
                   </div>
-                  <div className="text-center p-4 bg-sage-50 rounded-lg">
-                    <div className="text-2xl font-bold text-sage-600 mb-1">
+                  <div className="text-center p-4 bg-warm-600/30 rounded-lg">
+                    <div className="text-2xl font-bold text-warm-300 mb-1">
                       {todayEntry.ritualsCompleted.length}
                     </div>
-                    <div className="text-sm text-sage-600">Rituals</div>
+                    <div className="text-sm text-warm-300">Rituals</div>
                   </div>
                 </div>
 
                 {/* Notes */}
                 {todayEntry.notes && (
                   <div>
-                    <h3 className="font-medium text-sage-900 mb-2">Notes:</h3>
-                    <p className="text-sage-600 bg-sage-50 p-3 rounded-lg">
+                    <h3 className="font-medium text-white mb-2">Notes:</h3>
+                    <p className="text-warm-300 bg-warm-600/30 p-3 rounded-lg">
                       {todayEntry.notes}
                     </p>
                   </div>
@@ -236,12 +236,12 @@ const WellnessJournal: React.FC = () => {
                 {/* Completed Rituals */}
                 {todayEntry.ritualsCompleted.length > 0 && (
                   <div>
-                    <h3 className="font-medium text-sage-900 mb-2">Completed Rituals:</h3>
+                    <h3 className="font-medium text-white mb-2">Completed Rituals:</h3>
                     <div className="flex flex-wrap gap-2">
                       {todayEntry.ritualsCompleted.map((ritual, index) => (
                         <span
                           key={index}
-                          className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-lavender-100 text-lavender-700"
+                          className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-electric-500/20 text-electric-400"
                         >
                           <CheckCircle size={14} className="mr-1" />
                           {ritual}
@@ -253,8 +253,8 @@ const WellnessJournal: React.FC = () => {
               </div>
             ) : (
               <div className="text-center py-8">
-                <BookOpen size={48} className="text-sage-300 mx-auto mb-4" />
-                <p className="text-sage-600 mb-4">
+                <BookOpen size={48} className="text-warm-400 mx-auto mb-4" />
+                <p className="text-warm-300 mb-4">
                   No entry for this date yet.
                 </p>
                 <button
@@ -276,7 +276,7 @@ const WellnessJournal: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="card"
           >
-            <h2 className="text-xl font-bold text-sage-900 mb-6">
+            <h2 className="text-xl font-bold text-white mb-6">
               <TrendingUp size={20} className="inline mr-2" />
               Your Progress (Last 7 Days)
             </h2>
@@ -311,13 +311,13 @@ const WellnessJournal: React.FC = () => {
               className="bg-white rounded-xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-xl font-bold text-sage-900 mb-6">
+              <h2 className="text-xl font-bold text-white mb-6">
                 New Journal Entry
               </h2>
 
               {/* Mood */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-sage-700 mb-3">
+                <label className="block text-sm font-medium text-warm-300 mb-3">
                   How are you feeling today?
                 </label>
                 <div className="flex justify-between items-center">
@@ -330,14 +330,14 @@ const WellnessJournal: React.FC = () => {
                     onChange={(e) => setNewEntry(prev => ({ ...prev, mood: Number(e.target.value) }))}
                     className="flex-1 mx-4"
                   />
-                  <span className="text-sm font-medium text-sage-700">{newEntry.mood}/10</span>
+                  <span className="text-sm font-medium text-warm-300">{newEntry.mood}/10</span>
                 </div>
               </div>
 
               {/* Metrics */}
               <div className="space-y-4 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-sage-700 mb-2">
+                  <label className="block text-sm font-medium text-warm-300 mb-2">
                     Energy Level
                   </label>
                   <input
@@ -348,14 +348,14 @@ const WellnessJournal: React.FC = () => {
                     onChange={(e) => setNewEntry(prev => ({ ...prev, energy: Number(e.target.value) }))}
                     className="w-full"
                   />
-                  <div className="flex justify-between text-xs text-sage-500 mt-1">
+                  <div className="flex justify-between text-xs text-warm-400 mt-1">
                     <span>1</span>
                     <span>10</span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-sage-700 mb-2">
+                  <label className="block text-sm font-medium text-warm-300 mb-2">
                     Sleep Quality
                   </label>
                   <input
@@ -366,14 +366,14 @@ const WellnessJournal: React.FC = () => {
                     onChange={(e) => setNewEntry(prev => ({ ...prev, sleep: Number(e.target.value) }))}
                     className="w-full"
                   />
-                  <div className="flex justify-between text-xs text-sage-500 mt-1">
+                  <div className="flex justify-between text-xs text-warm-400 mt-1">
                     <span>1</span>
                     <span>10</span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-sage-700 mb-2">
+                  <label className="block text-sm font-medium text-warm-300 mb-2">
                     Stress Level
                   </label>
                   <input
@@ -384,7 +384,7 @@ const WellnessJournal: React.FC = () => {
                     onChange={(e) => setNewEntry(prev => ({ ...prev, stress: Number(e.target.value) }))}
                     className="w-full"
                   />
-                  <div className="flex justify-between text-xs text-sage-500 mt-1">
+                  <div className="flex justify-between text-xs text-warm-400 mt-1">
                     <span>1</span>
                     <span>10</span>
                   </div>
@@ -393,7 +393,7 @@ const WellnessJournal: React.FC = () => {
 
               {/* Rituals */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-sage-700 mb-3">
+                <label className="block text-sm font-medium text-warm-300 mb-3">
                   Rituals Completed Today
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -404,8 +404,8 @@ const WellnessJournal: React.FC = () => {
                       onClick={() => toggleRitual(ritual)}
                       className={`p-2 rounded-lg text-sm transition-all ${
                         newEntry.ritualsCompleted.includes(ritual)
-                          ? 'bg-lavender-100 text-lavender-700 border-lavender-300'
-                          : 'bg-sage-50 text-sage-600 border-sage-200 hover:bg-sage-100'
+                          ? 'bg-electric-500/20 text-electric-400 border-lavender-300'
+                          : 'bg-warm-600/30 text-warm-300 border-sage-200 hover:bg-warm-700/50'
                       } border`}
                     >
                       {ritual}
@@ -416,7 +416,7 @@ const WellnessJournal: React.FC = () => {
 
               {/* Notes */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-sage-700 mb-2">
+                <label className="block text-sm font-medium text-warm-300 mb-2">
                   Notes (optional)
                 </label>
                 <textarea

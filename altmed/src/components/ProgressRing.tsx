@@ -62,14 +62,14 @@ const ProgressRing: React.FC<ProgressRingProps> = ({
         </svg>
         {showValue && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-sm font-semibold text-sage-700">
+            <span className="text-sm font-semibold text-warm-300">
               {value}
             </span>
           </div>
         )}
       </div>
       {label && (
-        <span className="text-xs text-sage-600 mt-2 text-center">
+        <span className="text-xs text-warm-300 mt-2 text-center">
           {label}
         </span>
       )}

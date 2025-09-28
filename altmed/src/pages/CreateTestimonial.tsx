@@ -160,20 +160,20 @@ const CreateTestimonial: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-nature">
+    <div className="min-h-screen bg-warm-800">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-sage-200">
         <div className="max-w-4xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <Link to="/search-analysis" className="flex items-center text-sage-600 hover:text-sage-900 mb-2">
+              <Link to="/search-analysis" className="flex items-center text-warm-300 hover:text-white mb-2">
                 <ArrowLeft size={20} className="mr-2" />
                 Back to Search
               </Link>
-              <h1 className="text-3xl font-bold text-sage-900">
+              <h1 className="text-3xl font-bold text-white">
                 Share Your Experience
               </h1>
-              <p className="text-sage-600">
+              <p className="text-warm-300">
                 Help others by sharing your health journey and treatment experiences. Earn rewards and grow our community through our referral program.
               </p>
             </div>
@@ -189,8 +189,8 @@ const CreateTestimonial: React.FC = () => {
               <div key={step.id} className="flex items-center">
                 <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
                   currentStep >= step.id
-                    ? 'border-lavender-500 bg-lavender-500 text-white'
-                    : 'border-sage-300 text-sage-400'
+                    ? 'border-lavender-500 bg-electric-500/200 text-white'
+                    : 'border-sage-300 text-warm-400'
                 }`}>
                   {currentStep > step.id ? (
                     <CheckCircle size={20} />
@@ -200,17 +200,17 @@ const CreateTestimonial: React.FC = () => {
                 </div>
                 {index < steps.length - 1 && (
                   <div className={`w-16 h-0.5 mx-2 ${
-                    currentStep > step.id ? 'bg-lavender-500' : 'bg-sage-300'
+                    currentStep > step.id ? 'bg-electric-500/200' : 'bg-warm-500'
                   }`} />
                 )}
               </div>
             ))}
           </div>
           <div className="mt-4 text-center">
-            <h2 className="text-lg font-semibold text-sage-900">
+            <h2 className="text-lg font-semibold text-white">
               {steps[currentStep - 1].title}
             </h2>
-            <p className="text-sage-600">{steps[currentStep - 1].description}</p>
+            <p className="text-warm-300">{steps[currentStep - 1].description}</p>
           </div>
         </div>
 
@@ -228,13 +228,13 @@ const CreateTestimonial: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="card"
                 >
-                  <h3 className="text-xl font-bold text-sage-900 mb-6">
+                  <h3 className="text-xl font-bold text-white mb-6">
                     Basic Information
                   </h3>
                   
                   <div className="space-y-8">
                     <div>
-                      <label className="block text-base font-medium text-sage-700 mb-3">
+                      <label className="block text-base font-medium text-warm-300 mb-3">
                         Testimonial Title *
                       </label>
                       <Field
@@ -247,7 +247,7 @@ const CreateTestimonial: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-base font-medium text-sage-700 mb-3">
+                      <label className="block text-base font-medium text-warm-300 mb-3">
                         Your Story *
                       </label>
                       <Field
@@ -261,7 +261,7 @@ const CreateTestimonial: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-base font-medium text-sage-700 mb-3">
+                      <label className="block text-base font-medium text-warm-300 mb-3">
                         Primary Condition *
                       </label>
                       <Field
@@ -289,13 +289,13 @@ const CreateTestimonial: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="card"
                 >
-                  <h3 className="text-xl font-bold text-sage-900 mb-6">
+                  <h3 className="text-xl font-bold text-white mb-6">
                     Health Condition Details
                   </h3>
                   
                   <div className="space-y-8">
                     <div>
-                      <label className="block text-base font-medium text-sage-700 mb-3">
+                      <label className="block text-base font-medium text-warm-300 mb-3">
                         Diagnosis *
                       </label>
                       <Field
@@ -308,7 +308,7 @@ const CreateTestimonial: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-base font-medium text-sage-700 mb-3">
+                      <label className="block text-base font-medium text-warm-300 mb-3">
                         Severity *
                       </label>
                       <Field
@@ -323,7 +323,7 @@ const CreateTestimonial: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-base font-medium text-sage-700 mb-3">
+                      <label className="block text-base font-medium text-warm-300 mb-3">
                         Duration *
                       </label>
                       <Field
@@ -336,7 +336,7 @@ const CreateTestimonial: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-base font-medium text-sage-700 mb-3">
+                      <label className="block text-base font-medium text-warm-300 mb-3">
                         Symptoms
                       </label>
                       <div className="space-y-2">
@@ -352,7 +352,7 @@ const CreateTestimonial: React.FC = () => {
                                   setFieldValue('healthCondition.symptoms', values.healthCondition.symptoms.filter(s => s !== symptom));
                                 }
                               }}
-                              className="mr-3 text-lavender-600 focus:ring-lavender-500"
+                              className="mr-3 text-electric-400 focus:ring-lavender-500"
                             />
                             {symptom}
                           </label>
@@ -370,7 +370,7 @@ const CreateTestimonial: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="card"
                 >
-                  <h3 className="text-xl font-bold text-sage-900 mb-6">
+                  <h3 className="text-xl font-bold text-white mb-6">
                     Treatment History
                   </h3>
                   
@@ -378,11 +378,11 @@ const CreateTestimonial: React.FC = () => {
                     {/* Conventional Treatments */}
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-lg font-semibold text-sage-900">Conventional Treatments</h4>
+                        <h4 className="text-lg font-semibold text-white">Conventional Treatments</h4>
                         <button
                           type="button"
                           onClick={addConventionalTreatment}
-                          className="text-lavender-600 hover:text-lavender-700 text-sm font-medium"
+                          className="text-electric-400 hover:text-electric-400 text-sm font-medium"
                         >
                           + Add Treatment
                         </button>
@@ -393,7 +393,7 @@ const CreateTestimonial: React.FC = () => {
                           <div key={index} className="border border-sage-200 rounded-lg p-4">
                             <div className="grid md:grid-cols-2 gap-4">
                               <div>
-                                <label className="block text-sm font-medium text-sage-700 mb-1">Treatment Name</label>
+                                <label className="block text-sm font-medium text-warm-300 mb-1">Treatment Name</label>
                                 <input
                                   type="text"
                                   value={treatment.name}
@@ -406,7 +406,7 @@ const CreateTestimonial: React.FC = () => {
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-sage-700 mb-1">Effectiveness (1-10)</label>
+                                <label className="block text-sm font-medium text-warm-300 mb-1">Effectiveness (1-10)</label>
                                 <input
                                   type="number"
                                   min="1"
@@ -429,11 +429,11 @@ const CreateTestimonial: React.FC = () => {
                     {/* Alternative Treatments */}
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-lg font-semibold text-sage-900">Alternative Treatments</h4>
+                        <h4 className="text-lg font-semibold text-white">Alternative Treatments</h4>
                         <button
                           type="button"
                           onClick={addAlternativeTreatment}
-                          className="text-lavender-600 hover:text-lavender-700 text-sm font-medium"
+                          className="text-electric-400 hover:text-electric-400 text-sm font-medium"
                         >
                           + Add Treatment
                         </button>
@@ -444,7 +444,7 @@ const CreateTestimonial: React.FC = () => {
                           <div key={index} className="border border-sage-200 rounded-lg p-4">
                             <div className="grid md:grid-cols-3 gap-4">
                               <div>
-                                <label className="block text-sm font-medium text-sage-700 mb-1">Treatment Name</label>
+                                <label className="block text-sm font-medium text-warm-300 mb-1">Treatment Name</label>
                                 <input
                                   type="text"
                                   value={treatment.name}
@@ -457,7 +457,7 @@ const CreateTestimonial: React.FC = () => {
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-sage-700 mb-1">Effectiveness (1-10)</label>
+                                <label className="block text-sm font-medium text-warm-300 mb-1">Effectiveness (1-10)</label>
                                 <input
                                   type="number"
                                   min="1"
@@ -472,7 +472,7 @@ const CreateTestimonial: React.FC = () => {
                                 />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium text-sage-700 mb-1">Dosage</label>
+                                <label className="block text-sm font-medium text-warm-300 mb-1">Dosage</label>
                                 <input
                                   type="text"
                                   value={treatment.dosage || ''}
@@ -501,13 +501,13 @@ const CreateTestimonial: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="card"
                 >
-                  <h3 className="text-xl font-bold text-sage-900 mb-6">
+                  <h3 className="text-xl font-bold text-white mb-6">
                     Experience Details
                   </h3>
                   
                   <div className="space-y-8">
                     <div>
-                      <label className="block text-base font-medium text-sage-700 mb-3">
+                      <label className="block text-base font-medium text-warm-300 mb-3">
                         Overall Effectiveness (1-10) *
                       </label>
                       <Field
@@ -521,7 +521,7 @@ const CreateTestimonial: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-base font-medium text-sage-700 mb-3">
+                      <label className="block text-base font-medium text-warm-300 mb-3">
                         Treatment Timeline *
                       </label>
                       <Field
@@ -535,7 +535,7 @@ const CreateTestimonial: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-base font-medium text-sage-700 mb-3">
+                      <label className="block text-base font-medium text-warm-300 mb-3">
                         Lifestyle Changes
                       </label>
                       <div className="space-y-2">
@@ -551,7 +551,7 @@ const CreateTestimonial: React.FC = () => {
                                   setFieldValue('experience.lifestyleChanges', values.experience.lifestyleChanges.filter(c => c !== change));
                                 }
                               }}
-                              className="mr-3 text-lavender-600 focus:ring-lavender-500"
+                              className="mr-3 text-electric-400 focus:ring-lavender-500"
                             />
                             {change}
                           </label>
@@ -569,19 +569,19 @@ const CreateTestimonial: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="card"
                 >
-                  <h3 className="text-xl font-bold text-sage-900 mb-6">
+                  <h3 className="text-xl font-bold text-white mb-6">
                     Research & Consent
                   </h3>
                   
                   <div className="space-y-6">
                     <div>
-                      <h4 className="text-lg font-semibold text-sage-900 mb-4">Research Sources</h4>
+                      <h4 className="text-lg font-semibold text-white mb-4">Research Sources</h4>
                       <div className="space-y-3">
                         <label className="flex items-center">
                           <Field
                             name="research.consultedStudies"
                             type="checkbox"
-                            className="mr-3 text-lavender-600 focus:ring-lavender-500"
+                            className="mr-3 text-electric-400 focus:ring-lavender-500"
                           />
                           I consulted scientific studies and research papers
                         </label>
@@ -589,7 +589,7 @@ const CreateTestimonial: React.FC = () => {
                           <Field
                             name="research.consultedHealthcareProvider"
                             type="checkbox"
-                            className="mr-3 text-lavender-600 focus:ring-lavender-500"
+                            className="mr-3 text-electric-400 focus:ring-lavender-500"
                           />
                           I consulted with healthcare providers
                         </label>
@@ -597,16 +597,16 @@ const CreateTestimonial: React.FC = () => {
                           <Field
                             name="research.consultedCommunity"
                             type="checkbox"
-                            className="mr-3 text-lavender-600 focus:ring-lavender-500"
+                            className="mr-3 text-electric-400 focus:ring-lavender-500"
                           />
                           I consulted with patient communities and forums
                         </label>
                       </div>
                     </div>
 
-                    <div className="bg-lavender-50 border border-lavender-200 rounded-lg p-6">
-                      <h4 className="text-lg font-semibold text-sage-900 mb-4 flex items-center">
-                        <Shield size={20} className="mr-2 text-lavender-600" />
+                    <div className="bg-electric-500/20 border border-lavender-200 rounded-lg p-6">
+                      <h4 className="text-lg font-semibold text-white mb-4 flex items-center">
+                        <Shield size={20} className="mr-2 text-electric-400" />
                         Consent & Verification
                       </h4>
                       
@@ -615,11 +615,11 @@ const CreateTestimonial: React.FC = () => {
                           <Field
                             name="consent.ehrShared"
                             type="checkbox"
-                            className="mr-3 mt-1 text-lavender-600 focus:ring-lavender-500"
+                            className="mr-3 mt-1 text-electric-400 focus:ring-lavender-500"
                           />
                           <div>
-                            <span className="font-medium text-sage-900">EHR Data Sharing</span>
-                            <p className="text-sm text-sage-600">I consent to share my electronic health record data for research purposes (anonymized)</p>
+                            <span className="font-medium text-white">EHR Data Sharing</span>
+                            <p className="text-sm text-warm-300">I consent to share my electronic health record data for research purposes (anonymized)</p>
                           </div>
                         </label>
                         
@@ -627,11 +627,11 @@ const CreateTestimonial: React.FC = () => {
                           <Field
                             name="consent.identityVerified"
                             type="checkbox"
-                            className="mr-3 mt-1 text-lavender-600 focus:ring-lavender-500"
+                            className="mr-3 mt-1 text-electric-400 focus:ring-lavender-500"
                           />
                           <div>
-                            <span className="font-medium text-sage-900">Identity Verification</span>
-                            <p className="text-sm text-sage-600">I confirm my identity has been verified through our secure verification process</p>
+                            <span className="font-medium text-white">Identity Verification</span>
+                            <p className="text-sm text-warm-300">I confirm my identity has been verified through our secure verification process</p>
                           </div>
                         </label>
                         
@@ -639,11 +639,11 @@ const CreateTestimonial: React.FC = () => {
                           <Field
                             name="consent.dataUsageConsent"
                             type="checkbox"
-                            className="mr-3 mt-1 text-lavender-600 focus:ring-lavender-500"
+                            className="mr-3 mt-1 text-electric-400 focus:ring-lavender-500"
                           />
                           <div>
-                            <span className="font-medium text-sage-900">Data Usage Consent</span>
-                            <p className="text-sm text-sage-600">I consent to my testimonial being used for research and community insights</p>
+                            <span className="font-medium text-white">Data Usage Consent</span>
+                            <p className="text-sm text-warm-300">I consent to my testimonial being used for research and community insights</p>
                           </div>
                         </label>
                       </div>

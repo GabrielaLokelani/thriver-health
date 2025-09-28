@@ -32,20 +32,20 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
 
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
-      case 'immediate': return 'bg-rose-100 text-rose-700';
-      case 'weekly': return 'bg-sand-100 text-sand-700';
-      case 'long-term': return 'bg-sage-100 text-sage-700';
-      default: return 'bg-sage-100 text-sage-700';
+      case 'immediate': return 'bg-lime-500/20 text-lime-400';
+      case 'weekly': return 'bg-orange-500/20 text-orange-400';
+      case 'long-term': return 'bg-warm-700/50 text-warm-300';
+      default: return 'bg-warm-700/50 text-warm-300';
     }
   };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'physical': return 'bg-lavender-100 text-lavender-700';
-      case 'mental': return 'bg-sand-100 text-sand-700';
-      case 'emotional': return 'bg-rose-100 text-rose-700';
-      case 'spiritual': return 'bg-sage-100 text-sage-700';
-      default: return 'bg-sage-100 text-sage-700';
+      case 'physical': return 'bg-electric-500/20 text-electric-400';
+      case 'mental': return 'bg-orange-500/20 text-orange-400';
+      case 'emotional': return 'bg-lime-500/20 text-lime-400';
+      case 'spiritual': return 'bg-warm-700/50 text-warm-300';
+      default: return 'bg-warm-700/50 text-warm-300';
     }
   };
 
@@ -83,10 +83,10 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
         
         <div className="flex justify-between items-start mb-6">
           <div className="flex-1 pr-6">
-            <h3 className="text-xl font-semibold text-sage-900 mb-4">
+            <h3 className="text-xl font-semibold text-white mb-4">
               {recommendation.title}
             </h3>
-            <p className="text-sage-600 text-base mb-6 leading-relaxed">
+            <p className="text-warm-300 text-base mb-6 leading-relaxed">
               {recommendation.description}
             </p>
           </div>
@@ -94,8 +94,8 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
             onClick={handleSaveToggle}
             className={`p-3 rounded-full transition-all duration-300 flex-shrink-0 ${
               isSaved 
-                ? 'text-rose-500 hover:text-rose-600' 
-                : 'text-sage-400 hover:text-rose-500'
+                ? 'text-lime-400 hover:text-lime-400' 
+                : 'text-warm-400 hover:text-lime-400'
             }`}
           >
             <Heart 
@@ -125,18 +125,18 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
         </div>
 
         <div className="mb-8">
-          <h4 className="text-base font-medium text-sage-700 mb-4">Benefits:</h4>
+          <h4 className="text-base font-medium text-warm-300 mb-4">Benefits:</h4>
           <ul className="space-y-3">
             {recommendation.benefits.map((benefit, index) => (
-              <li key={index} className="text-base text-sage-600 flex items-start">
-                <Star size={16} className="text-lavender-500 mr-4 mt-1 flex-shrink-0" />
+              <li key={index} className="text-base text-warm-300 flex items-start">
+                <Star size={16} className="text-electric-400 mr-4 mt-1 flex-shrink-0" />
                 <span className="leading-relaxed">{benefit}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="flex items-center justify-between text-base text-sage-500 pt-6 border-t border-sage-100">
+        <div className="flex items-center justify-between text-base text-warm-400 pt-6 border-t border-sage-100">
           {recommendation.duration && (
             <div className="flex items-center">
               <Clock size={16} className="mr-3" />
@@ -154,11 +154,11 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
         {/* Instructions for AI-generated recommendations */}
         {recommendation.instructions && recommendation.instructions.length > 0 && (
           <div className="mt-6 pt-6 border-t border-sage-100">
-            <h4 className="text-base font-medium text-sage-700 mb-4">Instructions:</h4>
+            <h4 className="text-base font-medium text-warm-300 mb-4">Instructions:</h4>
             <ol className="space-y-2">
               {recommendation.instructions.map((instruction, index) => (
-                <li key={index} className="text-sm text-sage-600 flex items-start">
-                  <span className="bg-lavender-100 text-lavender-700 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                <li key={index} className="text-sm text-warm-300 flex items-start">
+                  <span className="bg-electric-500/20 text-electric-400 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
                     {index + 1}
                   </span>
                   <span className="leading-relaxed">{instruction}</span>
@@ -171,10 +171,10 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
         {/* Equipment needed */}
         {recommendation.equipment && recommendation.equipment.length > 0 && (
           <div className="mt-4">
-            <h4 className="text-sm font-medium text-sage-700 mb-2">Equipment needed:</h4>
+            <h4 className="text-sm font-medium text-warm-300 mb-2">Equipment needed:</h4>
             <div className="flex flex-wrap gap-2">
               {recommendation.equipment.map((item, index) => (
-                <span key={index} className="px-2 py-1 bg-sage-100 text-sage-700 text-xs rounded">
+                <span key={index} className="px-2 py-1 bg-warm-700/50 text-warm-300 text-xs rounded">
                   {item}
                 </span>
               ))}

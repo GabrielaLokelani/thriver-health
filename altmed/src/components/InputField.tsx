@@ -27,9 +27,9 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <div className={`mb-6 ${className}`}>
-      <label htmlFor={name} className="block text-base font-medium text-sage-700 mb-3">
+      <label htmlFor={name} className="block text-base font-medium text-warm-300 mb-3">
         {label}
-        {required && <span className="text-rose-500 ml-1">*</span>}
+        {required && <span className="text-lime-400 ml-1">*</span>}
       </label>
       <input
         id={name}
@@ -43,7 +43,7 @@ const InputField: React.FC<InputFieldProps> = ({
         required={required}
       />
       {error && (
-        <p className="mt-2 text-sm text-rose-600 animate-fade-in">
+        <p className="mt-2 text-sm text-lime-400 animate-fade-in">
           {error}
         </p>
       )}

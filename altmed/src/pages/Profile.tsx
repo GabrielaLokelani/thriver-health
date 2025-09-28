@@ -130,31 +130,31 @@ const Profile: React.FC = () => {
 
   if (!userProfile) {
     return (
-      <div className="min-h-screen bg-gradient-nature flex items-center justify-center">
+      <div className="min-h-screen bg-warm-800 flex items-center justify-center">
         <div className="card max-w-md w-full text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-600 mx-auto mb-4"></div>
-          <p className="text-sage-600">Loading profile...</p>
+          <p className="text-warm-300">Loading profile...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-nature">
+    <div className="min-h-screen bg-warm-800">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-sage-200">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-sage-900">
+              <h1 className="text-3xl font-bold text-white">
                 Profile & Settings
               </h1>
-              <p className="text-sage-600">
+              <p className="text-warm-300">
                 Manage your account, preferences, and wellness data
               </p>
               {isDemoMode && (
                 <div className="mt-2">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-lavender-100 to-rose-100 text-lavender-700 border border-lavender-200">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-lavender-100 to-rose-100 text-electric-400 border border-lavender-200">
                     🎭 Demo Mode
                   </span>
                 </div>
@@ -180,16 +180,16 @@ const Profile: React.FC = () => {
                     {userProfile.name.split(' ').map(n => n[0]).join('')}
                   </div>
                   <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow">
-                    <Camera size={16} className="text-sage-600" />
+                    <Camera size={16} className="text-warm-300" />
                   </button>
                 </div>
-                <h2 className="text-xl font-semibold text-sage-900 mb-1">
+                <h2 className="text-xl font-semibold text-white mb-1">
                   {userProfile.name}
                 </h2>
-                <p className="text-sage-600 text-sm mb-3">
+                <p className="text-warm-300 text-sm mb-3">
                   Member since {new Date(userProfile.createdAt).toLocaleDateString()}
                 </p>
-                <div className="flex items-center justify-center text-sage-500 text-sm">
+                <div className="flex items-center justify-center text-warm-400 text-sm">
                   <MapPin size={14} className="mr-1" />
                   {userProfile.location}
                 </div>
@@ -203,8 +203,8 @@ const Profile: React.FC = () => {
                     onClick={() => setActiveTab(tab.id as any)}
                     className={`w-full flex items-center px-6 py-4 rounded-lg transition-all ${
                       activeTab === tab.id
-                        ? 'bg-lavender-50 text-lavender-700 border-lavender-200'
-                        : 'text-sage-600 hover:bg-sage-50 hover:text-sage-900'
+                        ? 'bg-electric-500/20 text-electric-400 border-lavender-200'
+                        : 'text-warm-300 hover:bg-warm-600/30 hover:text-white'
                     }`}
                   >
                     <tab.icon size={20} className="mr-3" />
@@ -226,7 +226,7 @@ const Profile: React.FC = () => {
               {activeTab === 'overview' && (
                 <div className="space-y-8">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-2xl font-bold text-sage-900">
+                    <h3 className="text-2xl font-bold text-white">
                       Profile Overview
                     </h3>
                     <button
@@ -248,70 +248,70 @@ const Profile: React.FC = () => {
                     <div className="grid md:grid-cols-2 gap-8">
                       <div className="space-y-6">
                         <div>
-                          <label className="block text-base font-medium text-sage-700 mb-2">Full Name</label>
-                          <p className="text-sage-900 text-base">{userProfile.name}</p>
+                          <label className="block text-base font-medium text-warm-300 mb-2">Full Name</label>
+                          <p className="text-white text-base">{userProfile.name}</p>
                         </div>
                         <div>
-                          <label className="block text-base font-medium text-sage-700 mb-2">Age</label>
-                          <p className="text-sage-900 text-base">{userProfile.age} years old</p>
+                          <label className="block text-base font-medium text-warm-300 mb-2">Age</label>
+                          <p className="text-white text-base">{userProfile.age} years old</p>
                         </div>
                         <div>
-                          <label className="block text-base font-medium text-sage-700 mb-2">Sex</label>
-                          <p className="text-sage-900 text-base">{userProfile.sex}</p>
+                          <label className="block text-base font-medium text-warm-300 mb-2">Sex</label>
+                          <p className="text-white text-base">{userProfile.sex}</p>
                         </div>
                         <div>
-                          <label className="block text-base font-medium text-sage-700 mb-2">Location</label>
-                          <p className="text-sage-900 text-base">{userProfile.location}</p>
+                          <label className="block text-base font-medium text-warm-300 mb-2">Location</label>
+                          <p className="text-white text-base">{userProfile.location}</p>
                         </div>
                       </div>
 
                       <div className="space-y-6">
                         <div>
-                          <label className="block text-base font-medium text-sage-700 mb-2">Energy Level</label>
+                          <label className="block text-base font-medium text-warm-300 mb-2">Energy Level</label>
                           <div className="flex items-center">
-                            <div className="flex-1 bg-sage-200 rounded-full h-2 mr-3">
+                            <div className="flex-1 bg-warm-600 rounded-full h-2 mr-3">
                               <div 
-                                className="bg-lavender-500 h-2 rounded-full" 
+                                className="bg-electric-500/200 h-2 rounded-full" 
                                 style={{ width: `${userProfile.energyLevel * 10}%` }}
                               ></div>
                             </div>
-                            <span className="text-sm text-sage-600">{userProfile.energyLevel}/10</span>
+                            <span className="text-sm text-warm-300">{userProfile.energyLevel}/10</span>
                           </div>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-sage-700 mb-1">Sleep Quality</label>
+                          <label className="block text-sm font-medium text-warm-300 mb-1">Sleep Quality</label>
                           <div className="flex items-center">
-                            <div className="flex-1 bg-sage-200 rounded-full h-2 mr-3">
+                            <div className="flex-1 bg-warm-600 rounded-full h-2 mr-3">
                               <div 
-                                className="bg-sand-500 h-2 rounded-full" 
+                                className="bg-orange-500/200 h-2 rounded-full" 
                                 style={{ width: `${userProfile.sleepQuality * 10}%` }}
                               ></div>
                             </div>
-                            <span className="text-sm text-sage-600">{userProfile.sleepQuality}/10</span>
+                            <span className="text-sm text-warm-300">{userProfile.sleepQuality}/10</span>
                           </div>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-sage-700 mb-1">Stress Level</label>
+                          <label className="block text-sm font-medium text-warm-300 mb-1">Stress Level</label>
                           <div className="flex items-center">
-                            <div className="flex-1 bg-sage-200 rounded-full h-2 mr-3">
+                            <div className="flex-1 bg-warm-600 rounded-full h-2 mr-3">
                               <div 
-                                className="bg-rose-500 h-2 rounded-full" 
+                                className="bg-lime-500/200 h-2 rounded-full" 
                                 style={{ width: `${userProfile.stressLevel * 10}%` }}
                               ></div>
                             </div>
-                            <span className="text-sm text-sage-600">{userProfile.stressLevel}/10</span>
+                            <span className="text-sm text-warm-300">{userProfile.stressLevel}/10</span>
                           </div>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-sage-700 mb-1">Mental Clarity</label>
+                          <label className="block text-sm font-medium text-warm-300 mb-1">Mental Clarity</label>
                           <div className="flex items-center">
-                            <div className="flex-1 bg-sage-200 rounded-full h-2 mr-3">
+                            <div className="flex-1 bg-warm-600 rounded-full h-2 mr-3">
                               <div 
-                                className="bg-sage-500 h-2 rounded-full" 
+                                className="bg-warm-600/300 h-2 rounded-full" 
                                 style={{ width: `${userProfile.mentalClarity * 10}%` }}
                               ></div>
                             </div>
-                            <span className="text-sm text-sage-600">{userProfile.mentalClarity}/10</span>
+                            <span className="text-sm text-warm-300">{userProfile.mentalClarity}/10</span>
                           </div>
                         </div>
                       </div>
@@ -320,35 +320,35 @@ const Profile: React.FC = () => {
 
                   {/* Wellness Stats */}
                   <div className="border-t border-sage-200 pt-6">
-                    <h4 className="text-lg font-semibold text-sage-900 mb-4">Wellness Statistics</h4>
+                    <h4 className="text-lg font-semibold text-white mb-4">Wellness Statistics</h4>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div className="text-center p-4 bg-lavender-50 rounded-lg">
-                        <Heart size={24} className="text-lavender-600 mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-lavender-600">
+                      <div className="text-center p-4 bg-electric-500/20 rounded-lg">
+                        <Heart size={24} className="text-electric-400 mx-auto mb-2" />
+                        <div className="text-2xl font-bold text-electric-400">
                           {storage.getWellnessEntries().length}
                         </div>
-                        <div className="text-sm text-sage-600">Journal Entries</div>
+                        <div className="text-sm text-warm-300">Journal Entries</div>
                       </div>
-                      <div className="text-center p-4 bg-sand-50 rounded-lg">
-                        <BookOpen size={24} className="text-sand-600 mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-sand-600">
+                      <div className="text-center p-4 bg-orange-500/20 rounded-lg">
+                        <BookOpen size={24} className="text-orange-400 mx-auto mb-2" />
+                        <div className="text-2xl font-bold text-orange-400">
                           {storage.getSavedRecommendations().length}
                         </div>
-                        <div className="text-sm text-sage-600">Saved Recommendations</div>
+                        <div className="text-sm text-warm-300">Saved Recommendations</div>
                       </div>
-                      <div className="text-center p-4 bg-rose-50 rounded-lg">
-                        <TrendingUp size={24} className="text-rose-600 mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-rose-600">
+                      <div className="text-center p-4 bg-lime-500/20 rounded-lg">
+                        <TrendingUp size={24} className="text-lime-400 mx-auto mb-2" />
+                        <div className="text-2xl font-bold text-lime-400">
                           {Math.floor((Date.now() - new Date(userProfile.createdAt).getTime()) / (1000 * 60 * 60 * 24))}
                         </div>
-                        <div className="text-sm text-sage-600">Days Active</div>
+                        <div className="text-sm text-warm-300">Days Active</div>
                       </div>
-                      <div className="text-center p-4 bg-sage-50 rounded-lg">
-                        <Award size={24} className="text-sage-600 mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-sage-600">
+                      <div className="text-center p-4 bg-warm-600/30 rounded-lg">
+                        <Award size={24} className="text-warm-300 mx-auto mb-2" />
+                        <div className="text-2xl font-bold text-warm-300">
                           {userProfile.primaryIssues.length}
                         </div>
-                        <div className="text-sm text-sage-600">Focus Areas</div>
+                        <div className="text-sm text-warm-300">Focus Areas</div>
                       </div>
                     </div>
                   </div>
@@ -358,19 +358,19 @@ const Profile: React.FC = () => {
               {/* Settings Tab */}
               {activeTab === 'settings' && (
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-bold text-sage-900">
+                  <h3 className="text-2xl font-bold text-white">
                     App Settings
                   </h3>
 
                   <div className="space-y-6">
                     {/* Display Settings */}
                     <div>
-                      <h4 className="text-lg font-semibold text-sage-900 mb-4">Display & Interface</h4>
+                      <h4 className="text-lg font-semibold text-white mb-4">Display & Interface</h4>
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
                           <div>
-                            <label className="font-medium text-sage-900">Theme</label>
-                            <p className="text-sm text-sage-600">Choose your preferred color scheme</p>
+                            <label className="font-medium text-white">Theme</label>
+                            <p className="text-sm text-warm-300">Choose your preferred color scheme</p>
                           </div>
                           <select
                             value={settings.theme}
@@ -385,8 +385,8 @@ const Profile: React.FC = () => {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <label className="font-medium text-sage-900">Dashboard Layout</label>
-                            <p className="text-sm text-sage-600">Choose how your dashboard is organized</p>
+                            <label className="font-medium text-white">Dashboard Layout</label>
+                            <p className="text-sm text-warm-300">Choose how your dashboard is organized</p>
                           </div>
                           <select
                             value={settings.dashboardLayout}
@@ -400,13 +400,13 @@ const Profile: React.FC = () => {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <label className="font-medium text-sage-900">Animations</label>
-                            <p className="text-sm text-sage-600">Enable smooth animations and transitions</p>
+                            <label className="font-medium text-white">Animations</label>
+                            <p className="text-sm text-warm-300">Enable smooth animations and transitions</p>
                           </div>
                           <button
                             onClick={() => handleSaveSettings({ animationsEnabled: !settings.animationsEnabled })}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                              settings.animationsEnabled ? 'bg-lavender-600' : 'bg-sage-300'
+                              settings.animationsEnabled ? 'bg-electric-500' : 'bg-warm-500'
                             }`}
                           >
                             <span
@@ -421,16 +421,16 @@ const Profile: React.FC = () => {
 
                     {/* Sound Settings */}
                     <div>
-                      <h4 className="text-lg font-semibold text-sage-900 mb-4">Sound & Audio</h4>
+                      <h4 className="text-lg font-semibold text-white mb-4">Sound & Audio</h4>
                       <div className="flex items-center justify-between">
                         <div>
-                          <label className="font-medium text-sage-900">Sound Effects</label>
-                          <p className="text-sm text-sage-600">Play sounds for notifications and interactions</p>
+                          <label className="font-medium text-white">Sound Effects</label>
+                          <p className="text-sm text-warm-300">Play sounds for notifications and interactions</p>
                         </div>
                         <button
                           onClick={() => handleSaveSettings({ soundEnabled: !settings.soundEnabled })}
                           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                            settings.soundEnabled ? 'bg-lavender-600' : 'bg-sage-300'
+                            settings.soundEnabled ? 'bg-electric-500' : 'bg-warm-500'
                           }`}
                         >
                           <span
@@ -444,19 +444,19 @@ const Profile: React.FC = () => {
 
                     {/* Notification Settings */}
                     <div>
-                      <h4 className="text-lg font-semibold text-sage-900 mb-4">Notifications</h4>
+                      <h4 className="text-lg font-semibold text-white mb-4">Notifications</h4>
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
                           <div>
-                            <label className="font-medium text-sage-900">Email Notifications</label>
-                            <p className="text-sm text-sage-600">Receive updates and reminders via email</p>
+                            <label className="font-medium text-white">Email Notifications</label>
+                            <p className="text-sm text-warm-300">Receive updates and reminders via email</p>
                           </div>
                           <button
                             onClick={() => handleSaveSettings({ 
                               notifications: { ...settings.notifications, email: !settings.notifications.email }
                             })}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                              settings.notifications.email ? 'bg-lavender-600' : 'bg-sage-300'
+                              settings.notifications.email ? 'bg-electric-500' : 'bg-warm-500'
                             }`}
                           >
                             <span
@@ -469,15 +469,15 @@ const Profile: React.FC = () => {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <label className="font-medium text-sage-900">Push Notifications</label>
-                            <p className="text-sm text-sage-600">Receive notifications on your device</p>
+                            <label className="font-medium text-white">Push Notifications</label>
+                            <p className="text-sm text-warm-300">Receive notifications on your device</p>
                           </div>
                           <button
                             onClick={() => handleSaveSettings({ 
                               notifications: { ...settings.notifications, push: !settings.notifications.push }
                             })}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                              settings.notifications.push ? 'bg-lavender-600' : 'bg-sage-300'
+                              settings.notifications.push ? 'bg-electric-500' : 'bg-warm-500'
                             }`}
                           >
                             <span
@@ -490,15 +490,15 @@ const Profile: React.FC = () => {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <label className="font-medium text-sage-900">Wellness Reminders</label>
-                            <p className="text-sm text-sage-600">Daily reminders to log your wellness</p>
+                            <label className="font-medium text-white">Wellness Reminders</label>
+                            <p className="text-sm text-warm-300">Daily reminders to log your wellness</p>
                           </div>
                           <button
                             onClick={() => handleSaveSettings({ 
                               notifications: { ...settings.notifications, reminders: !settings.notifications.reminders }
                             })}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                              settings.notifications.reminders ? 'bg-lavender-600' : 'bg-sage-300'
+                              settings.notifications.reminders ? 'bg-electric-500' : 'bg-warm-500'
                             }`}
                           >
                             <span
@@ -517,25 +517,25 @@ const Profile: React.FC = () => {
               {/* Privacy Tab */}
               {activeTab === 'privacy' && (
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-bold text-sage-900">
+                  <h3 className="text-2xl font-bold text-white">
                     Privacy & Security
                   </h3>
 
                   <div className="space-y-6">
                     <div>
-                      <h4 className="text-lg font-semibold text-sage-900 mb-4">Data Sharing</h4>
+                      <h4 className="text-lg font-semibold text-white mb-4">Data Sharing</h4>
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
                           <div>
-                            <label className="font-medium text-sage-900">Share Wellness Data</label>
-                            <p className="text-sm text-sage-600">Allow your data to be used for research and community insights</p>
+                            <label className="font-medium text-white">Share Wellness Data</label>
+                            <p className="text-sm text-warm-300">Allow your data to be used for research and community insights</p>
                           </div>
                           <button
                             onClick={() => handleSaveSettings({ 
                               privacy: { ...settings.privacy, shareData: !settings.privacy.shareData }
                             })}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                              settings.privacy.shareData ? 'bg-lavender-600' : 'bg-sage-300'
+                              settings.privacy.shareData ? 'bg-electric-500' : 'bg-warm-500'
                             }`}
                           >
                             <span
@@ -548,15 +548,15 @@ const Profile: React.FC = () => {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <label className="font-medium text-sage-900">Public Profile</label>
-                            <p className="text-sm text-sage-600">Allow other users to see your profile information</p>
+                            <label className="font-medium text-white">Public Profile</label>
+                            <p className="text-sm text-warm-300">Allow other users to see your profile information</p>
                           </div>
                           <button
                             onClick={() => handleSaveSettings({ 
                               privacy: { ...settings.privacy, showProfile: !settings.privacy.showProfile }
                             })}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                              settings.privacy.showProfile ? 'bg-lavender-600' : 'bg-sage-300'
+                              settings.privacy.showProfile ? 'bg-electric-500' : 'bg-warm-500'
                             }`}
                           >
                             <span
@@ -569,15 +569,15 @@ const Profile: React.FC = () => {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <label className="font-medium text-sage-900">Analytics</label>
-                            <p className="text-sm text-sage-600">Help us improve by allowing anonymous usage analytics</p>
+                            <label className="font-medium text-white">Analytics</label>
+                            <p className="text-sm text-warm-300">Help us improve by allowing anonymous usage analytics</p>
                           </div>
                           <button
                             onClick={() => handleSaveSettings({ 
                               privacy: { ...settings.privacy, allowAnalytics: !settings.privacy.allowAnalytics }
                             })}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                              settings.privacy.allowAnalytics ? 'bg-lavender-600' : 'bg-sage-300'
+                              settings.privacy.allowAnalytics ? 'bg-electric-500' : 'bg-warm-500'
                             }`}
                           >
                             <span
@@ -590,17 +590,17 @@ const Profile: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="bg-sage-50 border border-sage-200 rounded-lg p-4">
-                      <h5 className="font-semibold text-sage-900 mb-2">Your Privacy Rights</h5>
-                      <p className="text-sm text-sage-600 mb-3">
+                    <div className="bg-warm-600/30 border border-sage-200 rounded-lg p-4">
+                      <h5 className="font-semibold text-white mb-2">Your Privacy Rights</h5>
+                      <p className="text-sm text-warm-300 mb-3">
                         You have the right to access, modify, or delete your personal data at any time. 
                         Your wellness data is encrypted and stored securely.
                       </p>
                       <div className="flex space-x-3">
-                        <button className="text-sm text-lavender-600 hover:text-lavender-700 font-medium">
+                        <button className="text-sm text-electric-400 hover:text-electric-400 font-medium">
                           View Data Policy
                         </button>
-                        <button className="text-sm text-lavender-600 hover:text-lavender-700 font-medium">
+                        <button className="text-sm text-electric-400 hover:text-electric-400 font-medium">
                           Contact Support
                         </button>
                       </div>
@@ -612,10 +612,10 @@ const Profile: React.FC = () => {
               {/* Referrals Tab */}
               {activeTab === 'referrals' && (
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-bold text-sage-900">
+                  <h3 className="text-2xl font-bold text-white">
                     Referral Program
                   </h3>
-                  <p className="text-sage-600">
+                  <p className="text-warm-300">
                     Track your referrals, earn commissions, and grow our community. Share your referral link to earn rewards when others join and engage with our platform.
                   </p>
                   <ReferralDashboard userId={userProfile.id} />
@@ -625,23 +625,23 @@ const Profile: React.FC = () => {
               {/* Data Tab */}
               {activeTab === 'data' && (
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-bold text-sage-900">
+                  <h3 className="text-2xl font-bold text-white">
                     Data Management
                   </h3>
 
                   <div className="space-y-6">
                     <div>
-                      <h4 className="text-lg font-semibold text-sage-900 mb-4">Export & Backup</h4>
+                      <h4 className="text-lg font-semibold text-white mb-4">Export & Backup</h4>
                       <div className="space-y-4">
-                        <div className="bg-lavender-50 border border-lavender-200 rounded-lg p-4">
+                        <div className="bg-electric-500/20 border border-lavender-200 rounded-lg p-4">
                           <div className="flex items-start justify-between">
                             <div>
-                              <h5 className="font-semibold text-sage-900 mb-1">Export Your Data</h5>
-                              <p className="text-sm text-sage-600 mb-3">
+                              <h5 className="font-semibold text-white mb-1">Export Your Data</h5>
+                              <p className="text-sm text-warm-300 mb-3">
                                 Download all your wellness data, including profile, journal entries, and settings.
                               </p>
                             </div>
-                            <Download size={20} className="text-lavender-600" />
+                            <Download size={20} className="text-electric-400" />
                           </div>
                           <button
                             onClick={exportUserData}
@@ -655,21 +655,21 @@ const Profile: React.FC = () => {
                     </div>
 
                     <div>
-                      <h4 className="text-lg font-semibold text-sage-900 mb-4">Account Actions</h4>
+                      <h4 className="text-lg font-semibold text-white mb-4">Account Actions</h4>
                       <div className="space-y-4">
-                        <div className="bg-rose-50 border border-rose-200 rounded-lg p-4">
+                        <div className="bg-lime-500/20 border border-rose-200 rounded-lg p-4">
                           <div className="flex items-start justify-between">
                             <div>
-                              <h5 className="font-semibold text-sage-900 mb-1">Delete Account</h5>
-                              <p className="text-sm text-sage-600 mb-3">
+                              <h5 className="font-semibold text-white mb-1">Delete Account</h5>
+                              <p className="text-sm text-warm-300 mb-3">
                                 Permanently delete your account and all associated data. This action cannot be undone.
                               </p>
                             </div>
-                            <Trash2 size={20} className="text-rose-600" />
+                            <Trash2 size={20} className="text-lime-400" />
                           </div>
                           <button
                             onClick={deleteAccount}
-                            className="bg-rose-600 hover:bg-rose-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center"
+                            className="bg-lime-500 hover:bg-lime-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center"
                           >
                             <Trash2 size={16} className="mr-2" />
                             Delete Account
@@ -679,22 +679,22 @@ const Profile: React.FC = () => {
                     </div>
 
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                      <h5 className="font-semibold text-sage-900 mb-2">Data Summary</h5>
+                      <h5 className="font-semibold text-white mb-2">Data Summary</h5>
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <span className="text-sage-600">Profile Created:</span>
+                          <span className="text-warm-300">Profile Created:</span>
                           <p className="font-medium">{new Date(userProfile.createdAt).toLocaleDateString()}</p>
                         </div>
                         <div>
-                          <span className="text-sage-600">Last Updated:</span>
+                          <span className="text-warm-300">Last Updated:</span>
                           <p className="font-medium">{new Date(userProfile.updatedAt).toLocaleDateString()}</p>
                         </div>
                         <div>
-                          <span className="text-sage-600">Journal Entries:</span>
+                          <span className="text-warm-300">Journal Entries:</span>
                           <p className="font-medium">{storage.getWellnessEntries().length}</p>
                         </div>
                         <div>
-                          <span className="text-sage-600">Saved Items:</span>
+                          <span className="text-warm-300">Saved Items:</span>
                           <p className="font-medium">{storage.getSavedRecommendations().length}</p>
                         </div>
                       </div>
@@ -738,7 +738,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ userProfile, onSave, 
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-sage-700 mb-2">Full Name</label>
+          <label className="block text-sm font-medium text-warm-300 mb-2">Full Name</label>
           <input
             type="text"
             value={formData.name}
@@ -748,7 +748,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ userProfile, onSave, 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-sage-700 mb-2">Age</label>
+          <label className="block text-sm font-medium text-warm-300 mb-2">Age</label>
           <input
             type="number"
             value={formData.age}
@@ -760,7 +760,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ userProfile, onSave, 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-sage-700 mb-2">Sex</label>
+          <label className="block text-sm font-medium text-warm-300 mb-2">Sex</label>
           <select
             value={formData.sex}
             onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
@@ -775,7 +775,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ userProfile, onSave, 
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-sage-700 mb-2">Location</label>
+          <label className="block text-sm font-medium text-warm-300 mb-2">Location</label>
           <input
             type="text"
             value={formData.location}
@@ -788,10 +788,10 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ userProfile, onSave, 
       </div>
 
       <div className="space-y-4">
-        <h4 className="text-lg font-semibold text-sage-900">Wellness Ratings</h4>
+        <h4 className="text-lg font-semibold text-white">Wellness Ratings</h4>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-sage-700 mb-2">
+            <label className="block text-sm font-medium text-warm-300 mb-2">
               Energy Level: {formData.energyLevel}/10
             </label>
             <input
@@ -804,7 +804,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ userProfile, onSave, 
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-sage-700 mb-2">
+            <label className="block text-sm font-medium text-warm-300 mb-2">
               Sleep Quality: {formData.sleepQuality}/10
             </label>
             <input
@@ -817,7 +817,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ userProfile, onSave, 
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-sage-700 mb-2">
+            <label className="block text-sm font-medium text-warm-300 mb-2">
               Stress Level: {formData.stressLevel}/10
             </label>
             <input
@@ -830,7 +830,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({ userProfile, onSave, 
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-sage-700 mb-2">
+            <label className="block text-sm font-medium text-warm-300 mb-2">
               Mental Clarity: {formData.mentalClarity}/10
             </label>
             <input

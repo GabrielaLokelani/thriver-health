@@ -77,9 +77,9 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-nature">
+    <div className="min-h-screen bg-warm-800">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-lavender-500 to-rose-500 text-white py-12">
+      <section className="bg-electric-500 text-white py-12">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -112,32 +112,32 @@ const Dashboard: React.FC = () => {
             className="lg:col-span-2"
           >
             <div className="modern-card p-8 mb-8">
-              <h2 className="text-3xl font-bold text-sage-900 mb-6">
+              <h2 className="text-3xl font-bold text-white mb-6">
                 Your Disease Research Overview
               </h2>
-              <p className="text-lg text-sage-600 mb-8 leading-relaxed">
+              <p className="text-lg text-warm-300 mb-8 leading-relaxed">
                 Track your alternative medicine research progress and treatment effectiveness for serious diseases. 
                 Get free AI-generated recommendations for diet, exercise, and therapy that you can do on your own.
               </p>
               
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-lavender-50 p-6 rounded-xl">
+                <div className="bg-electric-500/20 p-6 rounded-xl">
                   <div className="flex items-center mb-4">
-                    <Database size={24} className="text-lavender-600 mr-3" />
-                    <h3 className="text-xl font-semibold text-sage-900">Research Studies</h3>
+                    <Database size={24} className="text-electric-400 mr-3" />
+                    <h3 className="text-xl font-semibold text-white">Research Studies</h3>
                   </div>
-                  <div className="text-3xl font-bold text-lavender-600 mb-2">24</div>
-                  <p className="text-sage-600">Studies reviewed this month</p>
+                  <div className="text-3xl font-bold text-electric-400 mb-2">24</div>
+                  <p className="text-warm-300">Studies reviewed this month</p>
                 </div>
                 
-                <div className="bg-rose-50 p-6 rounded-xl">
+                <div className="bg-lime-500/20 p-6 rounded-xl">
                   <div className="flex items-center mb-4">
-                    <Users size={24} className="text-rose-600 mr-3" />
-                    <h3 className="text-xl font-semibold text-sage-900">Community Insights</h3>
+                    <Users size={24} className="text-lime-400 mr-3" />
+                    <h3 className="text-xl font-semibold text-white">Community Insights</h3>
                   </div>
-                  <div className="text-3xl font-bold text-rose-600 mb-2">156</div>
-                  <p className="text-sage-600">Patient testimonials analyzed</p>
-                  <button className="mt-3 text-sm text-rose-600 hover:text-rose-700 font-medium">
+                  <div className="text-3xl font-bold text-lime-400 mb-2">156</div>
+                  <p className="text-warm-300">Patient testimonials analyzed</p>
+                  <button className="mt-3 text-sm text-lime-400 hover:text-lime-400 font-medium">
                     Ask Questions →
                   </button>
                 </div>
@@ -152,9 +152,9 @@ const Dashboard: React.FC = () => {
             transition={{ delay: 0.1 }}
           >
             <div className="modern-card p-8">
-              <h3 className="text-2xl font-bold text-sage-900 mb-6">Quick Actions</h3>
+              <h3 className="text-2xl font-bold text-white mb-6">Quick Actions</h3>
               <div className="space-y-4">
-                <button className="w-full bg-gradient-to-r from-lavender-500 to-rose-500 text-white p-4 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-between group">
+                <button className="w-full bg-orange-500 hover:bg-orange-600 text-white p-4 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-between group">
                   <div className="flex items-center">
                     <Search size={20} className="mr-3" />
                     <span className="font-medium">Search Treatments</span>
@@ -162,7 +162,7 @@ const Dashboard: React.FC = () => {
                   <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </button>
                 
-                <button className="w-full bg-gradient-to-r from-sage-500 to-lavender-500 text-white p-4 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-between group">
+                <button className="w-full bg-bright-500 hover:bg-bright-600 text-white p-4 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-between group">
                   <div className="flex items-center">
                     <MessageSquare size={20} className="mr-3" />
                     <span className="font-medium">Share Experience</span>
@@ -170,7 +170,7 @@ const Dashboard: React.FC = () => {
                   <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </button>
                 
-                <button className="w-full bg-gradient-to-r from-rose-500 to-sand-500 text-white p-4 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-between group">
+                <button className="w-full bg-lime-500 hover:bg-lime-600 text-white p-4 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-between group">
                   <div className="flex items-center">
                     <Users size={20} className="mr-3" />
                     <span className="font-medium">Join Community</span>
@@ -191,10 +191,10 @@ const Dashboard: React.FC = () => {
         >
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-3xl font-bold text-sage-900">Your Treatment Plan</h2>
-              <p className="text-sage-600 mt-2">Free and AI-generated recommendations for your health journey</p>
+              <h2 className="text-3xl font-bold text-white">Your Treatment Plan</h2>
+              <p className="text-warm-300 mt-2">Free and AI-generated recommendations for your health journey</p>
             </div>
-            <div className="flex space-x-2 bg-sage-100 p-1 rounded-lg">
+            <div className="flex space-x-2 bg-warm-700/50 p-1 rounded-lg">
               {[
                 { id: 'immediate', label: 'Immediate', icon: AlertTriangle },
                 { id: 'weekly', label: 'Weekly', icon: Calendar },
@@ -205,8 +205,8 @@ const Dashboard: React.FC = () => {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center ${
                     activeTab === tab.id
-                      ? 'bg-white text-sage-900 shadow-sm'
-                      : 'text-sage-600 hover:text-sage-900'
+                      ? 'bg-white text-warm-800 shadow-sm'
+                      : 'text-warm-800 hover:text-white'
                   }`}
                 >
                   <tab.icon size={16} className="mr-2" />
@@ -222,7 +222,7 @@ const Dashboard: React.FC = () => {
               <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
                 <span className="text-green-600 font-bold text-sm">$</span>
               </div>
-              <h3 className="text-xl font-semibold text-sage-900">Free & AI-Generated Recommendations</h3>
+              <h3 className="text-xl font-semibold text-white">Free & AI-Generated Recommendations</h3>
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -255,10 +255,10 @@ const Dashboard: React.FC = () => {
           {/* Partner Recommendations */}
           <div>
             <div className="flex items-center mb-6">
-              <div className="w-8 h-8 bg-lavender-100 rounded-full flex items-center justify-center mr-3">
-                <span className="text-lavender-600 font-bold text-sm">P</span>
+              <div className="w-8 h-8 bg-electric-500/20 rounded-full flex items-center justify-center mr-3">
+                <span className="text-electric-400 font-bold text-sm">P</span>
               </div>
-              <h3 className="text-xl font-semibold text-sage-900">Partner Recommendations</h3>
+              <h3 className="text-xl font-semibold text-white">Partner Recommendations</h3>
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -296,44 +296,44 @@ const Dashboard: React.FC = () => {
           transition={{ delay: 0.3 }}
           className="modern-card p-8"
         >
-          <h2 className="text-3xl font-bold text-sage-900 mb-8">Recent Research Activity</h2>
+          <h2 className="text-3xl font-bold text-white mb-8">Recent Research Activity</h2>
           <div className="space-y-6">
-            <div className="flex items-start space-x-4 p-4 bg-sage-50 rounded-xl">
-              <div className="bg-lavender-100 p-3 rounded-lg">
-                <Search size={20} className="text-lavender-600" />
+            <div className="flex items-start space-x-4 p-4 bg-warm-600/30 rounded-xl">
+              <div className="bg-electric-500/20 p-3 rounded-lg">
+                <Search size={20} className="text-electric-400" />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-sage-900 mb-1">Researched Ivermectin for Cancer</h4>
-                <p className="text-sage-600 text-sm mb-2">Found 12 studies and 8 patient testimonials</p>
-                <div className="flex items-center text-xs text-sage-500">
+                <h4 className="font-semibold text-white mb-1">Researched Ivermectin for Cancer</h4>
+                <p className="text-warm-300 text-sm mb-2">Found 12 studies and 8 patient testimonials</p>
+                <div className="flex items-center text-xs text-warm-400">
                   <Calendar size={14} className="mr-1" />
                   2 hours ago
                 </div>
               </div>
             </div>
 
-            <div className="flex items-start space-x-4 p-4 bg-sage-50 rounded-xl">
-              <div className="bg-rose-100 p-3 rounded-lg">
-                <MessageSquare size={20} className="text-rose-600" />
+            <div className="flex items-start space-x-4 p-4 bg-warm-600/30 rounded-xl">
+              <div className="bg-lime-500/20 p-3 rounded-lg">
+                <MessageSquare size={20} className="text-lime-400" />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-sage-900 mb-1">Shared Treatment Experience</h4>
-                <p className="text-sage-600 text-sm mb-2">Posted testimonial about methylene blue therapy</p>
-                <div className="flex items-center text-xs text-sage-500">
+                <h4 className="font-semibold text-white mb-1">Shared Treatment Experience</h4>
+                <p className="text-warm-300 text-sm mb-2">Posted testimonial about methylene blue therapy</p>
+                <div className="flex items-center text-xs text-warm-400">
                   <Calendar size={14} className="mr-1" />
                   1 day ago
                 </div>
               </div>
             </div>
 
-            <div className="flex items-start space-x-4 p-4 bg-sage-50 rounded-xl">
-              <div className="bg-sand-100 p-3 rounded-lg">
-                <BookOpen size={20} className="text-sand-600" />
+            <div className="flex items-start space-x-4 p-4 bg-warm-600/30 rounded-xl">
+              <div className="bg-orange-500/20 p-3 rounded-lg">
+                <BookOpen size={20} className="text-orange-400" />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-sage-900 mb-1">Reviewed Research Study</h4>
-                <p className="text-sage-600 text-sm mb-2">Analyzed clinical trial on alternative cancer treatments</p>
-                <div className="flex items-center text-xs text-sage-500">
+                <h4 className="font-semibold text-white mb-1">Reviewed Research Study</h4>
+                <p className="text-warm-300 text-sm mb-2">Analyzed clinical trial on alternative cancer treatments</p>
+                <div className="flex items-center text-xs text-warm-400">
                   <Calendar size={14} className="mr-1" />
                   3 days ago
                 </div>
