@@ -9,11 +9,13 @@ import {
   ShoppingCart,
   Database,
   TrendingUp,
-  Users
+  Users,
+  Sparkles
 } from 'lucide-react';
 import LandingPage from './pages/LandingPage';
 import OnboardingWizard from './pages/OnboardingWizard';
 import Dashboard from './pages/Dashboard';
+import AIAgent from './pages/AIAgent';
 import ExploreServices from './pages/ExploreServices';
 import WellnessJournal from './pages/WellnessJournal';
 import Profile from './pages/Profile';
@@ -27,8 +29,7 @@ const App: React.FC = () => {
   const navigationItems = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/dashboard', label: 'Dashboard', icon: TrendingUp },
-    { path: '/search-analysis', label: 'Research', icon: Database },
-    { path: '/explore-services', label: 'Treatments', icon: BookOpen },
+    { path: '/ai-agent', label: 'AI Agent', icon: Sparkles },
     { path: '/social', label: 'Community', icon: Users },
     { path: '/partners', label: 'Partners', icon: TrendingUp },
     { path: '/create-testimonial', label: 'Share Experience', icon: MessageSquare },
@@ -72,7 +73,10 @@ const App: React.FC = () => {
 
               {/* Mobile menu button */}
               <div className="md:hidden">
-                <button className="text-warm-800 hover:text-electric-400 transition-colors">
+                <button 
+                  className="text-warm-800 hover:text-electric-400 transition-colors"
+                  aria-label="Toggle mobile menu"
+                >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
@@ -88,6 +92,7 @@ const App: React.FC = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/onboarding" element={<OnboardingWizard />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/ai-agent" element={<AIAgent />} />
             <Route path="/explore-services" element={<ExploreServices />} />
             <Route path="/wellness-journal" element={<WellnessJournal />} />
             <Route path="/profile" element={<Profile />} />

@@ -1,7 +1,17 @@
+export interface MetricDataEntry {
+  id: string;
+  metricName: string;
+  value: number | string;
+  unit: string;
+  date: string; // ISO date string
+  notes?: string;
+  tags?: string[]; // Optional tags for context
+}
+
 export interface UserProfile {
   id: string;
   name: string;
-  age: number;
+  dateOfBirth: string; // Changed from age to dateOfBirth (YYYY-MM-DD format)
   sex: string;
   location: string;
   photo?: string;
@@ -14,7 +24,37 @@ export interface UserProfile {
     movement: string;
     digitalUsage: string;
   };
-  primaryIssues: string[];
+  diagnosis: {
+    condition: string;        // Main diagnosis (e.g., "Prostate Cancer")
+    customCondition?: string; // Custom input if "Other" is selected
+    symptoms: string[];       // List of symptoms to address
+    diagnosisDate?: string;   // When diagnosed (optional)
+  };
+  medications: {
+    name: string;
+    dosage: string;
+    frequency: string;
+  }[];                        // List of current medications
+  treatments: {
+    name: string;
+    type: string;             // e.g., "Supplement", "Therapy", "Protocol"
+    dosage?: string;          // Optional for therapies that don't have dosage
+    frequency: string;
+  }[];                        // List of alternative treatments
+  conventionalTreatments: {
+    name: string;
+    type: string;             // e.g., "Surgery", "Chemotherapy", "Radiation"
+    date?: string;            // When performed/started
+    status: string;           // e.g., "Completed", "Ongoing", "Scheduled"
+    notes?: string;           // Additional details
+  }[];                        // List of conventional medical treatments
+  trackingMetrics: {
+    name: string;             // Metric name (e.g., "PSA Level", "Blood Sugar")
+    unit: string;             // Unit of measurement (e.g., "ng/mL", "mg/dL")
+    targetRange?: string;     // Optional target range (e.g., "< 4.0", "70-130")
+    frequency: string;        // How often to track (e.g., "Daily", "Weekly", "Monthly")
+    category: string;         // "Health Marker", "Wellness", "Activity", "Custom"
+  }[];                        // Custom metrics user wants to track
   customNotes: string;
   goals: {
     shortTerm: string[];
@@ -27,6 +67,20 @@ export interface UserProfile {
   createdAt: string;
   updatedAt: string;
 }
+
+// Helper function to calculate age from date of birth
+export const calculateAge = (dateOfBirth: string): number => {
+  const today = new Date();
+  const birthDate = new Date(dateOfBirth);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  
+  return age;
+};
 
 export interface WellnessEntry {
   id: string;
@@ -203,6 +257,67 @@ export const storage = {
       localStorage.setItem(STORAGE_KEYS.RECOMMENDATIONS, JSON.stringify(updated));
     } catch (error) {
       console.error('Error removing recommendation from storage:', error);
+    }
+  },
+
+  // Metric Data Management
+  saveMetricData: (entry: MetricDataEntry): void => {
+    try {
+      const existingData = storage.getMetricData();
+      const updatedData = [...existingData, entry];
+      localStorage.setItem('altmed_metric_data', JSON.stringify(updatedData));
+    } catch (error) {
+      console.error('Error saving metric data:', error);
+    }
+  },
+
+  getMetricData: (): MetricDataEntry[] => {
+    try {
+      const data = localStorage.getItem('altmed_metric_data');
+      return data ? JSON.parse(data) : [];
+    } catch (error) {
+      console.error('Error getting metric data:', error);
+      return [];
+    }
+  },
+
+  getMetricDataByName: (metricName: string): MetricDataEntry[] => {
+    try {
+      const allData = storage.getMetricData();
+      return allData.filter(entry => entry.metricName === metricName);
+    } catch (error) {
+      console.error('Error getting metric data by name:', error);
+      return [];
+    }
+  },
+
+  updateMetricData: (id: string, updatedEntry: Partial<MetricDataEntry>): void => {
+    try {
+      const existingData = storage.getMetricData();
+      const updatedData = existingData.map(entry => 
+        entry.id === id ? { ...entry, ...updatedEntry } : entry
+      );
+      localStorage.setItem('altmed_metric_data', JSON.stringify(updatedData));
+    } catch (error) {
+      console.error('Error updating metric data:', error);
+    }
+  },
+
+  deleteMetricData: (id: string): void => {
+    try {
+      const existingData = storage.getMetricData();
+      const updatedData = existingData.filter(entry => entry.id !== id);
+      localStorage.setItem('altmed_metric_data', JSON.stringify(updatedData));
+    } catch (error) {
+      console.error('Error deleting metric data:', error);
+    }
+  },
+
+  clearMetricData: (): void => {
+    try {
+      localStorage.removeItem('altmed_metric_data');
+    } catch (error) {
+      console.error('Error clearing metric data:', error);
     }
   },
 

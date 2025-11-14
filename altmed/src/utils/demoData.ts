@@ -3,7 +3,7 @@ import { UserProfile, WellnessEntry, storage } from './storage';
 export const demoUserProfile: UserProfile = {
   id: 'demo-user-123',
   name: 'Sarah Johnson',
-  age: 32,
+  dateOfBirth: '1992-03-15', // March 15, 1992 (will dynamically calculate age)
   sex: 'Female',
   location: 'San Francisco, CA',
   photo: '',
@@ -16,8 +16,88 @@ export const demoUserProfile: UserProfile = {
     movement: 'Yoga 3x/week, walking daily, occasional strength training',
     digitalUsage: 'Moderate - 4-6 hours daily, trying to reduce screen time before bed'
   },
-  primaryIssues: ['Anxiety', 'Sleep', 'Focus'],
-  customNotes: 'Looking to improve overall wellness and find natural ways to manage stress and sleep better.',
+  diagnosis: {
+    condition: 'Type 2 Diabetes',
+    symptoms: ['Fatigue', 'Sleep Issues', 'Brain Fog'],
+    diagnosisDate: '2022-06-15'
+  },
+  medications: [
+    {
+      name: 'Metformin',
+      dosage: '500mg',
+      frequency: 'Twice daily'
+    },
+    {
+      name: 'Vitamin D3',
+      dosage: '2000 IU',
+      frequency: 'Once daily'
+    }
+  ],
+  treatments: [
+    {
+      name: 'Intermittent Fasting',
+      type: 'Protocol',
+      frequency: '16:8 daily'
+    },
+    {
+      name: 'Berberine',
+      type: 'Supplement',
+      dosage: '500mg',
+      frequency: 'Three times daily'
+    },
+    {
+      name: 'Acupuncture',
+      type: 'Therapy',
+      frequency: 'Weekly'
+    }
+  ],
+  conventionalTreatments: [
+    {
+      name: 'Initial Screening',
+      type: 'Biopsy',
+      date: '2022-06-10',
+      status: 'Completed',
+      notes: 'Confirmed Type 2 Diabetes diagnosis'
+    },
+    {
+      name: 'Lifestyle Counseling',
+      type: 'Consultation',
+      date: '2022-06-20',
+      status: 'Ongoing',
+      notes: 'Monthly check-ins with endocrinologist'
+    }
+  ],
+  trackingMetrics: [
+    {
+      name: 'Fasting Blood Sugar',
+      unit: 'mg/dL',
+      targetRange: '70-100',
+      frequency: 'Daily',
+      category: 'Health Marker'
+    },
+    {
+      name: 'HbA1c',
+      unit: '%',
+      targetRange: '< 5.7',
+      frequency: 'Quarterly',
+      category: 'Health Marker'
+    },
+    {
+      name: 'Exercise Time',
+      unit: 'minutes',
+      targetRange: '30+',
+      frequency: 'Daily',
+      category: 'Activity'
+    },
+    {
+      name: 'Sleep Duration',
+      unit: 'hours',
+      targetRange: '7-9',
+      frequency: 'Daily',
+      category: 'Wellness'
+    }
+  ],
+  customNotes: 'Looking to improve overall wellness and find natural ways to manage condition alongside conventional treatment.',
   goals: {
     shortTerm: ['Better sleep', 'Less stress', 'More energy'],
     longTerm: 'Achieve sustainable wellness routine that supports my busy lifestyle and helps me feel more balanced and energized daily.'
