@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Amplify } from 'aws-amplify';
 import './index.css';
 import App from './App';
+import { AuthProvider } from './hooks/useAuth';
 
 // Configure Amplify - will be populated after first deployment
 try {
@@ -19,6 +20,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>
 ); 

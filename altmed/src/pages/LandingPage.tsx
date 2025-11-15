@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Shield, Database, Users, TrendingUp, BookOpen, Zap, Sparkles, Bot, User } from 'lucide-react';
 import PlaceholderImage from '../components/PlaceholderImage';
 import { loadDemoData } from '../utils/demoData';
+import SignUpModal from '../components/SignUpModal';
+import { useAuth } from '../hooks/useAuth';
 
 const LandingPage: React.FC = () => {
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
   const handleDemoMode = () => {
     try {
       console.log('Loading demo data...');
@@ -14,6 +20,19 @@ const LandingPage: React.FC = () => {
     } catch (error) {
       console.error('Error loading demo data:', error);
     }
+  };
+
+  const handleStartFreeTrial = () => {
+    if (isAuthenticated) {
+      navigate('/onboarding');
+    } else {
+      setShowSignUpModal(true);
+    }
+  };
+
+  const handleSignUpSuccess = () => {
+    setShowSignUpModal(false);
+    navigate('/onboarding');
   };
 
   return (
@@ -35,13 +54,13 @@ const LandingPage: React.FC = () => {
                 Learn faster. Decide smarter. Act with confidence—powered by evidence, experts, and a community of thrivers.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to="/onboarding"
+                <button
+                  onClick={handleStartFreeTrial}
                   className="btn-primary text-lg px-8 py-4 flex items-center justify-center"
                 >
                   Start Free Trial
                   <ArrowRight size={20} className="ml-2" />
-                </Link>
+                </button>
                 <button
                   onClick={handleDemoMode}
                   className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-orange-500/25 text-lg flex items-center justify-center"
@@ -423,13 +442,13 @@ const LandingPage: React.FC = () => {
               Join thousands of patients who are taking control of their health journey with verified alternative medicine information, AI-generated recommendations, and a thriving community of thought leaders and patients.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/onboarding"
+              <button
+                onClick={handleStartFreeTrial}
                 className="bg-white text-electric-400 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-warm-600/30 transition-all duration-300 flex items-center justify-center"
               >
                 Start Free Trial
                 <ArrowRight size={20} className="ml-2" />
-              </Link>
+              </button>
               <button
                 onClick={handleDemoMode}
                 className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white/10 transition-all duration-300 flex items-center justify-center"
@@ -504,6 +523,11 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </footer>
+      <SignUpModal 
+        isOpen={showSignUpModal} 
+        onClose={() => setShowSignUpModal(false)}
+        onSuccess={handleSignUpSuccess}
+      />
     </div>
   );
 };
