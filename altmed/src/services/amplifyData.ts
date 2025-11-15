@@ -14,6 +14,13 @@ async function getCurrentUserId(): Promise<string> {
   return attributes.sub || '';
 }
 
+// Helper to get current user email
+async function getCurrentUserEmail(): Promise<string> {
+  const { fetchUserAttributes } = await import('aws-amplify/auth');
+  const attributes = await fetchUserAttributes();
+  return attributes.email || '';
+}
+
 // User Profile Service
 export const profileService = {
   // Create or update user profile
@@ -36,9 +43,10 @@ export const profileService = {
       return updated.data as any;
     } else {
       // Create new
+      const email = await getCurrentUserEmail();
       const created = await client.models.UserProfile.create({
         userId,
-        email: profile.email || '',
+        email: email || '',
         name: profile.name,
         dateOfBirth: profile.dateOfBirth,
         sex: profile.sex,
