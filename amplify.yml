@@ -19,6 +19,6 @@ backend:
   phases:
     build:
       commands:
-        - '# Amplify Gen 2 - backend is auto-detected from amplify/ folder'
-        - cd altmed && npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+        - '# Amplify Gen 2 - backend is auto-detected from amplify/ folder in altmed/'
+        - echo "Backend will be auto-deployed by Amplify Gen 2"
 
