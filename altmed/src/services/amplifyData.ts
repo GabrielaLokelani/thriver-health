@@ -27,9 +27,10 @@ export const profileService = {
 
     if (existing.data && existing.data.length > 0) {
       // Update existing
+      const { id, ...profileWithoutId } = profile as any;
       const updated = await client.models.UserProfile.update({
         id: existing.data[0].id,
-        ...profile,
+        ...profileWithoutId,
         updatedAt: new Date().toISOString(),
       });
       return updated.data as any;
