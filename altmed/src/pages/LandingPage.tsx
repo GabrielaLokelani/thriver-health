@@ -24,7 +24,7 @@ const LandingPage: React.FC = () => {
 
   const handleStartFreeTrial = () => {
     if (isAuthenticated) {
-      navigate('/onboarding');
+      navigate('/ai-agent');
     } else {
       setShowSignUpModal(true);
     }
@@ -32,7 +32,7 @@ const LandingPage: React.FC = () => {
 
   const handleSignUpSuccess = () => {
     setShowSignUpModal(false);
-    navigate('/onboarding');
+    navigate('/ai-agent');
   };
 
   return (
