@@ -3,10 +3,6 @@ frontend:
   phases:
     preBuild:
       commands:
-        - pwd
-        - ls -la
-        - echo "Checking for package.json..."
-        - test -f package.json && echo "package.json found!" || echo "package.json NOT found!"
         - npm ci
     build:
       commands:
