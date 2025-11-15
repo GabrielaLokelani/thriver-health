@@ -88,6 +88,17 @@ class AmplifyAuthService {
 
   // Sign up new user
   async signUp(email: string, password: string, name?: string): Promise<any> {
+    // Check if Amplify is configured by trying to fetch auth session
+    try {
+      const { fetchAuthSession } = await import('aws-amplify/auth');
+      await fetchAuthSession();
+    } catch (error: any) {
+      const friendlyError = new Error('Backend not configured. Please deploy the backend in Amplify Console first. Go to your app → Backend → Deploy backend');
+      this.authState.error = friendlyError.message;
+      this.notifyListeners();
+      throw friendlyError;
+    }
+
     try {
       const { userId } = await signUp({
         username: email,
