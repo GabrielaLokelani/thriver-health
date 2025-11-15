@@ -27,5 +27,10 @@ backend:
         - cd altmed && npm ci
     build:
       commands:
-        - cd altmed && npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+        - |
+          if [ -d "altmed" ]; then
+            cd altmed && npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+          else
+            npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+          fi
 
