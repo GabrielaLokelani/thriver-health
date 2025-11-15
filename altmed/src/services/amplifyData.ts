@@ -291,7 +291,7 @@ export const conversationService = {
 // Real-time subscriptions (optional - for live updates)
 export const subscribeToWellnessEntries = (callback: (entry: WellnessEntry) => void) => {
   return client.models.WellnessEntry.observeQuery().subscribe({
-    next: ({ items }) => {
+    next: ({ items }: { items: any[] }) => {
       items.forEach(callback);
     },
   });
