@@ -271,6 +271,3 @@ class AmplifyAuthService {
 // Export singleton instance
 export const amplifyAuthService = new AmplifyAuthService();
 
-// Export types
-export type { User, AuthState };
-
