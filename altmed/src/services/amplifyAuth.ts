@@ -1,6 +1,6 @@
 // Amplify Gen 2 Authentication Service
 import {
-  signUp,
+  signUp as amplifySignUp,
   signIn,
   signOut,
   getCurrentUser,
@@ -100,7 +100,7 @@ class AmplifyAuthService {
     }
 
     try {
-      const { userId } = await signUp({
+      const { userId } = await amplifySignUp({
         username: email,
         password,
         options: {
