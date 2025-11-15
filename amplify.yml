@@ -6,7 +6,12 @@ frontend:
         - cd altmed && npm ci
     build:
       commands:
-        - cd altmed && npm run build
+        - |
+          if [ -d "altmed" ]; then
+            cd altmed && npm run build
+          else
+            npm run build
+          fi
   artifacts:
     baseDirectory: altmed/build
     files:
