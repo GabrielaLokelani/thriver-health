@@ -3,17 +3,19 @@ frontend:
   phases:
     preBuild:
       commands:
+        - cd altmed
         - npm ci
     build:
       commands:
+        - cd altmed
         - npm run build
   artifacts:
-    baseDirectory: build
+    baseDirectory: altmed/build
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
+      - altmed/node_modules/**/*
 
 backend:
   phases:
