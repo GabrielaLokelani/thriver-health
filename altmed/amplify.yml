@@ -3,12 +3,10 @@ frontend:
   phases:
     preBuild:
       commands:
-        - cd altmed
-        - npm ci
+        - cd altmed && npm ci
     build:
       commands:
-        - cd altmed
-        - npm run build
+        - cd altmed && npm run build
   artifacts:
     baseDirectory: altmed/build
     files:
