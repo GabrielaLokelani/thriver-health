@@ -8,8 +8,8 @@ import { AuthProvider } from './hooks/useAuth';
 // Configure Amplify - will be populated after first deployment
 let isAmplifyConfigured = false;
 try {
-  // Try to load amplify_outputs.json (generated after deployment)
-  const outputs = require('../amplify_outputs.json');
+  // Try to load amplify_outputs.json (generated after deployment at repository root)
+  const outputs = require('../../amplify_outputs.json');
   Amplify.configure(outputs);
   isAmplifyConfigured = true;
   console.log('✅ Amplify backend configured successfully');

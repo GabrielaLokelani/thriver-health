@@ -1,6 +1,6 @@
 // Amplify Gen 2 Data Service - Replaces localStorage with AWS backend
 import { generateClient } from 'aws-amplify/data';
-import type { Schema } from '../../amplify/data/resource';
+import type { Schema } from '../../../amplify/data/resource';
 import { UserProfile, WellnessEntry, MetricDataEntry } from '../utils/storage';
 
 const client = generateClient<Schema>({
