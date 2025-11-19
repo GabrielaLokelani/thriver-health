@@ -37,5 +37,22 @@ backend:
           fi
     build:
       commands:
-        - echo "Backend will be auto-deployed by Amplify Gen 2"
+        - |
+          echo "Deploying Amplify Gen 2 backend..."
+          if [ -d "altmed" ]; then
+            cd altmed
+            if [ -d "amplify" ]; then
+              echo "Found amplify folder, deploying backend..."
+              npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+            else
+              echo "Warning: amplify folder not found in altmed directory"
+            fi
+          else
+            if [ -d "amplify" ]; then
+              echo "Found amplify folder at root, deploying backend..."
+              npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+            else
+              echo "Warning: amplify folder not found"
+            fi
+          fi
 
