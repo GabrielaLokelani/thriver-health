@@ -9,6 +9,12 @@ frontend:
           else
             npm ci
           fi
+        - |
+          # Copy amplify_outputs.json to src/ if it exists (generated after backend deployment)
+          if [ -f "amplify_outputs.json" ] && [ -d "altmed/src" ]; then
+            cp amplify_outputs.json altmed/src/amplify_outputs.json
+            echo "✅ Copied amplify_outputs.json to src/"
+          fi
     build:
       commands:
         - |
