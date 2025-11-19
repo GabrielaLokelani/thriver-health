@@ -32,6 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       isAuthenticated: !!user,
       isLoading: false,
+      error: null,
     });
   };
 
