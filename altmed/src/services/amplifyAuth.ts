@@ -24,6 +24,7 @@ export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  error: string | null;
 }
 
 class AmplifyAuthService {
@@ -31,6 +32,7 @@ class AmplifyAuthService {
     user: null,
     isAuthenticated: false,
     isLoading: true,
+    error: null,
   };
 
   private listeners: Set<(state: AuthState) => void> = new Set();
@@ -54,6 +56,7 @@ class AmplifyAuthService {
         },
         isAuthenticated: true,
         isLoading: false,
+        error: null,
       };
     } catch (error) {
       // User not signed in
@@ -61,6 +64,7 @@ class AmplifyAuthService {
         user: null,
         isAuthenticated: false,
         isLoading: false,
+        error: null,
       };
     }
     
@@ -164,6 +168,7 @@ class AmplifyAuthService {
           user: userObj,
           isAuthenticated: true,
           isLoading: false,
+          error: null,
         };
         
         this.notifyListeners();
@@ -186,6 +191,7 @@ class AmplifyAuthService {
         user: null,
         isAuthenticated: false,
         isLoading: false,
+        error: null,
       };
       
       this.notifyListeners();
