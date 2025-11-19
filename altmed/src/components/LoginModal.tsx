@@ -28,7 +28,16 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) =
       onSuccess?.();
       onClose();
     } catch (err: any) {
-      setError(err.message || 'Login failed. Please check your credentials.');
+      let errorMessage = err.message || 'Login failed. Please check your credentials.';
+      
+      // Check for backend not configured error
+      if (errorMessage.includes('UserPool not configured') || 
+          errorMessage.includes('not configured') ||
+          errorMessage.includes('Backend not configured')) {
+        errorMessage = 'Backend not deployed yet. The authentication system needs to be set up first. Please contact support or check Amplify Console to deploy the backend.';
+      }
+      
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

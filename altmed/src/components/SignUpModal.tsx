@@ -41,7 +41,16 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
       await signUp(formData.email, formData.password, formData.name);
       setShowConfirmation(true);
     } catch (err: any) {
-      setError(err.message || 'Sign up failed. Please try again.');
+      let errorMessage = err.message || 'Sign up failed. Please try again.';
+      
+      // Check for backend not configured error
+      if (errorMessage.includes('UserPool not configured') || 
+          errorMessage.includes('not configured') ||
+          errorMessage.includes('Backend not configured')) {
+        errorMessage = 'Backend not deployed yet. The authentication system needs to be set up first. Please contact support or check Amplify Console to deploy the backend.';
+      }
+      
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
