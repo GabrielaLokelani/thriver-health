@@ -1,0 +1,11 @@
+{
+  "name": "thriver-health-root",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@aws-amplify/backend": "^1.18.0",
+    "@aws-amplify/backend-cli": "^1.8.0"
+  }
+}
+
