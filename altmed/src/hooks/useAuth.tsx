@@ -1,50 +1,31 @@
-// React Hook for Amplify Authentication
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
-import { amplifyAuthService, type AuthState, type User } from '../services/amplifyAuth';
+import { authService, type User, type AuthState } from '../services/authService';
 
 interface AuthContextType extends AuthState {
-  signUp: (email: string, password: string, name?: string) => Promise<any>;
+  signUp: (email: string, password: string, name: string) => Promise<User>;
   signIn: (email: string, password: string) => Promise<User>;
   signOut: () => Promise<void>;
-  confirmSignUp: (email: string, code: string) => Promise<void>;
-  forgotPassword: (email: string) => Promise<void>;
-  resetPassword: (email: string, code: string, newPassword: string) => Promise<void>;
-  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [authState, setAuthState] = useState<AuthState>(amplifyAuthService.getState());
+  const [authState, setAuthState] = useState<AuthState>(authService.init());
 
   useEffect(() => {
     // Subscribe to auth state changes
-    const unsubscribe = amplifyAuthService.subscribe((newState) => {
+    const unsubscribe = authService.subscribe((newState) => {
       setAuthState(newState);
     });
 
     return unsubscribe;
   }, []);
 
-  const refreshUser = async () => {
-    const user = await amplifyAuthService.getCurrentUser();
-    setAuthState({
-      user,
-      isAuthenticated: !!user,
-      isLoading: false,
-      error: null,
-    });
-  };
-
   const value: AuthContextType = {
     ...authState,
-    signUp: amplifyAuthService.signUp.bind(amplifyAuthService),
-    signIn: amplifyAuthService.signIn.bind(amplifyAuthService),
-    signOut: amplifyAuthService.signOut.bind(amplifyAuthService),
-    confirmSignUp: amplifyAuthService.confirmSignUp.bind(amplifyAuthService),
-    forgotPassword: amplifyAuthService.forgotPassword.bind(amplifyAuthService),
-    resetPassword: amplifyAuthService.resetPassword.bind(amplifyAuthService),
-    refreshUser,
+    signUp: authService.signUp.bind(authService),
+    signIn: authService.signIn.bind(authService),
+    signOut: authService.signOut.bind(authService),
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

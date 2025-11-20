@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { 
   Send, 
   Bot, 
@@ -14,9 +15,11 @@ import {
   Minimize2,
   Loader
 } from 'lucide-react';
-import { storage } from '../utils/storage';
+import { profileService } from '../services/dataService';
 import { recommendations } from '../data/recommendations';
 import { partnerContent } from '../data/social';
+import FirstEntryPrompt from '../components/FirstEntryPrompt';
+import { useAuth } from '../hooks/useAuth';
 
 interface Message {
   id: string;
@@ -31,11 +34,15 @@ interface Message {
 }
 
 const AIAgent: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [userProfile, setUserProfile] = useState(storage.getUserProfile());
+  const [userProfile, setUserProfile] = useState<any>(null);
   const [showSummary, setShowSummary] = useState(false);
+  const [showFirstEntryPrompt, setShowFirstEntryPrompt] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -45,27 +52,41 @@ const AIAgent: React.FC = () => {
   }, [messages]);
 
   useEffect(() => {
-    // Load user profile
-    const profile = storage.getUserProfile();
-    setUserProfile(profile);
+    // Check if this is first entry after signup
+    const isFirstEntry = searchParams.get('firstEntry') === 'true';
+    const hasCompletedFirstEntry = localStorage.getItem('altmed_first_entry_completed') === 'true';
     
-    // If user has data, show initial welcome with summary option
-    if (profile && (profile.diagnosis || profile.trackingMetrics?.length > 0)) {
-      setMessages([{
-        id: 'welcome',
-        role: 'assistant',
-        content: `Welcome back, ${profile.name}! I'm your Thriver AI assistant. I can help you research treatments, understand your condition, and track your journey. Would you like me to summarize your current health status?`,
-        timestamp: new Date()
-      }]);
-    } else {
-      setMessages([{
-        id: 'welcome',
-        role: 'assistant',
-        content: `Hello! I'm your Thriver AI assistant. I can help you research diseases, treatments, and create a personalized health plan. How can I assist you today?`,
-        timestamp: new Date()
-      }]);
+    if (isFirstEntry && !hasCompletedFirstEntry) {
+      setShowFirstEntryPrompt(true);
+      // Remove query param from URL
+      navigate('/ai-agent', { replace: true });
     }
-  }, []);
+
+    // Load user profile
+    const loadProfile = async () => {
+      const profile = await profileService.get();
+      setUserProfile(profile);
+      
+      // If user has data, show initial welcome with summary option
+      if (profile && (profile.diagnosis || profile.trackingMetrics?.length > 0)) {
+        setMessages([{
+          id: 'welcome',
+          role: 'assistant',
+          content: `Welcome back, ${profile.name}! I'm your Thriver AI assistant. I can help you research treatments, understand your condition, and track your journey. Would you like me to summarize your current health status?`,
+          timestamp: new Date()
+        }]);
+      } else {
+        setMessages([{
+          id: 'welcome',
+          role: 'assistant',
+          content: `Hello! I'm your Thriver AI assistant. I can help you research diseases, treatments, and create a personalized health plan. How can I assist you today?`,
+          timestamp: new Date()
+        }]);
+      }
+    };
+    
+    loadProfile();
+  }, [searchParams, navigate]);
 
   const generateConditionSummary = () => {
     if (!userProfile) return '';
@@ -82,11 +103,11 @@ const AIAgent: React.FC = () => {
     }
     
     if (userProfile.medications && userProfile.medications.length > 0) {
-      summary += `**Current Medications:** ${userProfile.medications.map(m => `${m.name} (${m.dosage})`).join(', ')}\n\n`;
+      summary += `**Current Medications:** ${userProfile.medications.map((m: any) => `${m.name} (${m.dosage})`).join(', ')}\n\n`;
     }
     
     if (userProfile.treatments && userProfile.treatments.length > 0) {
-      summary += `**Alternative Treatments:** ${userProfile.treatments.map(t => t.name).join(', ')}\n\n`;
+      summary += `**Alternative Treatments:** ${userProfile.treatments.map((t: any) => t.name).join(', ')}\n\n`;
     }
     
     if (userProfile.trackingMetrics && userProfile.trackingMetrics.length > 0) {
@@ -163,6 +184,27 @@ const AIAgent: React.FC = () => {
         });
       }, 1000 + Math.random() * 1000); // Simulate AI thinking time
     });
+  };
+
+  const handleFirstEntry = async (entry: string) => {
+    // Mark first entry as completed
+    localStorage.setItem('altmed_first_entry_completed', 'true');
+    
+    // Send the first entry as a message
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: entry,
+      timestamp: new Date()
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
+    setIsLoading(true);
+    
+    // Generate AI response
+    const aiResponse = await simulateAIResponse(entry);
+    setMessages(prev => [...prev, aiResponse]);
+    setIsLoading(false);
   };
 
   const handleSend = async () => {
@@ -568,6 +610,11 @@ const AIAgent: React.FC = () => {
           </div>
         </div>
       </div>
+      <FirstEntryPrompt
+        isOpen={showFirstEntryPrompt}
+        onClose={() => setShowFirstEntryPrompt(false)}
+        onSubmit={handleFirstEntry}
+      />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Heart, 
@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { socialPosts, userProfiles } from '../data/social';
 import { partners } from '../data/partners';
-import { storage } from '../utils/storage';
+import { profileService } from '../services/dataService';
 
 interface SocialNetworkProps {}
 
@@ -24,7 +24,15 @@ const SocialNetwork: React.FC<SocialNetworkProps> = () => {
   const [activeTab, setActiveTab] = useState<'feed' | 'partners' | 'trending'>('feed');
   const [filterType, setFilterType] = useState<'all' | 'partners' | 'users'>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [userProfile] = useState(storage.getUserProfile());
+  const [userProfile, setUserProfile] = useState<any>(null);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      const profile = await profileService.get();
+      setUserProfile(profile);
+    };
+    loadProfile();
+  }, []);
 
   const filteredPosts = socialPosts.filter(post => {
     if (filterType === 'partners') return post.authorType === 'partner';

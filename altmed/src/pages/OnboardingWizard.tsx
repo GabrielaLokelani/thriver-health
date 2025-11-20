@@ -17,7 +17,8 @@ import {
   Target,
   Calendar
 } from 'lucide-react';
-import { storage, UserProfile } from '../utils/storage';
+import { UserProfile } from '../utils/storage';
+import { profileService, wellnessService } from '../services/dataService';
 
 const OnboardingWizard: React.FC = () => {
   const navigate = useNavigate();
@@ -130,7 +131,7 @@ const OnboardingWizard: React.FC = () => {
     setIsRecording(false);
   };
 
-  const saveProfile = () => {
+  const saveProfile = async () => {
     // Calculate birth year from age
     const currentYear = new Date().getFullYear();
     const birthYear = currentYear - parseInt(extractedData.age || '30');
@@ -166,10 +167,10 @@ const OnboardingWizard: React.FC = () => {
       updatedAt: new Date().toISOString()
     };
 
-    storage.saveUserProfile(newProfile);
+    await profileService.save(newProfile);
     
     // Save the journal entry as a wellness entry
-    storage.saveWellnessEntry({
+    await wellnessService.create({
       id: Date.now().toString(),
       date: new Date().toISOString(),
       energy: 5,
@@ -180,11 +181,14 @@ const OnboardingWizard: React.FC = () => {
       notes: journalEntry
     });
 
+    // Mark onboarding as completed
+    localStorage.setItem('altmed_onboarding_completed', 'true');
+    
     setStep('complete');
     
-    // Navigate to dashboard after a short delay
+    // Navigate to AI agent with first entry prompt after a short delay
     setTimeout(() => {
-      navigate('/dashboard');
+      navigate('/ai-agent?firstEntry=true');
     }, 2000);
   };
 

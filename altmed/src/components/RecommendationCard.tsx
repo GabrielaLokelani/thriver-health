@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Clock, Calendar, Star } from 'lucide-react';
 import { Recommendation } from '../data/recommendations';
+// TODO: Create recommendationsService in dataService.ts
+// For now, keeping direct storage access for recommendations
 import { storage } from '../utils/storage';
 import PlaceholderImage from './PlaceholderImage';
 

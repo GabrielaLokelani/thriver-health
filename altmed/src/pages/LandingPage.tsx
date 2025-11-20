@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Shield, Database, Users, TrendingUp, BookOpen, Zap, Sparkles, Bot, User } from 'lucide-react';
+import { ArrowRight, Shield, Users, TrendingUp, BookOpen, Zap, Sparkles, Bot, User } from 'lucide-react';
 import PlaceholderImage from '../components/PlaceholderImage';
 import { loadDemoData } from '../utils/demoData';
 import SignUpModal from '../components/SignUpModal';
 import { useAuth } from '../hooks/useAuth';
 
 const LandingPage: React.FC = () => {
-  const [showSignUpModal, setShowSignUpModal] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
 
   const handleDemoMode = () => {
     try {
@@ -32,7 +32,15 @@ const LandingPage: React.FC = () => {
 
   const handleSignUpSuccess = () => {
     setShowSignUpModal(false);
-    navigate('/ai-agent');
+    // Check if user has completed onboarding
+    const hasCompletedOnboarding = localStorage.getItem('altmed_onboarding_completed') === 'true';
+    if (!hasCompletedOnboarding) {
+      // Navigate to onboarding first
+      navigate('/onboarding');
+    } else {
+      // Navigate to AI agent with first entry prompt
+      navigate('/ai-agent?firstEntry=true');
+    }
   };
 
   return (

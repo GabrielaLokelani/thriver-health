@@ -25,7 +25,8 @@ import {
   BarChart3,
   Target
 } from 'lucide-react';
-import { storage, UserProfile, calculateAge, MetricDataEntry } from '../utils/storage';
+import { UserProfile, calculateAge, MetricDataEntry } from '../utils/storage';
+import { profileService, wellnessService, metricService, settingsService, dataService } from '../services/dataService';
 import { demoUserProfile } from '../utils/demoData';
 import ReferralDashboard from '../components/ReferralDashboard';
 
@@ -51,6 +52,8 @@ const Profile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDemoMode, setIsDemoMode] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'health' | 'metrics' | 'referrals' | 'settings' | 'privacy' | 'data'>('overview');
+  const [wellnessEntriesCount, setWellnessEntriesCount] = useState(0);
+  const [savedRecommendationsCount, setSavedRecommendationsCount] = useState(0);
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({
     diagnosis: true,
     symptoms: false,
@@ -81,51 +84,60 @@ const Profile: React.FC = () => {
   });
 
   useEffect(() => {
-    const profile = storage.getUserProfile();
-    const savedSettings = storage.getUserSettings();
-    
-    setUserProfile(profile);
-    if (savedSettings) {
-      setSettings(prev => ({ ...prev, ...savedSettings }));
-    }
-    
-    // Check if this is demo mode
-    if (profile && profile.id === demoUserProfile.id) {
-      setIsDemoMode(true);
-    }
+    const loadData = async () => {
+      const profile = await profileService.get();
+      const savedSettings = await settingsService.get();
+      const wellnessEntries = await wellnessService.getAll();
+      
+      setUserProfile(profile);
+      setWellnessEntriesCount(wellnessEntries.length);
+      // TODO: Add recommendations service
+      setSavedRecommendationsCount(0);
+      
+      if (savedSettings) {
+        setSettings(prev => ({ ...prev, ...savedSettings }));
+      }
+      
+      // Check if this is demo mode
+      if (profile && profile.id === demoUserProfile.id) {
+        setIsDemoMode(true);
+      }
 
-    // Check for URL parameters to set active tab
-    const urlParams = new URLSearchParams(window.location.search);
-    const tab = urlParams.get('tab');
-    if (tab && ['overview', 'health', 'metrics', 'referrals', 'settings', 'privacy', 'data'].includes(tab)) {
-      setActiveTab(tab as any);
-    }
+      // Check for URL parameters to set active tab
+      const urlParams = new URLSearchParams(window.location.search);
+      const tab = urlParams.get('tab');
+      if (tab && ['overview', 'health', 'metrics', 'referrals', 'settings', 'privacy', 'data'].includes(tab)) {
+        setActiveTab(tab as any);
+      }
+    };
+    loadData();
   }, []);
 
-  const handleSaveProfile = (updatedProfile: Partial<UserProfile>) => {
+  const handleSaveProfile = async (updatedProfile: Partial<UserProfile>) => {
     if (userProfile) {
       const newProfile = {
         ...userProfile,
         ...updatedProfile,
         updatedAt: new Date().toISOString()
       };
-      storage.saveUserProfile(newProfile);
+      await profileService.save(newProfile);
       setUserProfile(newProfile);
       setIsEditing(false);
     }
   };
 
-  const handleSaveSettings = (newSettings: Partial<UserSettings>) => {
+  const handleSaveSettings = async (newSettings: Partial<UserSettings>) => {
     const updatedSettings = { ...settings, ...newSettings };
     setSettings(updatedSettings);
-    storage.saveUserSettings(updatedSettings);
+    await settingsService.save(updatedSettings);
   };
 
-  const exportUserData = () => {
+  const exportUserData = async () => {
+    const wellnessEntries = await wellnessService.getAll();
     const data = {
       profile: userProfile,
-      wellnessEntries: storage.getWellnessEntries(),
-      savedRecommendations: storage.getSavedRecommendations(),
+      wellnessEntries: wellnessEntries,
+      savedRecommendations: [], // TODO: Add recommendations service
       settings: settings,
       exportDate: new Date().toISOString()
     };
@@ -141,9 +153,9 @@ const Profile: React.FC = () => {
     URL.revokeObjectURL(url);
   };
 
-  const deleteAccount = () => {
+  const deleteAccount = async () => {
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      storage.clearAllData();
+      await dataService.clearAll();
       window.location.href = '/';
     }
   };
@@ -168,7 +180,7 @@ const Profile: React.FC = () => {
     setIsEditingMetric(true);
   };
 
-  const saveMetric = (metricData: any) => {
+  const saveMetric = async (metricData: any) => {
     if (userProfile) {
       let updatedMetrics;
       if (editingMetric && editingMetric.name) {
@@ -187,14 +199,14 @@ const Profile: React.FC = () => {
         updatedAt: new Date().toISOString()
       };
       
-      storage.saveUserProfile(updatedProfile);
+      await profileService.save(updatedProfile);
       setUserProfile(updatedProfile);
       setIsEditingMetric(false);
       setEditingMetric(null);
     }
   };
 
-  const deleteMetric = (metricName: string) => {
+  const deleteMetric = async (metricName: string) => {
     if (userProfile && window.confirm('Are you sure you want to delete this metric?')) {
       const updatedMetrics = userProfile.trackingMetrics.filter(m => m.name !== metricName);
       const updatedProfile = {
@@ -203,7 +215,7 @@ const Profile: React.FC = () => {
         updatedAt: new Date().toISOString()
       };
       
-      storage.saveUserProfile(updatedProfile);
+      await profileService.save(updatedProfile);
       setUserProfile(updatedProfile);
     }
   };
@@ -425,14 +437,14 @@ const Profile: React.FC = () => {
                       <div className="text-center p-4 bg-electric-500/20 rounded-lg">
                         <Heart size={24} className="text-electric-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-electric-400">
-                          {storage.getWellnessEntries().length}
+                          {wellnessEntriesCount}
                         </div>
                         <div className="text-sm text-warm-300">Journal Entries</div>
                       </div>
                       <div className="text-center p-4 bg-orange-500/20 rounded-lg">
                         <BookOpen size={24} className="text-orange-400 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-orange-400">
-                          {storage.getSavedRecommendations().length}
+                          {savedRecommendationsCount}
                         </div>
                         <div className="text-sm text-warm-300">Saved Recommendations</div>
                       </div>
@@ -1248,11 +1260,11 @@ const Profile: React.FC = () => {
                         </div>
                         <div>
                           <span className="text-warm-300">Journal Entries:</span>
-                          <p className="font-medium">{storage.getWellnessEntries().length}</p>
+                          <p className="font-medium">{wellnessEntriesCount}</p>
                         </div>
                         <div>
                           <span className="text-warm-300">Saved Items:</span>
-                          <p className="font-medium">{storage.getSavedRecommendations().length}</p>
+                          <p className="font-medium">{savedRecommendationsCount}</p>
                         </div>
                       </div>
                     </div>
@@ -1433,7 +1445,7 @@ const MetricDataEntryModal: React.FC<MetricDataEntryModalProps> = ({ metric, onC
     tags: [] as string[]
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.value) {
       const entry: MetricDataEntry = {
@@ -1446,7 +1458,7 @@ const MetricDataEntryModal: React.FC<MetricDataEntryModalProps> = ({ metric, onC
         tags: formData.tags.length > 0 ? formData.tags : undefined
       };
       
-      storage.saveMetricData(entry);
+      await metricService.create(entry);
       onClose();
     }
   };

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Plus, TrendingUp, BookOpen, CheckCircle } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { storage, WellnessEntry } from '../utils/storage';
+import { WellnessEntry } from '../utils/storage';
+import { wellnessService, profileService } from '../services/dataService';
 import { demoUserProfile } from '../utils/demoData';
 import PlaceholderImage from '../components/PlaceholderImage';
 
@@ -33,24 +34,27 @@ const WellnessJournal: React.FC = () => {
   const moodEmojis = ['😢', '😕', '😐', '🙂', '😊', '😄', '🤩', '🥰', '😍', '🤗', '😌'];
 
   useEffect(() => {
-    const savedEntries = storage.getWellnessEntries();
-    setEntries(savedEntries);
-    
-    // Check if this is demo mode
-    const userProfile = storage.getUserProfile();
-    if (userProfile && userProfile.id === demoUserProfile.id) {
-      setIsDemoMode(true);
-    }
+    const loadData = async () => {
+      const savedEntries = await wellnessService.getAll();
+      setEntries(savedEntries);
+      
+      // Check if this is demo mode
+      const userProfile = await profileService.get();
+      if (userProfile && userProfile.id === demoUserProfile.id) {
+        setIsDemoMode(true);
+      }
+    };
+    loadData();
   }, []);
 
-  const handleSaveEntry = () => {
+  const handleSaveEntry = async () => {
     const entry: WellnessEntry = {
       id: Date.now().toString(),
       date: selectedDate,
       ...newEntry
     };
 
-    storage.saveWellnessEntry(entry);
+    await wellnessService.create(entry);
     setEntries(prev => [...prev, entry]);
     setShowNewEntry(false);
     setNewEntry({

@@ -28,12 +28,33 @@ import {
   Eye,
   EyeOff
 } from 'lucide-react';
-import { storage } from '../utils/storage';
+import { profileService } from '../services/dataService';
+import EmptyState from '../components/EmptyState';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const [userProfile] = useState(storage.getUserProfile());
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isDemoMode, setIsDemoMode] = useState(false);
+  const [showWelcomeBanner, setShowWelcomeBanner] = useState(false);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      setIsLoading(true);
+      const profile = await profileService.get();
+      setUserProfile(profile);
+      
+      // Check if user just completed onboarding
+      const hasCompletedOnboarding = localStorage.getItem('altmed_onboarding_completed') === 'true';
+      const hasSeenWelcome = localStorage.getItem('altmed_welcome_banner_seen') === 'true';
+      if (hasCompletedOnboarding && !hasSeenWelcome && profile) {
+        setShowWelcomeBanner(true);
+      }
+      
+      setIsLoading(false);
+    };
+    loadProfile();
+  }, []);
   
   // Mindset tracking
   const [mindsetData, setMindsetData] = useState({
@@ -273,23 +294,24 @@ const Dashboard: React.FC = () => {
     setNewDataValue('');
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-surface-0 flex items-center justify-center">
+        <div className="text-white text-lg">Loading your dashboard...</div>
+      </div>
+    );
+  }
+
   if (!userProfile && !isDemoMode) {
     return (
       <div className="min-h-screen bg-surface-0 flex items-center justify-center p-6">
-        <div className="max-w-md w-full bg-surface-10 rounded-2xl p-8 text-center border border-surface-20 shadow-strong">
-          <Activity size={48} className="text-primary-0 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-4">Complete Your Profile</h2>
-          <p className="text-surface-50 mb-6">
-            Set up your health profile to get personalized insights and track your wellness journey.
-          </p>
-          <Link
-            to="/onboarding"
-            className="btn-primary inline-flex items-center"
-          >
-            Start Setup
-            <Plus size={20} className="ml-2" />
-          </Link>
-        </div>
+        <EmptyState
+          icon={Activity}
+          title="Welcome to ThriverHealth.Ai!"
+          description="Complete your profile setup to get personalized health insights, track your wellness journey, and connect with our AI assistant."
+          actionLabel="Start Setup"
+          onAction={() => navigate('/onboarding')}
+        />
       </div>
     );
   }
@@ -310,6 +332,35 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-surface-0 pb-8">
+      {/* Welcome Banner for New Users */}
+      {showWelcomeBanner && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-electric-500/20 border-b border-electric-500/30 px-6 py-4"
+        >
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Sparkles className="text-electric-400" size={24} />
+              <div>
+                <h3 className="text-white font-semibold">Welcome, {displayProfile.name || 'there'}! 🎉</h3>
+                <p className="text-warm-300 text-sm">Your profile is set up. Start exploring your personalized health journey.</p>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                setShowWelcomeBanner(false);
+                localStorage.setItem('altmed_welcome_banner_seen', 'true');
+              }}
+              className="text-warm-300 hover:text-white transition-colors"
+              aria-label="Dismiss welcome banner"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </motion.div>
+      )}
+
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-electric-500 to-electric-600 text-white py-8 shadow-lg">
         <div className="max-w-7xl mx-auto px-6">
@@ -604,7 +655,7 @@ const Dashboard: React.FC = () => {
                   <div>
                     <span className="text-white font-semibold">Treatments:</span>
                     <ul className="ml-4 mt-1 space-y-1">
-                      {displayProfile.treatments.slice(0, 3).map((treatment, idx) => (
+                      {displayProfile.treatments.slice(0, 3).map((treatment: any, idx: number) => (
                         <li key={idx} className="flex items-start">
                           <span className="text-primary-0 mr-2">•</span>
                           <span>{treatment.name} - {treatment.frequency}</span>
@@ -617,7 +668,7 @@ const Dashboard: React.FC = () => {
                   <div>
                     <span className="text-white font-semibold">Medications:</span>
                     <ul className="ml-4 mt-1 space-y-1">
-                      {displayProfile.medications.slice(0, 3).map((med, idx) => (
+                      {displayProfile.medications.slice(0, 3).map((med: any, idx: number) => (
                         <li key={idx} className="flex items-start">
                           <span className="text-success-10 mr-2">•</span>
                           <span>{med.name} - {med.dosage} {med.frequency}</span>
@@ -630,7 +681,7 @@ const Dashboard: React.FC = () => {
                   <div>
                     <span className="text-white font-semibold">Tracking:</span>
                     <ul className="ml-4 mt-1 space-y-1">
-                      {displayProfile.trackingMetrics.slice(0, 3).map((metric, idx) => (
+                      {displayProfile.trackingMetrics.slice(0, 3).map((metric: any, idx: number) => (
                         <li key={idx} className="flex items-start">
                           <span className="text-info-10 mr-2">•</span>
                           <span>{metric.name} ({metric.unit}) - {metric.frequency}</span>

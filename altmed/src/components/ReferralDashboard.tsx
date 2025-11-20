@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   TrendingUp, 
   Users, 
   DollarSign, 
   CheckCircle, 
-  Clock,
   ArrowUpRight,
   Filter,
   Calendar
 } from 'lucide-react';
 import { referrals, getReferralStats, getTopReferrers } from '../data/referrals';
-import { storage } from '../utils/storage';
+import { profileService } from '../services/dataService';
 
 interface ReferralDashboardProps {
   userId?: string;
@@ -19,7 +18,15 @@ interface ReferralDashboardProps {
 
 const ReferralDashboard: React.FC<ReferralDashboardProps> = ({ userId }) => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'pending' | 'active' | 'completed'>('all');
-  const [userProfile] = useState(storage.getUserProfile());
+  const [userProfile, setUserProfile] = useState<any>(null);
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      const profile = await profileService.get();
+      setUserProfile(profile);
+    };
+    loadProfile();
+  }, []);
   
   const currentUserId = userId || userProfile?.id || 'user-123';
   const stats = getReferralStats(currentUserId);

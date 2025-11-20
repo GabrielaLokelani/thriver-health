@@ -4,10 +4,8 @@ import { motion } from 'framer-motion';
 import { 
   Home, 
   User, 
-  BookOpen, 
   MessageSquare, 
   ShoppingCart,
-  Database,
   TrendingUp,
   Users,
   Sparkles,
@@ -16,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from './hooks/useAuth';
 import LoginModal from './components/LoginModal';
+import ProtectedRoute from './components/ProtectedRoute';
 import LandingPage from './pages/LandingPage';
 import OnboardingWizard from './pages/OnboardingWizard';
 import Dashboard from './pages/Dashboard';
@@ -87,7 +86,7 @@ const Navigation: React.FC = () => {
               
               {isAuthenticated ? (
                 <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-warm-300">
-                  <span className="text-warm-700 text-sm">{user?.email}</span>
+                  <span className="text-warm-700 text-sm">{user?.name || user?.email}</span>
                   <button
                     onClick={handleLogout}
                     className="flex items-center space-x-2 text-warm-800 hover:text-red-500 transition-colors duration-200"
@@ -130,29 +129,35 @@ const Navigation: React.FC = () => {
   );
 };
 
+const AppContent: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-warm-800">
+      <Navigation />
+      {/* Main Content */}
+      <main>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/onboarding" element={<ProtectedRoute><OnboardingWizard /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/ai-agent" element={<ProtectedRoute><AIAgent /></ProtectedRoute>} />
+          <Route path="/explore-services" element={<ProtectedRoute><ExploreServices /></ProtectedRoute>} />
+          <Route path="/wellness-journal" element={<ProtectedRoute><WellnessJournal /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/search-analysis" element={<ProtectedRoute><SearchAndAnalysis /></ProtectedRoute>} />
+          <Route path="/social" element={<ProtectedRoute><SocialNetwork /></ProtectedRoute>} />
+          <Route path="/partners" element={<Partners />} />
+          <Route path="/create-testimonial" element={<ProtectedRoute><CreateTestimonial /></ProtectedRoute>} />
+          <Route path="/shop" element={<Shop />} />
+        </Routes>
+      </main>
+    </div>
+  );
+};
+
 const App: React.FC = () => {
   return (
     <Router>
-      <div className="min-h-screen bg-warm-800">
-        <Navigation />
-        {/* Main Content */}
-        <main>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/onboarding" element={<OnboardingWizard />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/ai-agent" element={<AIAgent />} />
-            <Route path="/explore-services" element={<ExploreServices />} />
-            <Route path="/wellness-journal" element={<WellnessJournal />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/search-analysis" element={<SearchAndAnalysis />} />
-            <Route path="/social" element={<SocialNetwork />} />
-            <Route path="/partners" element={<Partners />} />
-            <Route path="/create-testimonial" element={<CreateTestimonial />} />
-            <Route path="/shop" element={<Shop />} />
-          </Routes>
-        </main>
-      </div>
+      <AppContent />
     </Router>
   );
 };
