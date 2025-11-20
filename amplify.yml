@@ -15,12 +15,24 @@ frontend:
   phases:
     preBuild:
       commands:
-        - cd altmed
-        - npm ci
+        - |
+          if [ -d "altmed" ]; then
+            echo "Building from altmed/ subdirectory"
+            cd altmed
+            npm ci
+          else
+            echo "Building from root directory"
+            npm ci
+          fi
     build:
       commands:
-        - cd altmed
-        - npm run build
+        - |
+          if [ -d "altmed" ]; then
+            cd altmed
+            npm run build
+          else
+            npm run build
+          fi
   artifacts:
     baseDirectory: altmed/build
     files:
