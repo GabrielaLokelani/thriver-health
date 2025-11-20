@@ -5,6 +5,13 @@
  * Only used when backend is deployed and amplify_outputs.json is available
  */
 
+import { 
+  UserProfile, 
+  WellnessEntry, 
+  MetricDataEntry, 
+  UserSettings 
+} from '../utils/storage';
+
 // Conditional import - only use when backend is available
 // The Schema type will be available after backend deployment generates types
 type Schema = any; // Will be replaced with actual schema after backend deployment
@@ -18,12 +25,6 @@ const isAmplifyAvailable = (): boolean => {
     return false;
   }
 };
-import { 
-  UserProfile, 
-  WellnessEntry, 
-  MetricDataEntry, 
-  UserSettings 
-} from '../utils/storage';
 
 // Generate the Amplify client - only when backend is available
 let client: any = null;
