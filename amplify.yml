@@ -18,8 +18,7 @@ frontend:
         - |
           if [ -d "altmed" ]; then
             echo "Building from altmed/ subdirectory"
-            cd altmed
-            npm ci
+            cd altmed && npm ci
           else
             echo "Building from root directory"
             npm ci
@@ -28,8 +27,7 @@ frontend:
       commands:
         - |
           if [ -d "altmed" ]; then
-            cd altmed
-            npm run build
+            cd altmed && npm run build
           else
             npm run build
           fi
