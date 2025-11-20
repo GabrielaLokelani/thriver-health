@@ -13,9 +13,36 @@ import {
   UserSettings 
 } from '../utils/storage';
 import { storage } from '../utils/storage';
+// Conditionally import Amplify service - only when backend is available
+let backendService: any = null;
 
-// Configuration flag - set to true when backend is ready
-const USE_BACKEND = false; // TODO: Set to true when backend is deployed
+// Check if we should try to use backend
+// This will be true after backend is deployed and amplify_outputs.json exists
+const shouldUseBackend = () => {
+  try {
+    // Check if amplify_outputs.json exists (will be generated after backend deployment)
+    require('../amplify_outputs.json');
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+if (shouldUseBackend()) {
+  try {
+    // Try to load Amplify service - will only work if aws-amplify is installed
+    const { AmplifyDataService } = require('./amplifyDataService');
+    if (AmplifyDataService) {
+      backendService = new AmplifyDataService();
+    }
+  } catch (error) {
+    // Amplify not available - will use localStorage
+    console.log('Amplify backend not available, using localStorage');
+  }
+}
+
+// Check if backend is available
+const USE_BACKEND = backendService !== null;
 
 /**
  * User Profile Service
@@ -25,10 +52,8 @@ export const profileService = {
    * Get current user profile
    */
   async get(): Promise<UserProfile | null> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.get('/profile');
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.getUserProfile();
     }
     return storage.getUserProfile();
   },
@@ -37,10 +62,8 @@ export const profileService = {
    * Save user profile
    */
   async save(profile: UserProfile): Promise<UserProfile> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.post('/profile', profile);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.saveUserProfile(profile);
     }
     storage.saveUserProfile(profile);
     return profile;
@@ -50,10 +73,12 @@ export const profileService = {
    * Update user profile (partial update)
    */
   async update(updates: Partial<UserProfile>): Promise<UserProfile> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.patch('/profile', updates);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      const updated = await backendService.updateUserProfile(updates);
+      if (!updated) {
+        throw new Error('Profile not found');
+      }
+      return updated;
     }
     storage.updateUserProfile(updates);
     const updated = storage.getUserProfile();
@@ -72,10 +97,8 @@ export const wellnessService = {
    * Get all wellness entries
    */
   async getAll(): Promise<WellnessEntry[]> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.get('/wellness-entries');
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.getWellnessEntries();
     }
     return storage.getWellnessEntries();
   },
@@ -84,10 +107,8 @@ export const wellnessService = {
    * Get wellness entries for a date range
    */
   async getByDateRange(startDate: string, endDate: string): Promise<WellnessEntry[]> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.get(`/wellness-entries?start=${startDate}&end=${endDate}`);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.getWellnessEntries(startDate, endDate);
     }
     const entries = storage.getWellnessEntries();
     return entries.filter(entry => entry.date >= startDate && entry.date <= endDate);
@@ -97,10 +118,8 @@ export const wellnessService = {
    * Create a new wellness entry
    */
   async create(entry: WellnessEntry): Promise<WellnessEntry> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.post('/wellness-entries', entry);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.saveWellnessEntry(entry);
     }
     storage.saveWellnessEntry(entry);
     return entry;
@@ -110,10 +129,12 @@ export const wellnessService = {
    * Update an existing wellness entry
    */
   async update(id: string, updates: Partial<WellnessEntry>): Promise<WellnessEntry> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.patch(`/wellness-entries/${id}`, updates);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      const updated = await backendService.updateWellnessEntry(id, updates);
+      if (!updated) {
+        throw new Error('Entry not found');
+      }
+      return updated;
     }
     storage.updateWellnessEntry(id, updates);
     const entries = storage.getWellnessEntries();
@@ -128,10 +149,8 @@ export const wellnessService = {
    * Delete a wellness entry
    */
   async delete(id: string): Promise<void> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.delete(`/wellness-entries/${id}`);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.deleteWellnessEntry(id);
     }
     // Note: storage doesn't have delete, so we'll filter it out
     const entries = storage.getWellnessEntries();
@@ -148,10 +167,8 @@ export const metricService = {
    * Get all metric data entries
    */
   async getAll(): Promise<MetricDataEntry[]> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.get('/metrics');
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.getMetricData();
     }
     return storage.getMetricData();
   },
@@ -160,10 +177,8 @@ export const metricService = {
    * Get metric data by metric name
    */
   async getByMetricName(metricName: string): Promise<MetricDataEntry[]> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.get(`/metrics?name=${metricName}`);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.getMetricData(metricName);
     }
     return storage.getMetricDataByName(metricName);
   },
@@ -172,10 +187,8 @@ export const metricService = {
    * Get metric data by date range
    */
   async getByDateRange(metricName: string, startDate: string, endDate: string): Promise<MetricDataEntry[]> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.get(`/metrics?name=${metricName}&start=${startDate}&end=${endDate}`);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.getMetricData(metricName, startDate, endDate);
     }
     const entries = storage.getMetricDataByName(metricName);
     return entries.filter(entry => entry.date >= startDate && entry.date <= endDate);
@@ -185,10 +198,8 @@ export const metricService = {
    * Create a new metric data entry
    */
   async create(entry: MetricDataEntry): Promise<MetricDataEntry> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.post('/metrics', entry);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.saveMetricData(entry);
     }
     storage.saveMetricData(entry);
     return entry;
@@ -198,10 +209,12 @@ export const metricService = {
    * Update an existing metric data entry
    */
   async update(id: string, updates: Partial<MetricDataEntry>): Promise<MetricDataEntry> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.patch(`/metrics/${id}`, updates);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      const updated = await backendService.updateMetricData(id, updates);
+      if (!updated) {
+        throw new Error('Entry not found');
+      }
+      return updated;
     }
     storage.updateMetricData(id, updates);
     const entries = storage.getMetricData();
@@ -216,10 +229,8 @@ export const metricService = {
    * Delete a metric data entry
    */
   async delete(id: string): Promise<void> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.delete(`/metrics/${id}`);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.deleteMetricData(id);
     }
     storage.deleteMetricData(id);
   },
@@ -233,10 +244,8 @@ export const settingsService = {
    * Get user settings
    */
   async get(): Promise<UserSettings> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.get('/settings');
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.getUserSettings();
     }
     return storage.getUserSettings();
   },
@@ -245,10 +254,8 @@ export const settingsService = {
    * Save user settings
    */
   async save(settings: UserSettings): Promise<UserSettings> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.post('/settings', settings);
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.saveUserSettings(settings);
     }
     storage.saveUserSettings(settings);
     return settings;
@@ -263,10 +270,8 @@ export const dataService = {
    * Clear all user data
    */
   async clearAll(): Promise<void> {
-    if (USE_BACKEND) {
-      // TODO: Replace with API call
-      // return await api.delete('/data');
-      throw new Error('Backend not yet implemented');
+    if (USE_BACKEND && backendService) {
+      return await backendService.clearAllData();
     }
     storage.clearAllData();
   },
