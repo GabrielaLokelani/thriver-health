@@ -1,0 +1,31 @@
+version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - npm ci
+        - |
+          if [ -d "amplify" ]; then
+            echo "Backend detected, deploying..."
+            npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+          else
+            echo "No backend directory found, skipping backend deployment"
+          fi
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - cd altmed
+        - npm ci
+    build:
+      commands:
+        - cd altmed
+        - npm run build
+  artifacts:
+    baseDirectory: altmed/build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - altmed/node_modules/**/*
+
