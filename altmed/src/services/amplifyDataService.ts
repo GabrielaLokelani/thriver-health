@@ -37,7 +37,9 @@ const initializeClient = () => {
   if (!client) {
     try {
       const { generateClient } = require('aws-amplify/data');
-      client = generateClient<Schema>({
+      // Type assertion needed because require() returns any
+      const generateClientTyped = generateClient as <T = any>(config: { authMode: string }) => any;
+      client = generateClientTyped({
         authMode: 'userPool',
       });
     } catch (error) {
