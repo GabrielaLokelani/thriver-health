@@ -53,7 +53,19 @@ export const profileService = {
    */
   async get(): Promise<UserProfile | null> {
     if (USE_BACKEND && backendService) {
-      return await backendService.getUserProfile();
+      try {
+        const profile = await backendService.getUserProfile();
+        if (profile) {
+          return profile;
+        }
+        // If backend returns null, fall back to localStorage
+        console.log('No profile found in backend, checking localStorage...');
+        return storage.getUserProfile();
+      } catch (error: any) {
+        // If backend fails (e.g., user not authenticated), fall back to localStorage
+        console.warn('Backend profile fetch failed, falling back to localStorage:', error.message);
+        return storage.getUserProfile();
+      }
     }
     return storage.getUserProfile();
   },
@@ -63,7 +75,17 @@ export const profileService = {
    */
   async save(profile: UserProfile): Promise<UserProfile> {
     if (USE_BACKEND && backendService) {
-      return await backendService.saveUserProfile(profile);
+      try {
+        return await backendService.saveUserProfile(profile);
+      } catch (error: any) {
+        // If user is not authenticated, fall back to localStorage
+        if (error.message && error.message.includes('not authenticated')) {
+          console.warn('User not authenticated, saving to localStorage instead');
+          storage.saveUserProfile(profile);
+          return profile;
+        }
+        throw error;
+      }
     }
     storage.saveUserProfile(profile);
     return profile;
@@ -119,7 +141,17 @@ export const wellnessService = {
    */
   async create(entry: WellnessEntry): Promise<WellnessEntry> {
     if (USE_BACKEND && backendService) {
-      return await backendService.saveWellnessEntry(entry);
+      try {
+        return await backendService.saveWellnessEntry(entry);
+      } catch (error: any) {
+        // If user is not authenticated, fall back to localStorage
+        if (error.message && error.message.includes('not authenticated')) {
+          console.warn('User not authenticated, saving wellness entry to localStorage instead');
+          storage.saveWellnessEntry(entry);
+          return entry;
+        }
+        throw error;
+      }
     }
     storage.saveWellnessEntry(entry);
     return entry;

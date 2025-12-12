@@ -64,8 +64,20 @@ export interface UserProfile {
     alignment: 'spiritual' | 'scientific' | 'both';
     modalities: string[];
   };
+  documents?: UserDocument[];
   createdAt: string;
   updatedAt: string;
+}
+
+export interface UserDocument {
+  id: string;
+  name: string;
+  type: string; // MIME type (e.g., 'application/pdf', 'image/jpeg')
+  size: number; // File size in bytes
+  uploadedAt: string;
+  data: string; // Base64 encoded file data
+  category?: string; // Optional category (e.g., 'Lab Results', 'Medical Records', 'Prescriptions')
+  description?: string; // Optional description
 }
 
 // Helper function to calculate age from date of birth

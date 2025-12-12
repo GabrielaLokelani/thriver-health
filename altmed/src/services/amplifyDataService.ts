@@ -12,6 +12,15 @@ import {
   UserSettings 
 } from '../utils/storage';
 
+// Import Amplify Auth to get current user
+let getCurrentUser: any = null;
+try {
+  const authModule = require('aws-amplify/auth');
+  getCurrentUser = authModule.getCurrentUser;
+} catch {
+  // Amplify Auth not available
+}
+
 // Conditional import - only use when backend is available
 // The Schema type will be available after backend deployment generates types
 type Schema = any; // Will be replaced with actual schema after backend deployment
@@ -55,10 +64,17 @@ const initializeClient = () => {
  * This will be used when backend is deployed
  */
 export class AmplifyDataService {
-  private getCurrentUserId(): string {
-    // TODO: Get from Amplify Auth
-    // For now, return a placeholder
-    return 'current-user-id';
+  private async getCurrentUserId(): Promise<string | null> {
+    try {
+      if (getCurrentUser) {
+        const user = await getCurrentUser();
+        return user.userId;
+      }
+    } catch (error) {
+      console.error('Error getting current user ID:', error);
+      return null;
+    }
+    return null;
   }
 
   // User Profile methods
@@ -68,8 +84,13 @@ export class AmplifyDataService {
       if (!amplifyClient) {
         throw new Error('Amplify client not initialized');
       }
+      const userId = await this.getCurrentUserId();
+      if (!userId) {
+        console.warn('User not authenticated, cannot fetch profile from backend');
+        return null;
+      }
       const { data, errors } = await amplifyClient.models.UserProfile.list({
-        filter: { userId: { eq: this.getCurrentUserId() } },
+        filter: { userId: { eq: userId } },
       });
       
       if (errors || !data || data.length === 0) {
@@ -85,6 +106,11 @@ export class AmplifyDataService {
 
   async saveUserProfile(profile: UserProfile): Promise<UserProfile> {
     try {
+      const userId = await this.getCurrentUserId();
+      if (!userId) {
+        throw new Error('User not authenticated');
+      }
+      
       const existing = await this.getUserProfile();
       const amplifyProfile = this.mapUserProfileToAmplify(profile);
       
@@ -107,9 +133,13 @@ export class AmplifyDataService {
       if (!amplifyClient) {
         throw new Error('Amplify client not initialized');
       }
+      const userId = await this.getCurrentUserId();
+      if (!userId) {
+        throw new Error('User not authenticated');
+      }
       const { data, errors } = await amplifyClient.models.UserProfile.create({
           ...amplifyProfile,
-          userId: this.getCurrentUserId(),
+          userId: userId,
         });
         
         if (errors) throw new Error(errors[0].message);
@@ -144,7 +174,12 @@ export class AmplifyDataService {
   // Wellness Entry methods
   async getWellnessEntries(startDate?: string, endDate?: string): Promise<WellnessEntry[]> {
     try {
-      let filter: any = { userId: { eq: this.getCurrentUserId() } };
+      const userId = await this.getCurrentUserId();
+      if (!userId) {
+        console.warn('User not authenticated, cannot fetch wellness entries from backend');
+        return [];
+      }
+      let filter: any = { userId: { eq: userId } };
       
       if (startDate && endDate) {
         filter = {
@@ -183,8 +218,12 @@ export class AmplifyDataService {
       if (!amplifyClient) {
         throw new Error('Amplify client not initialized');
       }
+      const userId = await this.getCurrentUserId();
+      if (!userId) {
+        throw new Error('User not authenticated');
+      }
       const { data, errors } = await amplifyClient.models.WellnessEntry.create({
-        userId: this.getCurrentUserId(),
+        userId: userId,
         date: entry.date,
         mood: entry.mood,
         energy: entry.energy,
@@ -238,7 +277,12 @@ export class AmplifyDataService {
   // Metric Data methods
   async getMetricData(metricName?: string, startDate?: string, endDate?: string): Promise<MetricDataEntry[]> {
     try {
-      let filter: any = { userId: { eq: this.getCurrentUserId() } };
+      const userId = await this.getCurrentUserId();
+      if (!userId) {
+        console.warn('User not authenticated, cannot fetch metric data from backend');
+        return [];
+      }
+      let filter: any = { userId: { eq: userId } };
       
       if (metricName) {
         filter.metricName = { eq: metricName };
@@ -272,8 +316,12 @@ export class AmplifyDataService {
       if (!amplifyClient) {
         throw new Error('Amplify client not initialized');
       }
+      const userId = await this.getCurrentUserId();
+      if (!userId) {
+        throw new Error('User not authenticated');
+      }
       const { data, errors } = await amplifyClient.models.MetricDataEntry.create({
-        userId: this.getCurrentUserId(),
+        userId: userId,
         metricName: entry.metricName,
         value: String(entry.value),
         unit: entry.unit,
@@ -331,8 +379,14 @@ export class AmplifyDataService {
       if (!amplifyClient) {
         throw new Error('Amplify client not initialized');
       }
+      const userId = await this.getCurrentUserId();
+      if (!userId) {
+        console.warn('User not authenticated, cannot fetch settings from backend');
+        // Return default settings
+        return this.getDefaultSettings();
+      }
       const { data, errors } = await amplifyClient.models.UserSettings.list({
-        filter: { userId: { eq: this.getCurrentUserId() } },
+        filter: { userId: { eq: userId } },
       });
       
       if (errors || !data || data.length === 0) {
@@ -371,9 +425,10 @@ export class AmplifyDataService {
       if (!amplifyClient) {
         throw new Error('Amplify client not initialized');
       }
+      const userId = await this.getCurrentUserId();
       const { data, errors } = await amplifyClient.models.UserSettings.create({
           ...amplifySettings,
-          userId: this.getCurrentUserId(),
+          userId: userId,
         });
         
         if (errors) throw new Error(errors[0].message);

@@ -42,7 +42,8 @@ const Navigation: React.FC = () => {
     }
   };
 
-  const navigationItems = [
+  // Navigation items for authenticated users
+  const authenticatedNavItems = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/dashboard', label: 'Dashboard', icon: TrendingUp },
     { path: '/ai-agent', label: 'AI Agent', icon: Sparkles },
@@ -51,6 +52,11 @@ const Navigation: React.FC = () => {
     { path: '/create-testimonial', label: 'Share Experience', icon: MessageSquare },
     { path: '/shop', label: 'Products', icon: ShoppingCart },
     { path: '/profile', label: 'Profile', icon: User },
+  ];
+
+  // Navigation items for non-authenticated users
+  const publicNavItems = [
+    { path: '/', label: 'Home', icon: Home },
   ];
 
   return (
@@ -73,7 +79,7 @@ const Navigation: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               className="hidden md:flex items-center space-x-8"
             >
-              {navigationItems.map((item) => (
+              {(isAuthenticated ? authenticatedNavItems : publicNavItems).map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}

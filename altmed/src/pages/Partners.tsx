@@ -84,6 +84,27 @@ const Partners: React.FC<PartnersProps> = () => {
       </section>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Call to Action - Moved to top */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-center mb-12"
+        >
+          <div className="bg-warm-700/40 backdrop-blur-sm p-8 rounded-xl border border-warm-600/50 hover:border-electric-500/50 transition-all duration-300">
+            <h3 className="text-3xl font-bold text-white mb-4 font-display text-orange-400">
+              BECOME A PARTNER
+            </h3>
+            <p className="text-warm-300 mb-6 max-w-2xl mx-auto font-modern">
+              Join our network of alternative health practitioners, researchers, and thought leaders like Dr. Makis. 
+              Share your content on Substack and other platforms, earn commissions through our referral program, and grow your audience through our social network.
+            </p>
+            <button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300 font-display text-lg">
+              APPLY TO JOIN
+            </button>
+          </div>
+        </motion.div>
+
         {/* Filters */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -305,27 +326,6 @@ const Partners: React.FC<PartnersProps> = () => {
             </motion.div>
           ))}
         </div>
-
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="text-center mt-12"
-        >
-          <div className="bg-warm-700/40 backdrop-blur-sm p-8 rounded-xl border border-warm-600/50 hover:border-electric-500/50 transition-all duration-300">
-            <h3 className="text-3xl font-bold text-white mb-4 font-display text-orange-400">
-              BECOME A PARTNER
-            </h3>
-            <p className="text-warm-300 mb-6 max-w-2xl mx-auto font-modern">
-              Join our network of alternative health practitioners, researchers, and thought leaders like Dr. Makis. 
-              Share your content on Substack and other platforms, earn commissions through our referral program, and grow your audience through our social network.
-            </p>
-            <button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300 font-display text-lg">
-              APPLY TO JOIN
-            </button>
-          </div>
-        </motion.div>
       </div>
     </div>
   );

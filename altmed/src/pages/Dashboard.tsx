@@ -28,21 +28,54 @@ import {
   Eye,
   EyeOff
 } from 'lucide-react';
-import { profileService } from '../services/dataService';
+import { profileService, wellnessService, metricService } from '../services/dataService';
 import EmptyState from '../components/EmptyState';
+import { LucideIcon } from 'lucide-react';
+
+// Type for wellness metric
+interface WellnessMetric {
+  label: string;
+  icon: LucideIcon;
+  color: string;
+  current: number;
+  trend: 'up' | 'down' | 'stable';
+  data: number[];
+  target: number;
+  inverse?: boolean;
+}
+
+// Type for wellness metrics object
+type WellnessMetrics = {
+  energy: WellnessMetric;
+  sleep: WellnessMetric;
+  stress: WellnessMetric;
+  mood: WellnessMetric;
+};
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDemoMode, setIsDemoMode] = useState(false);
   const [showWelcomeBanner, setShowWelcomeBanner] = useState(false);
+  const [wellnessEntries, setWellnessEntries] = useState<any[]>([]);
 
   useEffect(() => {
-    const loadProfile = async () => {
+    const loadData = async () => {
       setIsLoading(true);
+      
+      // Load user profile
       const profile = await profileService.get();
       setUserProfile(profile);
+      
+      // Load wellness entries for the last 7 days
+      const today = new Date();
+      const sevenDaysAgo = new Date(today);
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      const startDate = sevenDaysAgo.toISOString().split('T')[0];
+      const endDate = today.toISOString().split('T')[0];
+      
+      const entries = await wellnessService.getByDateRange(startDate, endDate);
+      setWellnessEntries(entries);
       
       // Check if user just completed onboarding
       const hasCompletedOnboarding = localStorage.getItem('altmed_onboarding_completed') === 'true';
@@ -53,7 +86,7 @@ const Dashboard: React.FC = () => {
       
       setIsLoading(false);
     };
-    loadProfile();
+    loadData();
   }, []);
   
   // Mindset tracking
@@ -63,15 +96,73 @@ const Dashboard: React.FC = () => {
     intention: ''
   });
 
-  // Today's tasks
-  const [todaysTasks, setTodaysTasks] = useState([
-    { id: 1, task: 'Morning meditation', status: 'done', category: 'wellness' },
-    { id: 2, task: 'Fenbendazole 222mg', status: 'done', category: 'medication' },
-    { id: 3, task: 'Vitamin D supplement', status: 'pending', category: 'supplement' },
-    { id: 4, task: '30 min walk', status: 'pending', category: 'activity' },
-    { id: 5, task: 'Track PSA levels', status: 'pending', category: 'tracking' },
-    { id: 6, task: 'Evening gratitude', status: 'upcoming', category: 'wellness' }
-  ]);
+  // Generate tasks from user profile
+  const generateTasksFromProfile = (profile: any) => {
+    if (!profile) return [];
+    
+    const tasks: any[] = [];
+    let taskId = 1;
+    
+    // Add medication tasks
+    if (profile.medications && profile.medications.length > 0) {
+      profile.medications.forEach((med: any) => {
+        tasks.push({
+          id: taskId++,
+          task: `${med.name} ${med.dosage || ''}`.trim(),
+          status: 'pending',
+          category: 'medication'
+        });
+      });
+    }
+    
+    // Add treatment/supplement tasks
+    if (profile.treatments && profile.treatments.length > 0) {
+      profile.treatments.forEach((treatment: any) => {
+        tasks.push({
+          id: taskId++,
+          task: `${treatment.name} ${treatment.dosage || ''}`.trim(),
+          status: 'pending',
+          category: 'supplement'
+        });
+      });
+    }
+    
+    // Add tracking metric tasks
+    if (profile.trackingMetrics && profile.trackingMetrics.length > 0) {
+      profile.trackingMetrics.forEach((metric: any) => {
+        if (metric.frequency === 'Daily' || metric.frequency === 'daily') {
+          tasks.push({
+            id: taskId++,
+            task: `Track ${metric.name}`,
+            status: 'pending',
+            category: 'tracking'
+          });
+        }
+      });
+    }
+    
+    // Add lifestyle/activity tasks if available
+    if (profile.lifestyle?.movement) {
+      tasks.push({
+        id: taskId++,
+        task: profile.lifestyle.movement,
+        status: 'pending',
+        category: 'activity'
+      });
+    }
+    
+    return tasks;
+  };
+  
+  const [todaysTasks, setTodaysTasks] = useState<any[]>([]);
+  
+  // Update tasks when profile loads
+  useEffect(() => {
+    if (userProfile) {
+      const generatedTasks = generateTasksFromProfile(userProfile);
+      setTodaysTasks(generatedTasks);
+    }
+  }, [userProfile]);
 
   // Gratitude streak (mock data)
   const [gratitudeStreak, setGratitudeStreak] = useState(7);
@@ -88,46 +179,93 @@ const Dashboard: React.FC = () => {
     return saved ? JSON.parse(saved) : ['energy', 'sleep', 'stress', 'mood'];
   });
 
-  // Wellness metrics data (7 days) - this could be pulled from storage in production
-  const [wellnessMetrics, setWellnessMetrics] = useState({
-    energy: {
-      label: 'Energy',
-      icon: Zap,
-      color: 'primary-0',
-      current: 7,
-      trend: 'up',
-      data: [5, 6, 5, 7, 6, 8, 7],
-      target: 8
-    },
-    sleep: {
-      label: 'Sleep Quality',
-      icon: Moon,
-      color: 'info-10',
-      current: 8,
-      trend: 'up',
-      data: [6, 7, 6, 7, 7, 8, 8],
-      target: 8
-    },
-    stress: {
-      label: 'Stress Management',
-      icon: Brain,
-      color: 'success-10',
-      current: 7,
-      trend: 'stable',
-      data: [8, 7, 8, 7, 7, 7, 7],
-      target: 7,
-      inverse: true // Lower is better
-    },
-    mood: {
-      label: 'Mood',
-      icon: Heart,
-      color: 'warning-10',
-      current: 8,
-      trend: 'up',
-      data: [6, 7, 7, 7, 8, 8, 8],
-      target: 8
+  // Calculate wellness metrics from real data
+  const calculateWellnessMetrics = (entries: any[], profile: any): WellnessMetrics => {
+    // Get last 7 days of data, pad with profile defaults if needed
+    const today = new Date();
+    const last7Days: any[] = [];
+    
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      const dateStr = date.toISOString().split('T')[0];
+      const entry = entries.find(e => e.date === dateStr);
+      
+      last7Days.push({
+        date: dateStr,
+        energy: entry?.energy || profile?.energyLevel || 5,
+        sleep: entry?.sleep || profile?.sleepQuality || 5,
+        stress: entry?.stress || profile?.stressLevel || 5,
+        mood: entry?.mood || 5
+      });
     }
+    
+    const calculateMetric = (key: string, inverse: boolean = false): { current: number; trend: 'up' | 'down' | 'stable'; data: number[] } => {
+      const values = last7Days.map(d => d[key]);
+      const current = values[values.length - 1];
+      const previous = values.length > 1 ? values[values.length - 2] : current;
+      
+      let trend: 'up' | 'down' | 'stable' = 'stable';
+      if (inverse) {
+        trend = current < previous ? 'up' : current > previous ? 'down' : 'stable';
+      } else {
+        trend = current > previous ? 'up' : current < previous ? 'down' : 'stable';
+      }
+      
+      return {
+        current,
+        trend,
+        data: values
+      };
+    };
+    
+    return {
+      energy: {
+        label: 'Energy',
+        icon: Zap,
+        color: 'primary-0',
+        ...calculateMetric('energy'),
+        target: profile?.energyLevel || 7
+      },
+      sleep: {
+        label: 'Sleep Quality',
+        icon: Moon,
+        color: 'info-10',
+        ...calculateMetric('sleep'),
+        target: profile?.sleepQuality || 7
+      },
+      stress: {
+        label: 'Stress Management',
+        icon: Brain,
+        color: 'success-10',
+        ...calculateMetric('stress', true),
+        inverse: true,
+        target: profile?.stressLevel || 5
+      },
+      mood: {
+        label: 'Mood',
+        icon: Heart,
+        color: 'warning-10',
+        ...calculateMetric('mood'),
+        target: 7
+      }
+    };
+  };
+  
+  const [wellnessMetrics, setWellnessMetrics] = useState<WellnessMetrics>({
+    energy: { label: 'Energy', icon: Zap, color: 'primary-0', current: 5, trend: 'stable', data: [5, 5, 5, 5, 5, 5, 5], target: 7 },
+    sleep: { label: 'Sleep Quality', icon: Moon, color: 'info-10', current: 5, trend: 'stable', data: [5, 5, 5, 5, 5, 5, 5], target: 7 },
+    stress: { label: 'Stress Management', icon: Brain, color: 'success-10', current: 5, trend: 'stable', data: [5, 5, 5, 5, 5, 5, 5], target: 5, inverse: true },
+    mood: { label: 'Mood', icon: Heart, color: 'warning-10', current: 5, trend: 'stable', data: [5, 5, 5, 5, 5, 5, 5], target: 7 }
   });
+  
+  // Update wellness metrics when entries or profile change
+  useEffect(() => {
+    if (userProfile || wellnessEntries.length > 0) {
+      const metrics = calculateWellnessMetrics(wellnessEntries, userProfile);
+      setWellnessMetrics(metrics);
+    }
+  }, [wellnessEntries, userProfile]);
 
   // Save visible metrics to localStorage when changed
   useEffect(() => {
@@ -135,9 +273,6 @@ const Dashboard: React.FC = () => {
   }, [visibleMetrics]);
 
   useEffect(() => {
-    const demoMode = localStorage.getItem('altmed_demo_mode');
-    setIsDemoMode(demoMode === 'true');
-    
     // Load saved mindset data from localStorage
     const savedMindset = localStorage.getItem('altmed_mindset_today');
     if (savedMindset) {
@@ -159,7 +294,33 @@ const Dashboard: React.FC = () => {
           : t
       )
     );
+    // Save task status to localStorage (could be saved to backend in future)
+    const updatedTasks = todaysTasks.map(t =>
+      t.id === taskId
+        ? { ...t, status: t.status === 'done' ? 'pending' : 'done' }
+        : t
+    );
+    localStorage.setItem('altmed_todays_tasks', JSON.stringify(updatedTasks));
   };
+  
+  // Load saved task statuses on mount
+  useEffect(() => {
+    const savedTasks = localStorage.getItem('altmed_todays_tasks');
+    if (savedTasks && userProfile) {
+      try {
+        const parsed = JSON.parse(savedTasks);
+        // Merge saved statuses with generated tasks
+        setTodaysTasks(prevTasks => {
+          return prevTasks.map(task => {
+            const saved = parsed.find((t: any) => t.task === task.task);
+            return saved ? { ...task, status: saved.status } : task;
+          });
+        });
+      } catch (e) {
+        // Ignore parse errors
+      }
+    }
+  }, [userProfile]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -278,10 +439,10 @@ const Dashboard: React.FC = () => {
       return;
     }
 
-    setWellnessMetrics(prev => ({
+    setWellnessMetrics((prev: WellnessMetrics) => ({
       ...prev,
       [selectedMetricKey]: {
-        ...prev[selectedMetricKey as keyof typeof prev],
+        ...prev[selectedMetricKey as keyof WellnessMetrics],
         current: value,
         data: [...prev[selectedMetricKey as keyof typeof prev].data.slice(1), value],
         trend: value > prev[selectedMetricKey as keyof typeof prev].current ? 'up' 
@@ -302,7 +463,7 @@ const Dashboard: React.FC = () => {
     );
   }
 
-  if (!userProfile && !isDemoMode) {
+  if (!userProfile) {
     return (
       <div className="min-h-screen bg-surface-0 flex items-center justify-center p-6">
         <EmptyState
@@ -316,19 +477,11 @@ const Dashboard: React.FC = () => {
     );
   }
 
-  const displayProfile = userProfile || {
-    name: 'Demo User',
-    dateOfBirth: '1970-01-01',
-    diagnosis: { condition: 'Prostate Cancer', symptoms: [] },
-    medications: [],
-    treatments: [],
-    trackingMetrics: [],
-    lifestyle: {
-      diet: 'Balanced diet with whole foods',
-      movement: 'Meditation, Walking, Exercise',
-      digitalUsage: 'Moderate'
-    }
-  };
+  if (!userProfile) {
+    return null; // This shouldn't happen due to the check above, but TypeScript needs it
+  }
+  
+  const displayProfile = userProfile;
 
   return (
     <div className="min-h-screen bg-surface-0 pb-8">
@@ -435,8 +588,9 @@ const Dashboard: React.FC = () => {
             {Object.entries(wellnessMetrics)
               .filter(([key]) => visibleMetrics.includes(key))
               .map(([key, metric], idx) => {
-              const Icon = metric.icon;
-              const progress = (metric.current / 10) * 100;
+              const metricTyped = metric as WellnessMetric;
+              const Icon = metricTyped.icon;
+              const progress = (metricTyped.current / 10) * 100;
               
               // Define color classes
               const getColorClasses = (color: string) => {
@@ -449,7 +603,7 @@ const Dashboard: React.FC = () => {
                 }
               };
               
-              const colorClasses = getColorClasses(metric.color);
+              const colorClasses = getColorClasses(metricTyped.color);
               
               return (
                 <motion.div
@@ -842,7 +996,8 @@ const Dashboard: React.FC = () => {
 
               <div className="space-y-3">
                 {Object.entries(wellnessMetrics).map(([key, metric]) => {
-                  const Icon = metric.icon;
+                  const metricTyped = metric as WellnessMetric;
+                  const Icon = metricTyped.icon;
                   const isVisible = visibleMetrics.includes(key);
                   
                   return (
@@ -860,7 +1015,7 @@ const Dashboard: React.FC = () => {
                           <Icon size={18} className={isVisible ? 'text-primary-0' : 'text-surface-50'} />
                         </div>
                         <span className={`font-medium ${isVisible ? 'text-white' : 'text-surface-50'}`}>
-                          {metric.label}
+                          {metricTyped.label}
                         </span>
                       </div>
                       {isVisible ? (

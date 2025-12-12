@@ -23,9 +23,13 @@ import {
   ChevronUp,
   Calendar,
   BarChart3,
-  Target
+  Target,
+  FileText,
+  Upload,
+  File,
+  Eye
 } from 'lucide-react';
-import { UserProfile, calculateAge, MetricDataEntry } from '../utils/storage';
+import { UserProfile, calculateAge, MetricDataEntry, UserDocument } from '../utils/storage';
 import { profileService, wellnessService, metricService, settingsService, dataService } from '../services/dataService';
 import { demoUserProfile } from '../utils/demoData';
 import ReferralDashboard from '../components/ReferralDashboard';
@@ -51,7 +55,11 @@ const Profile: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isDemoMode, setIsDemoMode] = useState(false);
-  const [activeTab, setActiveTab] = useState<'overview' | 'health' | 'metrics' | 'referrals' | 'settings' | 'privacy' | 'data'>('overview');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'overview' | 'health' | 'metrics' | 'referrals' | 'settings' | 'privacy' | 'data' | 'documents'>('overview');
+  const [documents, setDocuments] = useState<UserDocument[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
   const [wellnessEntriesCount, setWellnessEntriesCount] = useState(0);
   const [savedRecommendationsCount, setSavedRecommendationsCount] = useState(0);
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({
@@ -85,29 +93,46 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const profile = await profileService.get();
-      const savedSettings = await settingsService.get();
-      const wellnessEntries = await wellnessService.getAll();
-      
-      setUserProfile(profile);
-      setWellnessEntriesCount(wellnessEntries.length);
-      // TODO: Add recommendations service
-      setSavedRecommendationsCount(0);
-      
-      if (savedSettings) {
-        setSettings(prev => ({ ...prev, ...savedSettings }));
-      }
-      
-      // Check if this is demo mode
-      if (profile && profile.id === demoUserProfile.id) {
-        setIsDemoMode(true);
-      }
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        const profile = await profileService.get();
+        const savedSettings = await settingsService.get();
+        const wellnessEntries = await wellnessService.getAll();
+        
+        if (!profile) {
+          setError('No profile found. Please complete onboarding first.');
+          setIsLoading(false);
+          return;
+        }
+        
+        setUserProfile(profile);
+        setDocuments(profile.documents || []);
+        setWellnessEntriesCount(wellnessEntries.length);
+        // TODO: Add recommendations service
+        setSavedRecommendationsCount(0);
+        
+        if (savedSettings) {
+          setSettings(prev => ({ ...prev, ...savedSettings }));
+        }
+        
+        // Check if this is demo mode
+        if (profile && profile.id === demoUserProfile.id) {
+          setIsDemoMode(true);
+        }
 
-      // Check for URL parameters to set active tab
-      const urlParams = new URLSearchParams(window.location.search);
-      const tab = urlParams.get('tab');
-      if (tab && ['overview', 'health', 'metrics', 'referrals', 'settings', 'privacy', 'data'].includes(tab)) {
-        setActiveTab(tab as any);
+        // Check for URL parameters to set active tab
+        const urlParams = new URLSearchParams(window.location.search);
+        const tab = urlParams.get('tab');
+        if (tab && ['overview', 'health', 'metrics', 'documents', 'referrals', 'settings', 'privacy', 'data'].includes(tab)) {
+          setActiveTab(tab as any);
+        }
+      } catch (err: any) {
+        console.error('Error loading profile:', err);
+        setError(err.message || 'Failed to load profile. Please try again.');
+      } finally {
+        setIsLoading(false);
       }
     };
     loadData();
@@ -230,22 +255,197 @@ const Profile: React.FC = () => {
     setSelectedMetric(null);
   };
 
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+  };
+
+  const getDocumentCategory = (fileName: string): string => {
+    const name = fileName.toLowerCase();
+    if (name.includes('lab') || name.includes('test') || name.includes('result')) return 'Lab Results';
+    if (name.includes('prescription') || name.includes('rx') || name.includes('med')) return 'Prescriptions';
+    if (name.includes('medical') || name.includes('record') || name.includes('chart')) return 'Medical Records';
+    if (name.includes('insurance') || name.includes('claim')) return 'Insurance';
+    if (name.includes('imaging') || name.includes('scan') || name.includes('xray')) return 'Imaging';
+    return 'Other';
+  };
+
+  const handleDocumentUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+    try {
+      const newDocuments: UserDocument[] = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        
+        // Check file size (10MB limit)
+        if (file.size > 10 * 1024 * 1024) {
+          alert(`File "${file.name}" is too large. Maximum size is 10MB.`);
+          continue;
+        }
+
+        // Read file as base64
+        const reader = new FileReader();
+        const fileData = await new Promise<string>((resolve, reject) => {
+          reader.onload = (event) => {
+            if (event.target?.result) {
+              const base64 = (event.target.result as string).split(',')[1];
+              resolve(base64);
+            } else {
+              reject(new Error('Failed to read file'));
+            }
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+
+        const document: UserDocument = {
+          id: Date.now().toString() + i,
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          uploadedAt: new Date().toISOString(),
+          data: fileData,
+          category: getDocumentCategory(file.name),
+          description: ''
+        };
+
+        newDocuments.push(document);
+      }
+
+      if (newDocuments.length > 0) {
+        const updatedDocuments = [...documents, ...newDocuments];
+        setDocuments(updatedDocuments);
+        
+        if (userProfile) {
+          await handleSaveProfile({ documents: updatedDocuments });
+        }
+      }
+    } catch (error) {
+      console.error('Error uploading documents:', error);
+      alert('Failed to upload documents. Please try again.');
+    } finally {
+      setIsUploading(false);
+      // Reset input
+      e.target.value = '';
+    }
+  };
+
+  const handleViewDocument = (doc: UserDocument) => {
+    // Create a blob URL and open in new window
+    const byteCharacters = atob(doc.data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: doc.type });
+    const url = URL.createObjectURL(blob);
+    
+    if (doc.type === 'application/pdf' || doc.type.startsWith('image/')) {
+      window.open(url, '_blank');
+    } else {
+      // For other file types, trigger download
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = doc.name;
+      link.click();
+    }
+    
+    // Clean up URL after a delay
+    setTimeout(() => URL.revokeObjectURL(url), 100);
+  };
+
+  const handleDownloadDocument = (doc: UserDocument) => {
+    const byteCharacters = atob(doc.data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: doc.type });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = doc.name;
+    link.click();
+    
+    setTimeout(() => URL.revokeObjectURL(url), 100);
+  };
+
+  const handleDeleteDocument = async (documentId: string) => {
+    if (!window.confirm('Are you sure you want to delete this document?')) {
+      return;
+    }
+
+    const updatedDocuments = documents.filter(doc => doc.id !== documentId);
+    setDocuments(updatedDocuments);
+    
+    if (userProfile) {
+      await handleSaveProfile({ documents: updatedDocuments });
+    }
+  };
+
   const tabs = [
     { id: 'overview', label: 'Overview', icon: User },
     { id: 'health', label: 'Health Info', icon: Stethoscope },
     { id: 'metrics', label: 'Tracking Metrics', icon: BarChart3 },
+    { id: 'documents', label: 'Documents', icon: FileText },
     { id: 'referrals', label: 'Referrals', icon: TrendingUp },
     { id: 'settings', label: 'Settings', icon: Settings },
     { id: 'privacy', label: 'Privacy', icon: Shield },
     { id: 'data', label: 'Data', icon: Download }
   ];
 
-  if (!userProfile) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-warm-800 flex items-center justify-center">
         <div className="card max-w-md w-full text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-600 mx-auto mb-4"></div>
           <p className="text-warm-300">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-warm-800 flex items-center justify-center">
+        <div className="card max-w-md w-full text-center p-6">
+          <AlertCircle className="w-12 h-12 text-warning-10 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-white mb-2">Profile Not Found</h2>
+          <p className="text-warm-300 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.href = '/onboarding'}
+            className="bg-electric-500 hover:bg-electric-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+          >
+            Complete Onboarding
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!userProfile) {
+    return (
+      <div className="min-h-screen bg-warm-800 flex items-center justify-center">
+        <div className="card max-w-md w-full text-center p-6">
+          <AlertCircle className="w-12 h-12 text-warning-10 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-white mb-2">No Profile Found</h2>
+          <p className="text-warm-300 mb-4">Please complete onboarding to create your profile.</p>
+          <button
+            onClick={() => window.location.href = '/onboarding'}
+            className="bg-electric-500 hover:bg-electric-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+          >
+            Go to Onboarding
+          </button>
         </div>
       </div>
     );
@@ -1175,6 +1375,108 @@ const Profile: React.FC = () => {
                       </div>
                     </div>
                   </div>
+                </div>
+              )}
+
+              {/* Documents Tab */}
+              {activeTab === 'documents' && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-2xl font-bold text-white">
+                        Documents
+                      </h3>
+                      <p className="text-warm-300 mt-1">
+                        Upload and manage your medical documents, lab results, prescriptions, and other health-related files.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Upload Section */}
+                  <div className="bg-warm-600/30 border border-sage-200 rounded-lg p-6">
+                    <label className="block mb-4">
+                      <div className="flex items-center justify-center w-full h-32 border-2 border-dashed border-warm-500 rounded-lg cursor-pointer hover:border-electric-400 transition-colors bg-warm-700/30">
+                        <div className="text-center">
+                          <Upload size={32} className="mx-auto text-warm-400 mb-2" />
+                          <p className="text-warm-300 font-medium">Click to upload or drag and drop</p>
+                          <p className="text-sm text-warm-400 mt-1">PDF, Images, Documents (Max 10MB)</p>
+                        </div>
+                      </div>
+                      <input
+                        type="file"
+                        className="hidden"
+                        onChange={handleDocumentUpload}
+                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt"
+                        multiple
+                        disabled={isUploading}
+                      />
+                    </label>
+                  </div>
+
+                  {/* Documents List */}
+                  {documents.length === 0 ? (
+                    <div className="text-center py-12 bg-warm-600/30 border border-sage-200 rounded-lg">
+                      <FileText size={48} className="mx-auto text-warm-400 mb-4" />
+                      <h4 className="text-lg font-semibold text-white mb-2">No documents uploaded yet</h4>
+                      <p className="text-warm-300">Upload your first document to get started</p>
+                    </div>
+                  ) : (
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {documents.map((doc) => (
+                        <motion.div
+                          key={doc.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="bg-warm-600/30 border border-sage-200 rounded-lg p-4 hover:border-electric-400 transition-colors"
+                        >
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex items-start flex-1">
+                              <div className="w-10 h-10 bg-electric-500/20 rounded-lg flex items-center justify-center mr-3">
+                                <File size={20} className="text-electric-400" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h4 className="font-semibold text-white truncate">{doc.name}</h4>
+                                <p className="text-sm text-warm-400">
+                                  {formatFileSize(doc.size)} • {new Date(doc.uploadedAt).toLocaleDateString()}
+                                </p>
+                                {doc.category && (
+                                  <span className="inline-block mt-1 px-2 py-1 bg-electric-500/20 text-electric-400 text-xs rounded">
+                                    {doc.category}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => handleDeleteDocument(doc.id)}
+                              className="ml-2 p-1 hover:bg-danger-10/20 rounded text-warm-400 hover:text-danger-10 transition-colors"
+                              aria-label={`Delete ${doc.name}`}
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          </div>
+                          {doc.description && (
+                            <p className="text-sm text-warm-300 mb-3">{doc.description}</p>
+                          )}
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleViewDocument(doc)}
+                              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-electric-500/20 hover:bg-electric-500/30 text-electric-400 rounded-lg transition-colors text-sm"
+                            >
+                              <Eye size={16} />
+                              View
+                            </button>
+                            <button
+                              onClick={() => handleDownloadDocument(doc)}
+                              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-warm-700/50 hover:bg-warm-700 text-warm-300 rounded-lg transition-colors text-sm"
+                            >
+                              <Download size={16} />
+                              Download
+                            </button>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 

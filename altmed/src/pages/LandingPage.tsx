@@ -32,15 +32,8 @@ const LandingPage: React.FC = () => {
 
   const handleSignUpSuccess = () => {
     setShowSignUpModal(false);
-    // Check if user has completed onboarding
-    const hasCompletedOnboarding = localStorage.getItem('altmed_onboarding_completed') === 'true';
-    if (!hasCompletedOnboarding) {
-      // Navigate to onboarding first
-      navigate('/onboarding');
-    } else {
-      // Navigate to AI agent with first entry prompt
-      navigate('/ai-agent?firstEntry=true');
-    }
+    // After signup and email confirmation, always go to onboarding to tell their story
+    navigate('/onboarding');
   };
 
   return (

@@ -65,6 +65,32 @@ const ReferralDashboard: React.FC<ReferralDashboardProps> = ({ userId }) => {
 
   return (
     <div className="space-y-8">
+      {/* Referral Link - Moved to top */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="modern-card p-8"
+      >
+        <h3 className="text-2xl font-bold text-white mb-6">Your Referral Link</h3>
+        <div className="flex items-center space-x-4">
+          <input
+            type="text"
+            value={`https://thriverhealth.ai/ref/${currentUserId}`}
+            readOnly
+            className="flex-1 px-4 py-3 border border-sage-200 rounded-lg bg-warm-600/30 text-warm-300"
+            aria-label="Your referral link"
+          />
+          <button className="bg-gradient-to-r from-lavender-500 to-rose-500 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center">
+            <ArrowUpRight size={20} className="mr-2" />
+            Copy Link
+          </button>
+        </div>
+        <p className="text-warm-300 text-sm mt-3">
+          Share this link with others to earn commissions on their purchases and subscriptions
+        </p>
+      </motion.div>
+
       {/* Stats Overview */}
       <div className="grid md:grid-cols-4 gap-6">
         <motion.div
@@ -174,6 +200,7 @@ const ReferralDashboard: React.FC<ReferralDashboardProps> = ({ userId }) => {
               value={activeFilter}
               onChange={(e) => setActiveFilter(e.target.value as any)}
               className="border border-sage-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-lavender-500 focus:border-transparent"
+              aria-label="Filter referrals by status"
             >
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
@@ -246,31 +273,6 @@ const ReferralDashboard: React.FC<ReferralDashboardProps> = ({ userId }) => {
             </div>
           ))}
         </div>
-      </motion.div>
-
-      {/* Referral Link */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        className="modern-card p-8"
-      >
-        <h3 className="text-2xl font-bold text-white mb-6">Your Referral Link</h3>
-        <div className="flex items-center space-x-4">
-          <input
-            type="text"
-            value={`https://thriverhealth.ai/ref/${currentUserId}`}
-            readOnly
-            className="flex-1 px-4 py-3 border border-sage-200 rounded-lg bg-warm-600/30 text-warm-300"
-          />
-          <button className="bg-gradient-to-r from-lavender-500 to-rose-500 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center">
-            <ArrowUpRight size={20} className="mr-2" />
-            Copy Link
-          </button>
-        </div>
-        <p className="text-warm-300 text-sm mt-3">
-          Share this link with others to earn commissions on their purchases and subscriptions
-        </p>
       </motion.div>
     </div>
   );
