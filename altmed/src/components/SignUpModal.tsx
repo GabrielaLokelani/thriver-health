@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import Logo from './Logo';
 
 interface SignUpModalProps {
   isOpen: boolean;
@@ -127,43 +128,51 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
           }}
         >
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-warm-700 rounded-xl shadow-2xl max-w-md w-full p-6 border border-warm-600"
+            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+            className="relative max-w-md w-full p-8 rounded-2xl max-h-[90vh] overflow-y-auto"
+            style={{
+              background: 'linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 132, 0, 0.05)'
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white font-display">
+            <div className="flex justify-center mb-6">
+              <Logo size="md" showText={true} />
+            </div>
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-bold text-white">
                 {needsConfirmation ? 'Confirm Your Email' : 'Start Your Free Trial'}
               </h2>
               <button
                 onClick={onClose}
-                className="text-warm-400 hover:text-white transition-colors"
+                className="p-2 rounded-lg text-warm-400 hover:text-white hover:bg-white/5 transition-all"
                 aria-label="Close modal"
                 disabled={isConfirming}
               >
-                <X size={24} />
+                <X size={20} />
               </button>
             </div>
 
             {error && (
-              <div className="bg-red-500/20 text-red-400 p-3 rounded-lg mb-4 text-sm">
+              <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl mb-6 text-sm">
                 {error}
               </div>
             )}
 
             {needsConfirmation ? (
               // Confirmation Code Step
-              <div className="space-y-4">
-                <div className="bg-electric-500/20 border border-electric-500/30 rounded-lg p-4 mb-4">
-                  <p className="text-sm text-white">
-                    We've sent a confirmation code to <strong>{formData.email}</strong>. 
+              <div className="space-y-5">
+                <div className="bg-primary-0/10 border border-primary-0/20 rounded-xl p-4">
+                  <p className="text-sm text-warm-200">
+                    We've sent a confirmation code to <strong className="text-primary-0">{formData.email}</strong>. 
                     Please check your email and enter the code below.
                   </p>
                 </div>
                 
-                <form onSubmit={handleConfirmCode} className="space-y-4">
+                <form onSubmit={handleConfirmCode} className="space-y-5">
                   <div>
                     <label className="block text-sm font-medium text-warm-300 mb-2">
                       Confirmation Code
@@ -174,7 +183,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
                       onChange={(e) => setConfirmationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                       required
                       maxLength={6}
-                      className="w-full px-4 py-2 bg-warm-800 border border-warm-600 rounded-lg text-white text-center text-2xl tracking-widest focus:ring-2 focus:ring-electric-400 focus:border-electric-400 outline-none"
+                      className="input-glow text-center text-2xl tracking-[0.5em] font-mono"
                       placeholder="000000"
                       autoFocus
                     />
@@ -185,7 +194,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
                   
                   <button
                     type="submit"
-                    className="w-full bg-electric-500 hover:bg-electric-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="btn-glow w-full py-3.5"
                     disabled={isConfirming || confirmationCode.length !== 6}
                   >
                     {isConfirming ? 'Confirming...' : 'Confirm Account'}
@@ -194,7 +203,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
                   <button
                     type="button"
                     onClick={handleResendCode}
-                    className="w-full text-warm-400 hover:text-white text-sm py-2 transition-colors"
+                    className="w-full text-warm-400 hover:text-primary-0 text-sm py-2 transition-colors"
                   >
                     Didn't receive the code? Click here for help
                   </button>
@@ -208,13 +217,13 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
                     }}
                     className="w-full text-warm-400 hover:text-white text-sm py-2 transition-colors"
                   >
-                    Back to sign up
+                    ← Back to sign up
                   </button>
                 </form>
               </div>
             ) : (
               // Sign Up Form
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium text-warm-300 mb-2">
                     Full Name
@@ -225,7 +234,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 bg-warm-800 border border-warm-600 rounded-lg text-white focus:ring-2 focus:ring-electric-400 focus:border-electric-400 outline-none"
+                    className="input-glow"
                     placeholder="Enter your name"
                   />
                 </div>
@@ -239,7 +248,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 bg-warm-800 border border-warm-600 rounded-lg text-white focus:ring-2 focus:ring-electric-400 focus:border-electric-400 outline-none"
+                    className="input-glow"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -253,7 +262,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 bg-warm-800 border border-warm-600 rounded-lg text-white focus:ring-2 focus:ring-electric-400 focus:border-electric-400 outline-none"
+                    className="input-glow"
                     placeholder="At least 8 characters"
                   />
                 </div>
@@ -267,25 +276,25 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 bg-warm-800 border border-warm-600 rounded-lg text-white focus:ring-2 focus:ring-electric-400 focus:border-electric-400 outline-none"
+                    className="input-glow"
                     placeholder="Confirm your password"
                   />
                 </div>
-                <div className="flex items-start space-x-3">
+                <div className="flex items-start space-x-3 p-4 rounded-xl bg-white/[0.02] border border-white/5">
                   <input
                     type="checkbox"
                     id="terms"
                     checked={acceptedTerms}
                     onChange={(e) => setAcceptedTerms(e.target.checked)}
-                    className="mt-1 w-4 h-4 text-electric-500 bg-warm-800 border-warm-600 rounded focus:ring-electric-400 focus:ring-2"
+                    className="mt-1 w-5 h-5 rounded border-warm-500 bg-surface-10 text-primary-0 focus:ring-primary-0 focus:ring-offset-0"
                   />
-                  <label htmlFor="terms" className="text-sm text-warm-300">
-                    I consent to sharing my user data and medical information with ThriverHealth.Ai for the purpose of providing personalized health recommendations and services. I understand that my data will be used in accordance with the Terms of Service and Privacy Policy.
+                  <label htmlFor="terms" className="text-sm text-warm-300 leading-relaxed">
+                    I consent to sharing my user data and medical information with ThriverHealth.Ai for personalized health recommendations. I understand my data will be used per the <span className="text-primary-0 hover:underline cursor-pointer">Terms of Service</span> and <span className="text-primary-0 hover:underline cursor-pointer">Privacy Policy</span>.
                   </label>
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-electric-500 hover:bg-electric-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-glow w-full py-3.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
                   disabled={isLoading || !acceptedTerms}
                 >
                   {isLoading ? 'Creating Account...' : 'Create Account'}
@@ -294,8 +303,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
             )}
 
             {!needsConfirmation && (
-              <p className="text-xs text-warm-400 mt-4 text-center">
-                By creating an account, you agree to our Terms of Service and Privacy Policy
+              <p className="text-xs text-warm-500 mt-6 text-center">
+                Already have an account? <span className="text-primary-0 hover:underline cursor-pointer">Login here</span>
               </p>
             )}
           </motion.div>

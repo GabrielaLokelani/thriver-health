@@ -406,10 +406,10 @@ const Profile: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-warm-800 flex items-center justify-center">
-        <div className="card max-w-md w-full text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-600 mx-auto mb-4"></div>
-          <p className="text-warm-300">Loading profile...</p>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#000' }}>
+        <div className="panel-dark max-w-md w-full text-center p-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-500/30 border-t-orange-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading profile...</p>
         </div>
       </div>
     );
@@ -417,14 +417,14 @@ const Profile: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-warm-800 flex items-center justify-center">
-        <div className="card max-w-md w-full text-center p-6">
-          <AlertCircle className="w-12 h-12 text-warning-10 mx-auto mb-4" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#000' }}>
+        <div className="panel-dark max-w-md w-full text-center p-8">
+          <AlertCircle className="w-12 h-12 mx-auto mb-4" style={{ color: '#ff8400' }} />
           <h2 className="text-xl font-bold text-white mb-2">Profile Not Found</h2>
-          <p className="text-warm-300 mb-4">{error}</p>
+          <p className="text-gray-400 mb-4">{error}</p>
           <button
             onClick={() => window.location.href = '/onboarding'}
-            className="bg-electric-500 hover:bg-electric-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+            className="btn-glow"
           >
             Complete Onboarding
           </button>
@@ -435,14 +435,14 @@ const Profile: React.FC = () => {
 
   if (!userProfile) {
     return (
-      <div className="min-h-screen bg-warm-800 flex items-center justify-center">
-        <div className="card max-w-md w-full text-center p-6">
-          <AlertCircle className="w-12 h-12 text-warning-10 mx-auto mb-4" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#000' }}>
+        <div className="panel-dark max-w-md w-full text-center p-8">
+          <AlertCircle className="w-12 h-12 mx-auto mb-4" style={{ color: '#ff8400' }} />
           <h2 className="text-xl font-bold text-white mb-2">No Profile Found</h2>
-          <p className="text-warm-300 mb-4">Please complete onboarding to create your profile.</p>
+          <p className="text-gray-400 mb-4">Please complete onboarding to create your profile.</p>
           <button
             onClick={() => window.location.href = '/onboarding'}
-            className="bg-electric-500 hover:bg-electric-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+            className="btn-glow"
           >
             Go to Onboarding
           </button>
@@ -452,21 +452,21 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-warm-800">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(180deg, #000 0%, #0a0805 50%, #000 100%)' }}>
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-sage-200">
+      <header className="bg-surface-10/80 backdrop-blur-xl border-b border-surface-20">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-white">
+              <h1 className="text-3xl font-bold text-white font-display">
                 Profile & Settings
               </h1>
-              <p className="text-warm-300">
+              <p className="text-surface-50">
                 Manage your account, preferences, and wellness data
               </p>
               {isDemoMode && (
                 <div className="mt-2">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-lavender-100 to-rose-100 text-electric-400 border border-lavender-200">
+                  <span className="tech-badge">
                     🎭 Demo Mode
                   </span>
                 </div>
@@ -483,43 +483,43 @@ const Profile: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="card p-8"
+              className="panel-dark p-8"
             >
               {/* Profile Card */}
               <div className="text-center mb-6">
                 <div className="relative inline-block mb-4">
-                  <div className="w-24 h-24 bg-gradient-to-br from-lavender-400 to-rose-400 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                  <div className="w-24 h-24 bg-gradient-to-br from-primary-0 to-primary-20 rounded-full flex items-center justify-center text-black text-2xl font-bold shadow-lg shadow-primary-0/30">
                     {userProfile.name.split(' ').map(n => n[0]).join('')}
                   </div>
-                  <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow">
-                    <Camera size={16} className="text-warm-300" />
+                  <button className="absolute bottom-0 right-0 bg-surface-20 rounded-full p-2 shadow-lg hover:bg-surface-30 transition-all border border-surface-30">
+                    <Camera size={16} className="text-primary-0" />
                   </button>
                 </div>
                 <h2 className="text-xl font-semibold text-white mb-1">
                   {userProfile.name}
                 </h2>
-                <p className="text-warm-300 text-sm mb-3">
+                <p className="text-surface-50 text-sm mb-3">
                   Member since {new Date(userProfile.createdAt).toLocaleDateString()}
                 </p>
-                <div className="flex items-center justify-center text-warm-400 text-sm">
+                <div className="flex items-center justify-center text-surface-50 text-sm">
                   <MapPin size={14} className="mr-1" />
                   {userProfile.location}
                 </div>
               </div>
 
               {/* Navigation Tabs */}
-              <nav className="space-y-3">
+              <nav className="space-y-2">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`w-full flex items-center px-6 py-4 rounded-lg transition-all ${
+                    className={`w-full flex items-center px-4 py-3 rounded-xl transition-all ${
                       activeTab === tab.id
-                        ? 'bg-electric-500/20 text-electric-400 border-lavender-200'
-                        : 'text-warm-300 hover:bg-warm-600/30 hover:text-white'
+                        ? 'bg-primary-0/20 text-primary-0 border border-primary-0/30'
+                        : 'text-surface-50 hover:bg-surface-20 hover:text-white'
                     }`}
                   >
-                    <tab.icon size={20} className="mr-3" />
+                    <tab.icon size={18} className="mr-3" />
                     {tab.label}
                   </button>
                 ))}
@@ -532,7 +532,7 @@ const Profile: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="card p-8"
+              className="panel-dark p-8"
             >
               {/* Overview Tab */}
               {activeTab === 'overview' && (

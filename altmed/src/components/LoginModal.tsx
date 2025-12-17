@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import Logo from './Logo';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -51,30 +52,38 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) =
           onClick={onClose}
         >
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-warm-700 rounded-xl shadow-2xl max-w-md w-full p-6 border border-warm-600"
+            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="relative max-w-md w-full p-8 rounded-2xl"
+            style={{
+              background: 'linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 132, 0, 0.05)'
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white font-display">Login</h2>
+            <div className="flex justify-center mb-6">
+              <Logo size="md" showText={true} />
+            </div>
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-bold text-white">Welcome Back</h2>
               <button
                 onClick={onClose}
-                className="text-warm-400 hover:text-white transition-colors"
+                className="p-2 rounded-lg text-warm-400 hover:text-white hover:bg-white/5 transition-all"
                 aria-label="Close modal"
               >
-                <X size={24} />
+                <X size={20} />
               </button>
             </div>
 
             {error && (
-              <div className="bg-red-500/20 text-red-400 p-3 rounded-lg mb-4 text-sm">
+              <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl mb-6 text-sm">
                 {error}
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-warm-300 mb-2">
                   Email
@@ -85,7 +94,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) =
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 bg-warm-800 border border-warm-600 rounded-lg text-white focus:ring-2 focus:ring-electric-400 focus:border-electric-400 outline-none"
+                  className="input-glow"
                   placeholder="Enter your email"
                 />
               </div>
@@ -99,13 +108,13 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) =
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 bg-warm-800 border border-warm-600 rounded-lg text-white focus:ring-2 focus:ring-electric-400 focus:border-electric-400 outline-none"
+                  className="input-glow"
                   placeholder="Enter your password"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full bg-electric-500 hover:bg-electric-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-glow w-full py-3.5 text-base"
                 disabled={isLoading}
               >
                 {isLoading ? 'Logging In...' : 'Login'}
@@ -115,7 +124,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) =
             <button
               type="button"
               onClick={() => {/* TODO: Implement forgot password */}}
-              className="w-full text-electric-400 hover:text-electric-300 text-sm mt-4 text-center"
+              className="w-full text-primary-0 hover:text-primary-10 text-sm mt-6 text-center font-medium transition-colors"
             >
               Forgot Password?
             </button>

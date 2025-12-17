@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from './hooks/useAuth';
 import LoginModal from './components/LoginModal';
+import Logo from './components/Logo';
 import ProtectedRoute from './components/ProtectedRoute';
 import LandingPage from './pages/LandingPage';
 import OnboardingWizard from './pages/OnboardingWizard';
@@ -61,41 +62,47 @@ const Navigation: React.FC = () => {
 
   return (
     <>
-      <nav className="bg-white/80 backdrop-blur-sm border-b border-sage-200 sticky top-0 z-50">
+      <nav 
+        className="sticky top-0 z-50 backdrop-blur-xl"
+        style={{
+          background: 'rgba(10, 10, 10, 0.95)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center space-x-4"
             >
-              <Link to="/" className="text-2xl font-bold text-gradient">
-                ThriverHealth.Ai
+              <Link to="/" className="flex items-center">
+                <Logo size="sm" showText={true} />
               </Link>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="hidden md:flex items-center space-x-8"
+              className="hidden md:flex items-center space-x-1"
             >
               {(isAuthenticated ? authenticatedNavItems : publicNavItems).map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="flex items-center space-x-2 text-warm-800 hover:text-electric-400 transition-colors duration-200 group"
+                  className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-200"
                 >
-                  <item.icon size={18} className="group-hover:scale-110 transition-transform" />
-                  <span className="font-medium">{item.label}</span>
+                  <item.icon size={18} />
+                  <span>{item.label}</span>
                 </Link>
               ))}
               
               {isAuthenticated ? (
-                <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-warm-300">
-                  <span className="text-warm-700 text-sm">{user?.name || user?.email}</span>
+                <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-white/10">
+                  <span className="text-gray-500 text-sm">{user?.name || user?.email}</span>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center space-x-2 text-warm-800 hover:text-red-500 transition-colors duration-200"
+                    className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
                   >
                     <LogOut size={18} />
                     <span className="font-medium">Logout</span>
@@ -104,10 +111,15 @@ const Navigation: React.FC = () => {
               ) : (
                 <button
                   onClick={() => setShowLoginModal(true)}
-                  className="flex items-center space-x-2 text-warm-800 hover:text-electric-400 transition-colors duration-200 ml-4 pl-4 border-l border-warm-300"
+                  className="flex items-center space-x-2 ml-4 px-5 py-2.5 rounded-xl font-semibold transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, #ff8400 0%, #ff6b00 100%)',
+                    color: '#000',
+                    boxShadow: '0 0 20px rgba(255, 132, 0, 0.3)'
+                  }}
                 >
                   <LogIn size={18} />
-                  <span className="font-medium">Login</span>
+                  <span>Login</span>
                 </button>
               )}
             </motion.div>
@@ -115,7 +127,7 @@ const Navigation: React.FC = () => {
             {/* Mobile menu button */}
             <div className="md:hidden">
               <button 
-                className="text-warm-800 hover:text-electric-400 transition-colors"
+                className="text-gray-400 hover:text-orange-400 transition-colors p-2"
                 aria-label="Toggle mobile menu"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,7 +149,7 @@ const Navigation: React.FC = () => {
 
 const AppContent: React.FC = () => {
   return (
-    <div className="min-h-screen bg-warm-800">
+    <div className="min-h-screen" style={{ background: '#0a0a0a' }}>
       <Navigation />
       {/* Main Content */}
       <main>

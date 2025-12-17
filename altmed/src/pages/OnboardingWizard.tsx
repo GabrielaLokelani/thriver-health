@@ -301,12 +301,13 @@ const OnboardingWizard: React.FC = () => {
 
     // Mark onboarding as completed
     localStorage.setItem('altmed_onboarding_completed', 'true');
+    localStorage.setItem('altmed_first_entry_completed', 'true');
     
     setStep('complete');
     
-    // Navigate to AI agent with first entry prompt after a short delay
+    // Navigate to dashboard after a short delay (user already told their story in onboarding)
     setTimeout(() => {
-      navigate('/ai-agent?firstEntry=true');
+      navigate('/dashboard');
     }, 2000);
   };
 
@@ -458,7 +459,12 @@ const OnboardingWizard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-0 flex items-center justify-center p-4">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{
+        background: 'radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255, 132, 0, 0.1) 0%, transparent 50%), linear-gradient(180deg, #000 0%, #0a0a0a 100%)'
+      }}
+    >
       <div className="w-full max-w-5xl">
         <AnimatePresence mode="wait">
           {/* Welcome Step */}
@@ -468,51 +474,71 @@ const OnboardingWizard: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-surface-10 rounded-3xl border border-surface-20/50 p-8 md:p-12 shadow-strong text-center"
+              className="rounded-3xl p-8 md:p-12 text-center"
+              style={{
+                background: 'linear-gradient(145deg, #111111 0%, #0a0a0a 100%)',
+                border: '1px solid rgba(255, 132, 0, 0.15)',
+                boxShadow: '0 0 80px rgba(255, 132, 0, 0.08), 0 25px 50px -12px rgba(0, 0, 0, 0.8)'
+              }}
             >
-              <div className="w-20 h-20 bg-gradient-to-br from-primary-0 to-primary-10 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary-0/30">
+              <div 
+                className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6"
+                style={{
+                  background: 'linear-gradient(135deg, #ff8400, #ff6b00)',
+                  boxShadow: '0 0 60px rgba(255, 132, 0, 0.5), 0 8px 30px rgba(255, 132, 0, 0.4)'
+                }}
+              >
                 <Heart size={40} className="text-black" />
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 font-display">
-                Welcome to Thriver Health
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                Welcome to{' '}
+                <span style={{ background: 'linear-gradient(90deg, #ff8400, #ffae66)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  Thriver Health
+                </span>
               </h1>
-              <p className="text-xl text-surface-50 mb-8 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed">
                 Let's start your journey together. Share your story with us - tell us about your diagnosis, 
                 what you're experiencing, and what you hope to achieve.
               </p>
-              <div className="bg-surface-20/50 border border-surface-30/30 rounded-2xl p-6 mb-8 max-w-2xl mx-auto">
+              <div 
+                className="rounded-2xl p-6 mb-8 max-w-2xl mx-auto"
+                style={{
+                  background: 'rgba(255, 132, 0, 0.05)',
+                  border: '1px solid rgba(255, 132, 0, 0.15)'
+                }}
+              >
                 <h3 className="text-lg font-semibold text-white mb-3">You can share:</h3>
-                <ul className="text-left text-surface-50 space-y-2">
+                <ul className="text-left text-gray-400 space-y-2">
                   <li className="flex items-start">
-                    <Check size={20} className="text-success-10 mr-3 flex-shrink-0 mt-0.5" />
+                    <Check size={20} className="mr-3 flex-shrink-0 mt-0.5" style={{ color: '#47d5a6' }} />
                     <span>Your diagnosis and when you received it</span>
                   </li>
                   <li className="flex items-start">
-                    <Check size={20} className="text-success-10 mr-3 flex-shrink-0 mt-0.5" />
+                    <Check size={20} className="mr-3 flex-shrink-0 mt-0.5" style={{ color: '#47d5a6' }} />
                     <span>Symptoms you're experiencing</span>
                   </li>
                   <li className="flex items-start">
-                    <Check size={20} className="text-success-10 mr-3 flex-shrink-0 mt-0.5" />
+                    <Check size={20} className="mr-3 flex-shrink-0 mt-0.5" style={{ color: '#47d5a6' }} />
                     <span>Current treatments and medications</span>
                   </li>
                   <li className="flex items-start">
-                    <Check size={20} className="text-success-10 mr-3 flex-shrink-0 mt-0.5" />
+                    <Check size={20} className="mr-3 flex-shrink-0 mt-0.5" style={{ color: '#47d5a6' }} />
                     <span>Your lifestyle and daily routine</span>
                   </li>
                   <li className="flex items-start">
-                    <Check size={20} className="text-success-10 mr-3 flex-shrink-0 mt-0.5" />
+                    <Check size={20} className="mr-3 flex-shrink-0 mt-0.5" style={{ color: '#47d5a6' }} />
                     <span>What you want to achieve with your health</span>
                   </li>
                 </ul>
               </div>
               <button
                 onClick={() => setStep('journal')}
-                className="btn-primary btn-lg inline-flex items-center"
+                className="btn-glow text-lg inline-flex items-center"
               >
                 Begin Your Story
                 <ChevronRight size={24} className="ml-2" />
               </button>
-              <p className="text-sm text-surface-50 mt-6">
+              <p className="text-sm text-gray-500 mt-6 font-mono tracking-wider">
                 Our AI will help organize and understand your journey
               </p>
             </motion.div>

@@ -457,15 +457,18 @@ const Dashboard: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-surface-0 flex items-center justify-center">
-        <div className="text-white text-lg">Loading your dashboard...</div>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#000' }}>
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="text-white text-lg">Loading your dashboard...</div>
+        </div>
       </div>
     );
   }
 
   if (!userProfile) {
     return (
-      <div className="min-h-screen bg-surface-0 flex items-center justify-center p-6">
+      <div className="min-h-screen flex items-center justify-center p-6" style={{ background: '#000' }}>
         <EmptyState
           icon={Activity}
           title="Welcome to ThriverHealth.Ai!"
@@ -484,20 +487,26 @@ const Dashboard: React.FC = () => {
   const displayProfile = userProfile;
 
   return (
-    <div className="min-h-screen bg-surface-0 pb-8">
+    <div className="min-h-screen pb-8" style={{ background: 'linear-gradient(180deg, #000 0%, #0a0805 50%, #000 100%)' }}>
       {/* Welcome Banner for New Users */}
       {showWelcomeBanner && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-electric-500/20 border-b border-electric-500/30 px-6 py-4"
+          className="px-6 py-4"
+          style={{
+            background: 'linear-gradient(90deg, rgba(255, 132, 0, 0.15) 0%, rgba(255, 132, 0, 0.05) 50%, rgba(255, 132, 0, 0.15) 100%)',
+            borderBottom: '1px solid rgba(255, 132, 0, 0.3)'
+          }}
         >
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <Sparkles className="text-electric-400" size={24} />
+              <div className="icon-glow p-2">
+                <Sparkles size={24} />
+              </div>
               <div>
                 <h3 className="text-white font-semibold">Welcome, {displayProfile.name || 'there'}! 🎉</h3>
-                <p className="text-warm-300 text-sm">Your profile is set up. Start exploring your personalized health journey.</p>
+                <p className="text-gray-400 text-sm">Your profile is set up. Start exploring your personalized health journey.</p>
               </div>
             </div>
             <button
@@ -505,7 +514,7 @@ const Dashboard: React.FC = () => {
                 setShowWelcomeBanner(false);
                 localStorage.setItem('altmed_welcome_banner_seen', 'true');
               }}
-              className="text-warm-300 hover:text-white transition-colors"
+              className="text-gray-400 hover:text-white transition-colors"
               aria-label="Dismiss welcome banner"
             >
               <X size={20} />
@@ -515,7 +524,13 @@ const Dashboard: React.FC = () => {
       )}
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-electric-500 to-electric-600 text-white py-8 shadow-lg">
+      <section 
+        className="text-white py-8"
+        style={{
+          background: 'radial-gradient(ellipse 100% 80% at 50% -20%, rgba(255, 132, 0, 0.15) 0%, transparent 50%)',
+          borderBottom: '1px solid rgba(255, 132, 0, 0.2)'
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -530,10 +545,17 @@ const Dashboard: React.FC = () => {
             </p>
             
             {displayProfile.diagnosis && (
-              <div className="inline-block bg-success-10/20 border border-success-10/30 px-6 py-2 rounded-full mb-5">
-                <span className="font-semibold">Health Status: </span>
-                <strong>Stable & Thriving</strong>
-                <span className="ml-3 opacity-75">| Last Update: {new Date().toLocaleDateString()}</span>
+              <div 
+                className="inline-block px-6 py-2 rounded-full mb-5"
+                style={{
+                  background: 'rgba(71, 213, 166, 0.15)',
+                  border: '1px solid rgba(71, 213, 166, 0.3)',
+                  boxShadow: '0 0 30px rgba(71, 213, 166, 0.1)'
+                }}
+              >
+                <span className="font-semibold text-green-400">Health Status: </span>
+                <strong className="text-white">Stable & Thriving</strong>
+                <span className="ml-3 text-gray-400">| Last Update: {new Date().toLocaleDateString()}</span>
               </div>
             )}
 
@@ -541,14 +563,14 @@ const Dashboard: React.FC = () => {
             <div className="flex justify-center gap-4 flex-wrap mb-4">
               <button
                 onClick={() => navigate('/ai-agent')}
-                className="btn-primary btn-lg inline-flex items-center"
+                className="btn-glow inline-flex items-center"
               >
                 <Sparkles size={20} className="mr-2" />
                 Chat with AI Advisor
               </button>
               <button
                 onClick={() => navigate('/profile?tab=health')}
-                className="bg-white hover:bg-gray-100 text-electric-500 font-semibold px-6 py-3 rounded-xl transition-all inline-flex items-center shadow-lg"
+                className="btn-secondary inline-flex items-center"
               >
                 <FileText size={20} className="mr-2" />
                 View Full Health Profile
@@ -556,7 +578,14 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* Gratitude Streak Badge */}
-            <div className="inline-block bg-primary-0 text-black px-5 py-2 rounded-full font-bold text-sm shadow-lg">
+            <div 
+              className="inline-block px-5 py-2 rounded-full font-bold text-sm"
+              style={{
+                background: 'linear-gradient(135deg, #ff8400, #ff6b00)',
+                color: '#000',
+                boxShadow: '0 0 30px rgba(255, 132, 0, 0.5)'
+              }}
+            >
               <Heart size={16} className="inline mr-2" />
               Gratitude Streak: {gratitudeStreak} Days
             </div>

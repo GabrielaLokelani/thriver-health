@@ -10,7 +10,7 @@ module.exports = {
         dark: '#000000',
         light: '#ffffff',
         
-        // Theme primary colors (Orange brand)
+        // Theme primary colors (Orange brand - warm, inviting)
         primary: {
           0: '#ff8400',
           10: '#ff9230',
@@ -18,29 +18,34 @@ module.exports = {
           30: '#ffae66',
           40: '#ffbb80',
           50: '#ffc999',
+          glow: 'rgba(255, 132, 0, 0.4)',
           DEFAULT: '#ff8400',
         },
         
-        // Theme surface colors (Dark backgrounds)
+        // Theme surface colors (Deep dark backgrounds)
         surface: {
-          0: '#121212',
-          10: '#282828',
-          20: '#3f3f3f',
-          30: '#575757',
-          40: '#717171',
-          50: '#8b8b8b',
-          DEFAULT: '#121212',
+          0: '#0a0a0a',
+          5: '#111111',
+          10: '#1a1a1a',
+          15: '#222222',
+          20: '#2a2a2a',
+          25: '#333333',
+          30: '#3d3d3d',
+          40: '#525252',
+          50: '#6b6b6b',
+          60: '#858585',
+          DEFAULT: '#0a0a0a',
         },
         
         // Theme tonal surface colors (Warm tinted backgrounds)
         'surface-tonal': {
-          0: '#271d15',
-          10: '#3c322a',
-          20: '#514841',
-          30: '#686059',
-          40: '#807872',
-          50: '#98918d',
-          DEFAULT: '#271d15',
+          0: '#1a1510',
+          10: '#2a231c',
+          20: '#3a3228',
+          30: '#4a4235',
+          40: '#5a5242',
+          50: '#6b6350',
+          DEFAULT: '#1a1510',
         },
         
         // Success colors (Green)
@@ -90,12 +95,22 @@ module.exports = {
           500: '#22946e',
         },
         warm: {
+          200: '#a8a8a8',
           300: '#8b8b8b',
-          400: '#717171',
-          600: '#3f3f3f',
-          700: '#282828',
-          800: '#121212',
+          400: '#6b6b6b',
+          500: '#525252',
+          600: '#333333',
+          700: '#1a1a1a',
+          800: '#0a0a0a',
           900: '#000000',
+        },
+        
+        // Accent glow colors
+        glow: {
+          orange: 'rgba(255, 132, 0, 0.5)',
+          'orange-soft': 'rgba(255, 132, 0, 0.2)',
+          blue: 'rgba(64, 119, 209, 0.5)',
+          green: 'rgba(71, 213, 166, 0.5)',
         },
       },
       fontFamily: {

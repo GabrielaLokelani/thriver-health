@@ -44,26 +44,31 @@ const FirstEntryPrompt: React.FC<FirstEntryPromptProps> = ({ isOpen, onClose, on
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="bg-warm-700 rounded-xl shadow-2xl max-w-2xl w-full p-8 border border-warm-600"
+            className="max-w-2xl w-full p-8 rounded-2xl"
+            style={{
+              background: 'linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 132, 0, 0.05)'
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center space-x-3">
-                <div className="bg-electric-500/20 p-3 rounded-lg">
-                  <Sparkles className="text-electric-400" size={24} />
+                <div className="icon-glow">
+                  <Sparkles size={24} />
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-white font-display">
                     Welcome to ThriverHealth.Ai!
                   </h2>
-                  <p className="text-warm-300 text-sm mt-1">
+                  <p className="text-surface-50 text-sm mt-1">
                     Let's start your health journey
                   </p>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="text-warm-400 hover:text-white transition-colors"
+                className="text-surface-50 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5"
                 aria-label="Close"
               >
                 <X size={24} />
@@ -71,14 +76,14 @@ const FirstEntryPrompt: React.FC<FirstEntryPromptProps> = ({ isOpen, onClose, on
             </div>
 
             <div className="mb-6">
-              <p className="text-warm-200 mb-4 leading-relaxed">
+              <p className="text-surface-50 mb-4 leading-relaxed">
                 Tell us about your health journey. Share your diagnosis, symptoms, current treatments, 
                 or any health concerns you'd like to explore. Our AI will help you understand your 
                 condition and discover personalized treatment options.
               </p>
-              <div className="bg-warm-800/50 rounded-lg p-4 border border-warm-600">
-                <p className="text-sm text-warm-300 mb-2 font-medium">Examples:</p>
-                <ul className="text-sm text-warm-400 space-y-1 list-disc list-inside">
+              <div className="bg-surface-20/50 rounded-xl p-4 border border-surface-30/50">
+                <p className="text-sm text-white mb-2 font-medium">Examples:</p>
+                <ul className="text-sm text-surface-50 space-y-1 list-disc list-inside">
                   <li>"I was diagnosed with prostate cancer 6 months ago. I'm currently on hormone therapy and looking for complementary treatments."</li>
                   <li>"I have type 2 diabetes and want to explore natural ways to manage my blood sugar."</li>
                   <li>"I'm experiencing chronic fatigue and want to understand what might be causing it."</li>
@@ -88,7 +93,7 @@ const FirstEntryPrompt: React.FC<FirstEntryPromptProps> = ({ isOpen, onClose, on
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-warm-300 mb-2">
+                <label className="block text-sm font-medium text-surface-50 mb-2">
                   Your Health Story
                 </label>
                 <textarea
@@ -96,7 +101,7 @@ const FirstEntryPrompt: React.FC<FirstEntryPromptProps> = ({ isOpen, onClose, on
                   onChange={(e) => setEntry(e.target.value)}
                   required
                   rows={6}
-                  className="w-full px-4 py-3 bg-warm-800 border border-warm-600 rounded-lg text-white focus:ring-2 focus:ring-electric-400 focus:border-electric-400 outline-none resize-none"
+                  className="input-glow resize-none"
                   placeholder="Share your health journey, diagnosis, symptoms, treatments, or questions..."
                 />
               </div>
@@ -104,14 +109,14 @@ const FirstEntryPrompt: React.FC<FirstEntryPromptProps> = ({ isOpen, onClose, on
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 text-warm-300 hover:text-white transition-colors"
+                  className="px-4 py-2 text-surface-50 hover:text-white transition-colors"
                   disabled={isSubmitting}
                 >
                   Skip for now
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center space-x-2 bg-electric-500 hover:bg-electric-600 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-glow flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isSubmitting || !entry.trim()}
                 >
                   <Send size={18} />
