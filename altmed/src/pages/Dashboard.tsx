@@ -640,29 +640,62 @@ const Dashboard: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-surface-10 rounded-2xl border border-surface-20/50 p-5 shadow-strong hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative group"
+                  className="rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 relative group"
+                  style={{
+                    background: 'linear-gradient(145deg, #111111 0%, #0a0a0a 100%)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(255, 132, 0, 0.2)';
+                    e.currentTarget.style.boxShadow = '0 8px 40px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 132, 0, 0.08)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                    e.currentTarget.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.5)';
+                  }}
                 >
                   {/* Add Data Button - Appears on Hover */}
                   <button
                     onClick={() => openDataEntry(key)}
-                    className="absolute top-3 right-3 p-2 bg-primary-0 text-black rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:scale-105"
+                    className="btn-glow absolute top-3 right-3 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:scale-105"
                     aria-label="Add new data point"
                   >
                     <Plus size={16} />
                   </button>
 
                   <div className="flex items-center justify-between mb-4">
-                    <div className={`p-2.5 rounded-xl ${colorClasses.bg}`}>
-                      <Icon size={20} className={colorClasses.text} />
+                    <div 
+                      className="p-2.5 rounded-xl"
+                      style={{
+                        background: metric.color === 'primary-0' ? 'rgba(255, 132, 0, 0.15)' : 
+                                   metric.color === 'info-10' ? 'rgba(64, 119, 209, 0.15)' :
+                                   metric.color === 'success-10' ? 'rgba(71, 213, 166, 0.15)' :
+                                   'rgba(255, 132, 0, 0.15)',
+                        boxShadow: metric.color === 'primary-0' ? '0 0 30px rgba(255, 132, 0, 0.3)' :
+                                  metric.color === 'info-10' ? '0 0 30px rgba(64, 119, 209, 0.3)' :
+                                  metric.color === 'success-10' ? '0 0 30px rgba(71, 213, 166, 0.3)' :
+                                  '0 0 30px rgba(255, 132, 0, 0.3)'
+                      }}
+                    >
+                      <Icon 
+                        size={20} 
+                        style={{
+                          color: metric.color === 'primary-0' ? '#ff8400' :
+                                 metric.color === 'info-10' ? '#4077d1' :
+                                 metric.color === 'success-10' ? '#47d5a6' :
+                                 '#ff8400'
+                        }} 
+                      />
                     </div>
                     {getTrendIcon(metric.trend)}
                   </div>
                   
-                  <h3 className="text-sm font-semibold text-surface-50 mb-2">{metric.label}</h3>
+                  <h3 className="text-sm font-semibold text-gray-400 mb-2">{metric.label}</h3>
                   
                   <div className="flex items-baseline gap-2 mb-4">
                     <span className="text-3xl font-bold text-white">{metric.current}</span>
-                    <span className="text-sm text-surface-50">/10</span>
+                    <span className="text-sm text-gray-400">/10</span>
                   </div>
 
                   {/* Mini Line Graph */}
@@ -672,23 +705,27 @@ const Dashboard: React.FC = () => {
 
                   {/* Progress Bar */}
                   <div className="relative">
-                    <div className="h-2 bg-surface-20 rounded-full overflow-hidden">
+                    <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 1, delay: idx * 0.1 + 0.3 }}
-                        className={`h-full bg-gradient-to-r ${colorClasses.gradient} rounded-full relative overflow-hidden`}
+                        className="h-full rounded-full relative overflow-hidden"
+                        style={{
+                          background: metric.color === 'primary-0' ? 'linear-gradient(90deg, #ff8400, #ff6b00)' :
+                                     metric.color === 'info-10' ? 'linear-gradient(90deg, #4077d1, #5a8de8)' :
+                                     metric.color === 'success-10' ? 'linear-gradient(90deg, #47d5a6, #5ee0b8)' :
+                                     'linear-gradient(90deg, #ff8400, #ff6b00)'
+                        }}
                       >
                         <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
                       </motion.div>
                     </div>
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-xs text-surface-50">
+                      <span className="text-xs text-gray-400">
                         Target: {metric.target}/10
                       </span>
-                      <span className={`text-xs font-semibold ${
-                        metric.current >= metric.target ? 'text-success-10' : 'text-warning-10'
-                      }`}>
+                      <span className="text-xs font-semibold" style={{ color: metric.current >= metric.target ? '#47d5a6' : '#ff8400' }}>
                         {metric.current >= metric.target ? 'On Track' : 'Keep Going'}
                       </span>
                     </div>
@@ -706,11 +743,22 @@ const Dashboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-surface-10 rounded-2xl border border-surface-20/50 shadow-strong overflow-hidden"
+            className="rounded-2xl overflow-hidden"
+            style={{
+              background: 'linear-gradient(145deg, #111111 0%, #0a0a0a 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5)'
+            }}
           >
-            <div className="bg-gradient-to-r from-success-10 to-success-0 p-4 border-b border-surface-20/50">
+            <div 
+              className="p-4 border-b"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255, 132, 0, 0.2) 0%, rgba(255, 107, 0, 0.15) 100%)',
+                borderColor: 'rgba(255, 132, 0, 0.2)'
+              }}
+            >
               <h3 className="text-lg font-bold text-white flex items-center">
-                <Heart size={20} className="mr-2" />
+                <Heart size={20} className="mr-2" style={{ color: '#ff8400' }} />
                 Mindset Tracker
               </h3>
             </div>
@@ -720,7 +768,7 @@ const Dashboard: React.FC = () => {
                   How are you feeling today?
                 </label>
                 <textarea
-                  className="w-full px-4 py-3 bg-surface-0 border border-surface-30 rounded-xl focus:ring-2 focus:ring-success-10 text-white placeholder-surface-40 resize-none text-sm"
+                  className="input-glow w-full px-4 py-3 rounded-xl resize-none text-sm"
                   rows={2}
                   placeholder="Energized and ready for the day!"
                   value={mindsetData.feeling}
@@ -732,7 +780,7 @@ const Dashboard: React.FC = () => {
                   Daily Gratitude
                 </label>
                 <textarea
-                  className="w-full px-4 py-3 bg-surface-0 border border-surface-30 rounded-xl focus:ring-2 focus:ring-success-10 text-white placeholder-surface-40 resize-none text-sm"
+                  className="input-glow w-full px-4 py-3 rounded-xl resize-none text-sm"
                   rows={2}
                   placeholder="Grateful for my health and loved ones..."
                   value={mindsetData.gratitude}
@@ -744,7 +792,7 @@ const Dashboard: React.FC = () => {
                   What will make today great?
                 </label>
                 <textarea
-                  className="w-full px-4 py-3 bg-surface-0 border border-surface-30 rounded-xl focus:ring-2 focus:ring-success-10 text-white placeholder-surface-40 resize-none text-sm"
+                  className="input-glow w-full px-4 py-3 rounded-xl resize-none text-sm"
                   rows={2}
                   placeholder="A walk in nature and quality time with family..."
                   value={mindsetData.intention}
@@ -753,7 +801,7 @@ const Dashboard: React.FC = () => {
               </div>
               <button
                 onClick={saveMindset}
-                className="w-full bg-success-10 hover:bg-success-0 text-black font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center"
+                className="btn-glow w-full font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center"
               >
                 <Save size={18} className="mr-2" />
                 Save & Share Win
@@ -766,37 +814,48 @@ const Dashboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-surface-10 rounded-2xl border border-surface-20/50 shadow-strong overflow-hidden"
+            className="rounded-2xl overflow-hidden"
+            style={{
+              background: 'linear-gradient(145deg, #111111 0%, #0a0a0a 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5)'
+            }}
           >
-            <div className="bg-gradient-to-r from-primary-0 to-primary-10 p-4 border-b border-surface-20/50">
-              <h3 className="text-lg font-bold text-black flex items-center">
-                <Users size={20} className="mr-2" />
+            <div 
+              className="p-4 border-b"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255, 132, 0, 0.2) 0%, rgba(255, 107, 0, 0.15) 100%)',
+                borderColor: 'rgba(255, 132, 0, 0.2)'
+              }}
+            >
+              <h3 className="text-lg font-bold text-white flex items-center">
+                <Users size={20} className="mr-2" style={{ color: '#ff8400' }} />
                 Social Activity
               </h3>
             </div>
             <div className="p-5">
               <p className="font-semibold text-white mb-4">Your Thriving Network</p>
               <ul className="space-y-3 mb-5">
-                <li className="flex items-center text-surface-50">
-                  <MessageSquare size={16} className="text-primary-0 mr-3" />
+                <li className="flex items-center text-gray-400">
+                  <MessageSquare size={16} className="mr-3" style={{ color: '#ff8400' }} />
                   <span>3 Posts Shared This Week</span>
                 </li>
-                <li className="flex items-center text-surface-50">
-                  <MessageSquare size={16} className="text-info-10 mr-3" />
+                <li className="flex items-center text-gray-400">
+                  <MessageSquare size={16} className="mr-3" style={{ color: '#4077d1' }} />
                   <span>5 New Messages</span>
                 </li>
-                <li className="flex items-center text-surface-50">
-                  <ThumbsUp size={16} className="text-success-10 mr-3" />
+                <li className="flex items-center text-gray-400">
+                  <ThumbsUp size={16} className="mr-3" style={{ color: '#47d5a6' }} />
                   <span>12 Likes on Your Recent Story</span>
                 </li>
-                <li className="flex items-center text-surface-50">
-                  <Users size={16} className="text-warning-10 mr-3" />
+                <li className="flex items-center text-gray-400">
+                  <Users size={16} className="mr-3" style={{ color: '#ff8400' }} />
                   <span>24 Thrivers in Your Network</span>
                 </li>
               </ul>
               <button
                 onClick={() => navigate('/social')}
-                className="w-full bg-surface-20 hover:bg-surface-30 border border-surface-30 hover:border-primary-0/30 text-white font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center"
+                className="btn-secondary w-full font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center"
               >
                 <MessageSquare size={18} className="mr-2" />
                 Post a Win
@@ -812,16 +871,27 @@ const Dashboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-surface-10 rounded-2xl border border-surface-20/50 shadow-strong overflow-hidden"
+            className="rounded-2xl overflow-hidden"
+            style={{
+              background: 'linear-gradient(145deg, #111111 0%, #0a0a0a 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5)'
+            }}
           >
-            <div className="bg-gradient-to-r from-primary-0 via-warning-10 to-warning-0 p-4 border-b border-surface-20/50">
-              <h3 className="text-lg font-bold text-black flex items-center">
-                <Target size={20} className="mr-2" />
+            <div 
+              className="p-4 border-b"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255, 132, 0, 0.25) 0%, rgba(255, 107, 0, 0.2) 100%)',
+                borderColor: 'rgba(255, 132, 0, 0.2)'
+              }}
+            >
+              <h3 className="text-lg font-bold text-white flex items-center">
+                <Target size={20} className="mr-2" style={{ color: '#ff8400' }} />
                 Thriver Master Plan
               </h3>
             </div>
             <div className="p-5">
-              <div className="space-y-3 text-sm text-surface-50">
+              <div className="space-y-3 text-sm text-gray-400">
                 <div>
                   <span className="text-white font-semibold">Activities:</span>
                   <p className="ml-4 mt-1">
@@ -840,7 +910,7 @@ const Dashboard: React.FC = () => {
                     <ul className="ml-4 mt-1 space-y-1">
                       {displayProfile.treatments.slice(0, 3).map((treatment: any, idx: number) => (
                         <li key={idx} className="flex items-start">
-                          <span className="text-primary-0 mr-2">•</span>
+                          <span className="mr-2" style={{ color: '#ff8400' }}>•</span>
                           <span>{treatment.name} - {treatment.frequency}</span>
                         </li>
                       ))}
@@ -853,7 +923,7 @@ const Dashboard: React.FC = () => {
                     <ul className="ml-4 mt-1 space-y-1">
                       {displayProfile.medications.slice(0, 3).map((med: any, idx: number) => (
                         <li key={idx} className="flex items-start">
-                          <span className="text-success-10 mr-2">•</span>
+                          <span className="mr-2" style={{ color: '#47d5a6' }}>•</span>
                           <span>{med.name} - {med.dosage} {med.frequency}</span>
                         </li>
                       ))}
@@ -866,7 +936,7 @@ const Dashboard: React.FC = () => {
                     <ul className="ml-4 mt-1 space-y-1">
                       {displayProfile.trackingMetrics.slice(0, 3).map((metric: any, idx: number) => (
                         <li key={idx} className="flex items-start">
-                          <span className="text-info-10 mr-2">•</span>
+                          <span className="mr-2" style={{ color: '#4077d1' }}>•</span>
                           <span>{metric.name} ({metric.unit}) - {metric.frequency}</span>
                         </li>
                       ))}
@@ -876,7 +946,7 @@ const Dashboard: React.FC = () => {
               </div>
               <button
                 onClick={() => navigate('/profile?tab=health')}
-                className="w-full mt-5 bg-surface-20 hover:bg-surface-30 border border-warning-10/30 hover:border-warning-10 text-white font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center"
+                className="btn-secondary w-full mt-5 font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center"
               >
                 <Edit3 size={18} className="mr-2" />
                 Customize Master Plan
@@ -889,11 +959,22 @@ const Dashboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-surface-10 rounded-2xl border border-surface-20/50 shadow-strong overflow-hidden"
+            className="rounded-2xl overflow-hidden"
+            style={{
+              background: 'linear-gradient(145deg, #111111 0%, #0a0a0a 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5)'
+            }}
           >
-            <div className="bg-gradient-to-r from-electric-500 to-info-10 p-4 border-b border-surface-20/50">
+            <div 
+              className="p-4 border-b"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255, 132, 0, 0.2) 0%, rgba(64, 119, 209, 0.15) 100%)',
+                borderColor: 'rgba(255, 132, 0, 0.2)'
+              }}
+            >
               <h3 className="text-lg font-bold text-white flex items-center">
-                <Calendar size={20} className="mr-2" />
+                <Calendar size={20} className="mr-2" style={{ color: '#ff8400' }} />
                 Today's Plan for Thriving
               </h3>
             </div>
@@ -902,20 +983,30 @@ const Dashboard: React.FC = () => {
                 {todaysTasks.map((task) => (
                   <li
                     key={task.id}
-                    className="flex items-center justify-between p-3 bg-surface-20/50 rounded-lg border border-surface-30/30 hover:bg-surface-20 transition-colors cursor-pointer"
+                    className="flex items-center justify-between p-3 rounded-lg border transition-colors cursor-pointer"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      borderColor: 'rgba(255, 255, 255, 0.05)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                    }}
                     onClick={() => toggleTaskStatus(task.id)}
                   >
                     <span className="text-white text-sm flex items-center">
                       {task.status === 'done' ? (
-                        <CheckCircle size={16} className="text-success-10 mr-2 flex-shrink-0" />
+                        <CheckCircle size={16} className="mr-2 flex-shrink-0" style={{ color: '#47d5a6' }} />
                       ) : task.status === 'missed' ? (
-                        <XCircle size={16} className="text-danger-10 mr-2 flex-shrink-0" />
+                        <XCircle size={16} className="mr-2 flex-shrink-0" style={{ color: '#ef4444' }} />
                       ) : (
-                        <Clock size={16} className="text-warning-10 mr-2 flex-shrink-0" />
+                        <Clock size={16} className="mr-2 flex-shrink-0" style={{ color: '#ff8400' }} />
                       )}
                       {task.task}
                     </span>
-                    <span className={`text-xs font-semibold ${getStatusColor(task.status)}`}>
+                    <span className="text-xs font-semibold" style={{ color: task.status === 'done' ? '#47d5a6' : task.status === 'missed' ? '#ef4444' : '#ff8400' }}>
                       {getStatusText(task.status)}
                     </span>
                   </li>
@@ -939,16 +1030,27 @@ const Dashboard: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-surface-10 rounded-2xl border border-surface-20/50 shadow-strong overflow-hidden"
+          className="rounded-2xl overflow-hidden"
+          style={{
+            background: 'linear-gradient(145deg, #111111 0%, #0a0a0a 100%)',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5)'
+          }}
         >
-          <div className="bg-gradient-to-r from-electric-500 to-success-10 p-4 border-b border-surface-20/50 flex items-center justify-between flex-wrap gap-3">
+          <div 
+            className="p-4 border-b flex items-center justify-between flex-wrap gap-3"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255, 132, 0, 0.2) 0%, rgba(255, 107, 0, 0.15) 100%)',
+              borderColor: 'rgba(255, 132, 0, 0.2)'
+            }}
+          >
             <h3 className="text-lg font-bold text-white flex items-center">
-              <Users size={20} className="mr-2" />
+              <Users size={20} className="mr-2" style={{ color: '#ff8400' }} />
               Community Success Stories
             </h3>
             <Link
               to="/social"
-              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              className="btn-secondary px-4 py-2 rounded-lg text-sm font-medium transition-all"
             >
               View All Stories
             </Link>
@@ -956,34 +1058,72 @@ const Dashboard: React.FC = () => {
           <div className="p-6">
             <div className="grid md:grid-cols-2 gap-4">
               {/* Sample success stories */}
-              <div className="p-4 bg-surface-20/50 rounded-xl border-l-4 border-success-10">
+              <div 
+                className="p-4 rounded-xl border-l-4"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  borderLeftColor: '#47d5a6'
+                }}
+              >
                 <h4 className="font-semibold text-white mb-2">Stage 4 Prostate - PSA Improvement</h4>
-                <p className="text-sm text-surface-50 mb-2">
+                <p className="text-sm text-gray-400 mb-2">
                   <em>Protocol:</em> Fenbendazole + Ivermectin
                 </p>
-                <p className="text-sm text-surface-50 mb-2">
+                <p className="text-sm text-gray-400 mb-2">
                   <em>Result:</em> PSA 156 → 4.2 (6 months)
                 </p>
-                <p className="text-sm text-success-10 font-semibold italic">
+                <p className="text-sm font-semibold italic" style={{ color: '#47d5a6' }}>
                   "Energy levels restored - back to daily walks!"
                 </p>
-                <button className="mt-3 bg-success-10/20 hover:bg-success-10/30 text-success-10 px-4 py-1.5 rounded-lg text-xs font-medium transition-all">
+                <button 
+                  className="mt-3 px-4 py-1.5 rounded-lg text-xs font-medium transition-all"
+                  style={{
+                    background: 'rgba(71, 213, 166, 0.15)',
+                    border: '1px solid rgba(71, 213, 166, 0.3)',
+                    color: '#47d5a6'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(71, 213, 166, 0.25)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(71, 213, 166, 0.15)';
+                  }}
+                >
                   Full Story
                 </button>
               </div>
               
-              <div className="p-4 bg-surface-20/50 rounded-xl border-l-4 border-info-10">
+              <div 
+                className="p-4 rounded-xl border-l-4"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  borderLeftColor: '#4077d1'
+                }}
+              >
                 <h4 className="font-semibold text-white mb-2">Stage 3 Breast - Tumor Reduction</h4>
-                <p className="text-sm text-surface-50 mb-2">
+                <p className="text-sm text-gray-400 mb-2">
                   <em>Protocol:</em> IV Vitamin C + Curcumin + Keto
                 </p>
-                <p className="text-sm text-surface-50 mb-2">
+                <p className="text-sm text-gray-400 mb-2">
                   <em>Result:</em> 7cm → 1.5cm (3 months)
                 </p>
-                <p className="text-sm text-info-10 font-semibold italic">
+                <p className="text-sm font-semibold italic" style={{ color: '#4077d1' }}>
                   "Back to yoga and feeling stronger every day!"
                 </p>
-                <button className="mt-3 bg-info-10/20 hover:bg-info-10/30 text-info-10 px-4 py-1.5 rounded-lg text-xs font-medium transition-all">
+                <button 
+                  className="mt-3 px-4 py-1.5 rounded-lg text-xs font-medium transition-all"
+                  style={{
+                    background: 'rgba(64, 119, 209, 0.15)',
+                    border: '1px solid rgba(64, 119, 209, 0.3)',
+                    color: '#4077d1'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(64, 119, 209, 0.25)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(64, 119, 209, 0.15)';
+                  }}
+                >
                   Full Story
                 </button>
               </div>
@@ -992,7 +1132,7 @@ const Dashboard: React.FC = () => {
             <div className="mt-6 text-center">
               <Link
                 to="/create-testimonial"
-                className="btn-primary inline-flex items-center"
+                className="btn-glow inline-flex items-center"
               >
                 <MessageSquare size={18} className="mr-2" />
                 Share Your Success Story

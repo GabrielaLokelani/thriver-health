@@ -97,9 +97,9 @@ const Navigation: React.FC = () => {
                 </Link>
               ))}
               
-              {isAuthenticated ? (
+              {isAuthenticated && user ? (
                 <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-white/10">
-                  <span className="text-gray-500 text-sm">{user?.name || user?.email}</span>
+                  <span className="text-gray-500 text-sm">{user.name || user.email}</span>
                   <button
                     onClick={handleLogout}
                     className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"

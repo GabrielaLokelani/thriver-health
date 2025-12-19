@@ -57,6 +57,9 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
 
     setIsLoading(true);
     try {
+      // Store the name temporarily for use in onboarding
+      localStorage.setItem('altmed_pending_user_name', formData.name);
+      
       await signUp(formData.email, formData.password, formData.name);
       // If we get here, signup was successful and user is signed in
       onSuccess();
@@ -73,8 +76,11 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
         setError(null);
         setIsLoading(false);
         // Don't close modal - stay open to show confirmation step
+        // Name is already stored in localStorage above
         return;
       } else {
+        // Remove stored name if signup failed
+        localStorage.removeItem('altmed_pending_user_name');
         setError(err.message || 'Sign up failed. Please try again.');
         setIsLoading(false);
       }
@@ -92,6 +98,11 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
 
     setIsConfirming(true);
     try {
+      // Ensure name is stored (in case it wasn't stored earlier)
+      if (formData.name) {
+        localStorage.setItem('altmed_pending_user_name', formData.name);
+      }
+      
       await confirmSignUp(formData.email, confirmationCode);
       // After confirmation, sign in the user
       await signIn(formData.email, formData.password);

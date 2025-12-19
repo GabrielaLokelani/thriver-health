@@ -356,7 +356,12 @@ class AuthService {
 
     try {
       await signOut();
-      // Hub listener will handle the state update
+      // Immediately update state (Hub listener will also fire, but this ensures immediate UI update)
+      this.notifyListeners({
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+      });
     } catch (error: any) {
       console.error('Sign out error:', error);
       // Still update state even if signOut fails

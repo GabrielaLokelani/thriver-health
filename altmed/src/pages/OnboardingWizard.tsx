@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -73,6 +73,17 @@ const OnboardingWizard: React.FC = () => {
 
   const [editingField, setEditingField] = useState<string | null>(null);
 
+  // Load stored name from signup form on mount
+  useEffect(() => {
+    const storedName = localStorage.getItem('altmed_pending_user_name');
+    if (storedName) {
+      setExtractedData(prev => ({
+        ...prev,
+        name: storedName
+      }));
+    }
+  }, []);
+
   // Process journal entry - extract data from user's story
   const processJournalEntry = async () => {
     setIsProcessing(true);
@@ -109,10 +120,16 @@ const OnboardingWizard: React.FC = () => {
       keyInsights: []
     };
 
-    // Extract name (look for "I'm [name]" or "My name is [name]")
-    const nameMatch = journalEntry.match(/(?:I'?m|my name is|I am)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i);
-    if (nameMatch) {
-      extracted.name = nameMatch[1];
+    // Use stored name from signup form if available, otherwise extract from journal entry
+    const storedName = localStorage.getItem('altmed_pending_user_name');
+    if (storedName) {
+      extracted.name = storedName;
+    } else {
+      // Extract name (look for "I'm [name]" or "My name is [name]")
+      const nameMatch = journalEntry.match(/(?:I'?m|my name is|I am)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i);
+      if (nameMatch) {
+        extracted.name = nameMatch[1];
+      }
     }
 
     // Extract age (look for "X years old" or "age X")
@@ -298,6 +315,9 @@ const OnboardingWizard: React.FC = () => {
       ritualsCompleted: [],
       notes: journalEntry
     });
+
+    // Clean up stored name now that profile is saved
+    localStorage.removeItem('altmed_pending_user_name');
 
     // Mark onboarding as completed
     localStorage.setItem('altmed_onboarding_completed', 'true');

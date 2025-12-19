@@ -43,6 +43,7 @@ const AIAgent: React.FC = () => {
   const [userProfile, setUserProfile] = useState<any>(null);
   const [showSummary, setShowSummary] = useState(false);
   const [showFirstEntryPrompt, setShowFirstEntryPrompt] = useState(false);
+  const [isBannerCollapsed, setIsBannerCollapsed] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -50,6 +51,23 @@ const AIAgent: React.FC = () => {
     // Auto-scroll to bottom when new messages arrive
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  useEffect(() => {
+    // Handle banner collapse on scroll
+    const chatContainer = chatContainerRef.current;
+    if (!chatContainer) return;
+
+    const handleScroll = () => {
+      const scrollTop = chatContainer.scrollTop;
+      setIsBannerCollapsed(scrollTop > 50);
+    };
+
+    // Set initial state
+    handleScroll();
+    
+    chatContainer.addEventListener('scroll', handleScroll, { passive: true });
+    return () => chatContainer.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     // Check if this is first entry after signup
@@ -251,43 +269,92 @@ const AIAgent: React.FC = () => {
   };
 
   return (
-    <div className="h-screen bg-surface-0 flex flex-col overflow-hidden">
-      {/* Header */}
-      <section className="bg-gradient-to-r from-electric-500 to-electric-600 text-white py-4 border-b border-electric-400/30 shadow-lg flex-shrink-0">
+    <div className="h-screen flex flex-col overflow-hidden" style={{ background: '#000' }}>
+      {/* Header - Sticky and Collapsible */}
+      <motion.section 
+        className="sticky top-0 z-30 flex-shrink-0 transition-all duration-300"
+        style={{
+          background: 'linear-gradient(135deg, rgba(255, 132, 0, 0.15) 0%, rgba(64, 119, 209, 0.15) 100%)',
+          borderBottom: '1px solid rgba(255, 132, 0, 0.2)',
+          backdropFilter: 'blur(10px)',
+          pointerEvents: 'auto'
+        }}
+        animate={{
+          paddingTop: isBannerCollapsed ? '0.5rem' : '1rem',
+          paddingBottom: isBannerCollapsed ? '0.5rem' : '1rem'
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <motion.div 
+              className="flex items-center gap-3"
+              animate={{
+                scale: isBannerCollapsed ? 0.9 : 1
+              }}
+            >
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-primary-0 flex items-center justify-center shadow-lg shadow-primary-0/30">
-                  <Sparkles size={22} className="text-black" />
+                <div 
+                  className="rounded-xl flex items-center justify-center"
+                  style={{
+                    width: isBannerCollapsed ? '2.5rem' : '3rem',
+                    height: isBannerCollapsed ? '2.5rem' : '3rem',
+                    background: 'linear-gradient(135deg, #ff8400, #ff6b00)',
+                    boxShadow: '0 4px 15px rgba(255, 132, 0, 0.3)'
+                  }}
+                >
+                  <Sparkles size={isBannerCollapsed ? 18 : 22} className="text-black" />
                 </div>
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-success-10 rounded-full border-2 border-electric-500 animate-pulse"></div>
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-black animate-pulse"></div>
               </div>
-              <div>
-                <h1 className="text-xl font-bold font-display tracking-tight">Thriver AI Agent</h1>
-                <p className="text-xs opacity-95 font-modern">Your intelligent health research assistant</p>
-              </div>
-            </div>
+              <motion.div
+                animate={{
+                  opacity: isBannerCollapsed ? 0.8 : 1
+                }}
+              >
+                <h1 className="text-xl font-bold text-white tracking-tight">Thriver AI Agent</h1>
+                {!isBannerCollapsed && (
+                  <p className="text-xs text-gray-400">Your intelligent health research assistant</p>
+                )}
+              </motion.div>
+            </motion.div>
             <button
               onClick={() => setShowSummary(!showSummary)}
-              className="px-4 py-2 bg-white/15 hover:bg-white/25 backdrop-blur-sm rounded-lg text-xs font-medium transition-all duration-200 border border-white/20 hover:border-white/30 shadow-sm"
+              className="px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200"
+              style={{
+                background: 'rgba(255, 132, 0, 0.15)',
+                border: '1px solid rgba(255, 132, 0, 0.3)',
+                color: '#ff8400'
+              }}
               aria-label={showSummary ? "Hide summary" : "Show summary"}
             >
               {showSummary ? <><Minimize2 size={14} className="inline mr-1.5" />Hide</> : <><Maximize2 size={14} className="inline mr-1.5" />Summary</>}
             </button>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <div className="flex-1 overflow-hidden max-w-7xl mx-auto w-full px-4 py-4">
-        <div className="grid lg:grid-cols-3 gap-4 h-full">
+      <div className="flex-1 overflow-hidden max-w-7xl mx-auto w-full px-4 py-4 min-h-0">
+        <div className="grid lg:grid-cols-3 gap-4 h-full min-h-0">
           {/* Main Chat Interface */}
-          <div className="lg:col-span-2 h-full">
-            <div className="bg-surface-10 rounded-2xl border border-surface-20/50 h-full flex flex-col shadow-strong overflow-hidden">
+          <div className="lg:col-span-2 h-full min-h-0 flex flex-col">
+            <div 
+              className="rounded-2xl h-full flex flex-col overflow-hidden min-h-0"
+              style={{
+                background: 'linear-gradient(145deg, #111111 0%, #0a0a0a 100%)',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5)'
+              }}
+            >
               {/* Messages Area */}
               <div 
                 ref={chatContainerRef}
-                className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-gradient-to-b from-surface-10 to-surface-0"
+                className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0"
+                style={{
+                  scrollBehavior: 'smooth',
+                  WebkitOverflowScrolling: 'touch',
+                  touchAction: 'pan-y',
+                  overscrollBehavior: 'contain'
+                }}
               >
                 {messages.length === 0 && !isLoading && (
                   <motion.div
@@ -295,24 +362,30 @@ const AIAgent: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="flex flex-col items-center justify-center h-full text-center px-6"
                   >
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-0 to-primary-10 flex items-center justify-center mb-4 shadow-xl shadow-primary-0/30">
+                    <div 
+                      className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-xl"
+                      style={{
+                        background: 'linear-gradient(135deg, #ff8400, #ff6b00)',
+                        boxShadow: '0 8px 30px rgba(255, 132, 0, 0.3)'
+                      }}
+                    >
                       <Sparkles size={32} className="text-black" />
                     </div>
                     <h2 className="text-xl font-bold text-white mb-2">Welcome to Thriver AI Agent</h2>
-                    <p className="text-surface-50 max-w-md mb-6 text-sm leading-relaxed">
+                    <p className="text-gray-400 max-w-md mb-6 text-sm leading-relaxed">
                       I'm here to help you research your condition, understand treatments, and find relevant content. 
                       Ask me anything about your health journey.
                     </p>
                     <div className="grid grid-cols-2 gap-2 max-w-md">
                       <button
                         onClick={() => setInput('Tell me about my condition')}
-                        className="px-3 py-2 bg-surface-20 hover:bg-surface-30 border border-surface-30/50 rounded-lg text-xs text-white transition-all"
+                        className="btn-secondary px-3 py-2 rounded-lg text-xs transition-all"
                       >
                         About My Condition
                       </button>
                       <button
                         onClick={() => setInput('Research treatments')}
-                        className="px-3 py-2 bg-surface-20 hover:bg-surface-30 border border-surface-30/50 rounded-lg text-xs text-white transition-all"
+                        className="btn-secondary px-3 py-2 rounded-lg text-xs transition-all"
                       >
                         Research Treatments
                       </button>
@@ -330,16 +403,33 @@ const AIAgent: React.FC = () => {
                       className={`flex gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
                       {message.role === 'assistant' && (
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-0 to-primary-10 flex items-center justify-center flex-shrink-0 shadow-md shadow-primary-0/20">
+                        <div 
+                          className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md"
+                          style={{
+                            background: 'linear-gradient(135deg, #ff8400, #ff6b00)',
+                            boxShadow: '0 4px 15px rgba(255, 132, 0, 0.25)'
+                          }}
+                        >
                           <Bot size={16} className="text-black" />
                         </div>
                       )}
                       <div
                         className={`max-w-[80%] rounded-xl p-3.5 ${
                           message.role === 'user'
-                            ? 'bg-gradient-to-br from-primary-0 to-primary-10 text-black shadow-md shadow-primary-0/20'
-                            : 'bg-surface-20 text-white border border-surface-30/50 shadow-md'
+                            ? 'text-black shadow-md'
+                            : 'text-white border shadow-md'
                         }`}
+                        style={
+                          message.role === 'user'
+                            ? {
+                                background: 'linear-gradient(135deg, #ff8400, #ff6b00)',
+                                boxShadow: '0 4px 15px rgba(255, 132, 0, 0.25)'
+                              }
+                            : {
+                                background: 'linear-gradient(145deg, #1a1a1a 0%, #141414 100%)',
+                                border: '1px solid rgba(255, 255, 255, 0.05)'
+                              }
+                        }
                       >
                         <div className="prose prose-invert max-w-none">
                           <div className="whitespace-pre-wrap text-sm leading-relaxed">
@@ -434,8 +524,14 @@ const AIAgent: React.FC = () => {
                         )}
                       </div>
                       {message.role === 'user' && (
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-surface-20 to-surface-30 flex items-center justify-center flex-shrink-0 border border-surface-30/50 shadow-md">
-                          <User size={16} className="text-primary-0" />
+                        <div 
+                          className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md"
+                          style={{
+                            background: 'linear-gradient(145deg, #1a1a1a 0%, #141414 100%)',
+                            border: '1px solid rgba(255, 255, 255, 0.05)'
+                          }}
+                        >
+                          <User size={16} style={{ color: '#ff8400' }} />
                         </div>
                       )}
                     </motion.div>
@@ -448,13 +544,25 @@ const AIAgent: React.FC = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     className="flex gap-2"
                   >
-                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-0 to-primary-10 flex items-center justify-center shadow-md shadow-primary-0/20">
+                    <div 
+                      className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                      style={{
+                        background: 'linear-gradient(135deg, #ff8400, #ff6b00)',
+                        boxShadow: '0 4px 15px rgba(255, 132, 0, 0.25)'
+                      }}
+                    >
                       <Bot size={16} className="text-black" />
                     </div>
-                    <div className="bg-surface-20 rounded-xl p-3 border border-surface-30/50 shadow-md">
+                    <div 
+                      className="rounded-xl p-3 shadow-md"
+                      style={{
+                        background: 'linear-gradient(145deg, #1a1a1a 0%, #141414 100%)',
+                        border: '1px solid rgba(255, 255, 255, 0.05)'
+                      }}
+                    >
                       <div className="flex items-center gap-2">
-                        <Loader size={16} className="animate-spin text-primary-0" />
-                        <span className="text-xs text-surface-50 font-medium">AI is thinking...</span>
+                        <Loader size={16} className="animate-spin" style={{ color: '#ff8400' }} />
+                        <span className="text-xs text-gray-400 font-medium">AI is thinking...</span>
                       </div>
                     </div>
                   </motion.div>
@@ -464,7 +572,13 @@ const AIAgent: React.FC = () => {
               </div>
 
               {/* Input Area */}
-              <div className="border-t border-surface-20/50 bg-surface-10 p-3 flex-shrink-0">
+              <div 
+                className="border-t p-3 flex-shrink-0"
+                style={{
+                  borderColor: 'rgba(255, 255, 255, 0.05)',
+                  background: 'rgba(17, 17, 17, 0.8)'
+                }}
+              >
                 <div className="flex gap-2 items-end">
                   <div className="flex-1 relative">
                     <textarea
@@ -472,7 +586,7 @@ const AIAgent: React.FC = () => {
                       onChange={(e) => setInput(e.target.value)}
                       onKeyPress={handleKeyPress}
                       placeholder="Ask me anything about your condition, treatments, or research..."
-                      className="w-full px-3 py-2.5 bg-surface-0 border-2 border-surface-30 rounded-xl focus:ring-2 focus:ring-primary-0 focus:border-primary-0 text-white placeholder-surface-40 resize-none text-sm leading-relaxed transition-all duration-200"
+                      className="input-glow w-full px-3 py-2.5 rounded-xl resize-none text-sm leading-relaxed"
                       rows={1}
                       maxLength={500}
                     />
@@ -480,35 +594,41 @@ const AIAgent: React.FC = () => {
                   <button
                     onClick={handleSend}
                     disabled={!input.trim() || isLoading}
-                    className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary-0 to-primary-10 text-black disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center shadow-md shadow-primary-0/20 hover:shadow-lg hover:shadow-primary-0/30 transition-all duration-200 hover:scale-105 disabled:hover:scale-100"
+                    className="btn-glow w-11 h-11 rounded-xl disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all duration-200 hover:scale-105 disabled:hover:scale-100"
                     aria-label="Send message"
                   >
                     <Send size={18} />
                   </button>
                 </div>
                 <div className="flex items-center justify-between mt-1.5 px-1">
-                  <p className="text-[10px] text-surface-50">
-                    Press <kbd className="px-1 py-0.5 bg-surface-20 rounded text-surface-30 border border-surface-30/50 text-[10px]">Enter</kbd> to send
+                  <p className="text-[10px] text-gray-500">
+                    Press <kbd className="px-1 py-0.5 rounded text-[10px]" style={{ background: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>Enter</kbd> to send
                   </p>
-                  <span className="text-[10px] text-surface-40 font-tech">{input.length}/500</span>
+                  <span className="text-[10px] text-gray-500 font-mono">{input.length}/500</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Sidebar - Summary & Quick Actions */}
-          <div className="h-full overflow-y-auto custom-scrollbar space-y-3">
+          <div className="h-full overflow-y-auto space-y-3 min-h-0" style={{ scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch' }}>
             {showSummary && userProfile && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="bg-surface-10 rounded-2xl border border-surface-20/50 p-4 shadow-strong"
+                className="rounded-2xl p-4"
+                style={{
+                  background: 'linear-gradient(145deg, #111111 0%, #0a0a0a 100%)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5)'
+                }}
               >
-                <div className="flex items-center justify-between mb-3 pb-3 border-b border-surface-20/50">
+                <div className="flex items-center justify-between mb-3 pb-3 border-b" style={{ borderColor: 'rgba(255, 255, 255, 0.05)' }}>
                   <h3 className="text-sm font-bold text-white">Your Health Summary</h3>
                   <button
                     onClick={() => setShowSummary(false)}
-                    className="text-surface-50 hover:text-white p-1 hover:bg-surface-20 rounded transition-colors"
+                    className="text-gray-400 hover:text-white p-1 rounded transition-colors"
+                    style={{ background: 'rgba(255, 255, 255, 0.05)' }}
                     aria-label="Close summary"
                   >
                     <X size={14} />
@@ -516,28 +636,28 @@ const AIAgent: React.FC = () => {
                 </div>
                 <div className="space-y-2 text-xs">
                   {userProfile.diagnosis && (
-                    <div className="p-2 bg-surface-20/50 rounded-lg border border-surface-30/30">
-                      <span className="text-surface-50 text-[10px] font-medium tracking-wide block mb-0.5">CONDITION</span>
+                    <div className="p-2 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                      <span className="text-gray-500 text-[10px] font-medium tracking-wide block mb-0.5">CONDITION</span>
                       <p className="text-white font-semibold text-sm">
                         {userProfile.diagnosis.customCondition || userProfile.diagnosis.condition}
                       </p>
                     </div>
                   )}
                   {userProfile.medications && userProfile.medications.length > 0 && (
-                    <div className="p-2 bg-surface-20/50 rounded-lg border border-surface-30/30">
-                      <span className="text-surface-50 text-[10px] font-medium tracking-wide block mb-0.5">MEDICATIONS</span>
+                    <div className="p-2 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                      <span className="text-gray-500 text-[10px] font-medium tracking-wide block mb-0.5">MEDICATIONS</span>
                       <p className="text-white font-semibold">{userProfile.medications.length} active</p>
                     </div>
                   )}
                   {userProfile.treatments && userProfile.treatments.length > 0 && (
-                    <div className="p-2 bg-surface-20/50 rounded-lg border border-surface-30/30">
-                      <span className="text-surface-50 text-[10px] font-medium tracking-wide block mb-0.5">TREATMENTS</span>
+                    <div className="p-2 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                      <span className="text-gray-500 text-[10px] font-medium tracking-wide block mb-0.5">TREATMENTS</span>
                       <p className="text-white font-semibold">{userProfile.treatments.length} tracked</p>
                     </div>
                   )}
                   {userProfile.trackingMetrics && userProfile.trackingMetrics.length > 0 && (
-                    <div className="p-2 bg-surface-20/50 rounded-lg border border-surface-30/30">
-                      <span className="text-surface-50 text-[10px] font-medium tracking-wide block mb-0.5">TRACKING METRICS</span>
+                    <div className="p-2 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                      <span className="text-gray-500 text-[10px] font-medium tracking-wide block mb-0.5">TRACKING METRICS</span>
                       <p className="text-white font-semibold">{userProfile.trackingMetrics.length} metrics</p>
                     </div>
                   )}
@@ -547,7 +667,7 @@ const AIAgent: React.FC = () => {
                     const summary = generateConditionSummary();
                     setInput(`Please summarize my condition and treatment journey. ${summary}`);
                   }}
-                  className="w-full mt-3 px-3 py-2 bg-surface-20 hover:bg-surface-30 border border-surface-30/50 hover:border-primary-0/30 text-white font-medium rounded-lg transition-all duration-200 text-xs shadow-sm hover:shadow-md"
+                  className="btn-secondary w-full mt-3 px-3 py-2 font-medium rounded-lg transition-all duration-200 text-xs"
                 >
                   Ask AI to Summarize
                 </button>
@@ -555,52 +675,107 @@ const AIAgent: React.FC = () => {
             )}
 
             {/* Quick Actions */}
-            <div className="bg-surface-10 rounded-2xl border border-surface-20/50 p-4 shadow-strong">
-              <div className="flex items-center gap-2 mb-3 pb-3 border-b border-surface-20/50">
-                <Sparkles size={14} className="text-primary-0" />
+            <div 
+              className="rounded-2xl p-4"
+              style={{
+                background: 'linear-gradient(145deg, #111111 0%, #0a0a0a 100%)',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5)'
+              }}
+            >
+              <div className="flex items-center gap-2 mb-3 pb-3 border-b" style={{ borderColor: 'rgba(255, 255, 255, 0.05)' }}>
+                <Sparkles size={14} style={{ color: '#ff8400' }} />
                 <h3 className="text-sm font-bold text-white">Quick Actions</h3>
               </div>
               <div className="space-y-2">
                 <button
                   onClick={() => setInput('Summarize my current condition and treatment journey')}
-                  className="w-full text-left px-3 py-2.5 bg-surface-20/80 hover:bg-surface-30 border border-surface-30/30 hover:border-primary-0/30 rounded-lg text-white text-xs transition-all duration-200 shadow-sm hover:shadow-md group"
+                  className="w-full text-left px-3 py-2.5 rounded-lg text-white text-xs transition-all duration-200 group"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 132, 0, 0.1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 132, 0, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                  }}
                 >
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-primary-0/20 group-hover:bg-primary-0/30 flex items-center justify-center transition-colors">
-                      <FileText size={12} className="text-primary-0" />
+                    <div className="w-6 h-6 rounded flex items-center justify-center transition-colors" style={{ background: 'rgba(255, 132, 0, 0.15)' }}>
+                      <FileText size={12} style={{ color: '#ff8400' }} />
                     </div>
                     <span className="font-medium">Get Health Summary</span>
                   </div>
                 </button>
                 <button
                   onClick={() => setInput('Research treatments for my condition')}
-                  className="w-full text-left px-3 py-2.5 bg-surface-20/80 hover:bg-surface-30 border border-surface-30/30 hover:border-info-10/30 rounded-lg text-white text-xs transition-all duration-200 shadow-sm hover:shadow-md group"
+                  className="w-full text-left px-3 py-2.5 rounded-lg text-white text-xs transition-all duration-200 group"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(64, 119, 209, 0.1)';
+                    e.currentTarget.style.borderColor = 'rgba(64, 119, 209, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                  }}
                 >
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-info-10/20 group-hover:bg-info-10/30 flex items-center justify-center transition-colors">
-                      <TrendingUp size={12} className="text-info-10" />
+                    <div className="w-6 h-6 rounded flex items-center justify-center transition-colors" style={{ background: 'rgba(64, 119, 209, 0.15)' }}>
+                      <TrendingUp size={12} style={{ color: '#4077d1' }} />
                     </div>
                     <span className="font-medium">Research Treatments</span>
                   </div>
                 </button>
                 <button
                   onClick={() => setInput('Find relevant videos and educational content')}
-                  className="w-full text-left px-3 py-2.5 bg-surface-20/80 hover:bg-surface-30 border border-surface-30/30 hover:border-primary-0/30 rounded-lg text-white text-xs transition-all duration-200 shadow-sm hover:shadow-md group"
+                  className="w-full text-left px-3 py-2.5 rounded-lg text-white text-xs transition-all duration-200 group"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 132, 0, 0.1)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 132, 0, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                  }}
                 >
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-primary-0/20 group-hover:bg-primary-0/30 flex items-center justify-center transition-colors">
-                      <Video size={12} className="text-primary-0" />
+                    <div className="w-6 h-6 rounded flex items-center justify-center transition-colors" style={{ background: 'rgba(255, 132, 0, 0.15)' }}>
+                      <Video size={12} style={{ color: '#ff8400' }} />
                     </div>
                     <span className="font-medium">Find Videos</span>
                   </div>
                 </button>
                 <button
                   onClick={() => setInput('Show me research studies related to my condition')}
-                  className="w-full text-left px-3 py-2.5 bg-surface-20/80 hover:bg-surface-30 border border-surface-30/30 hover:border-success-10/30 rounded-lg text-white text-xs transition-all duration-200 shadow-sm hover:shadow-md group"
+                  className="w-full text-left px-3 py-2.5 rounded-lg text-white text-xs transition-all duration-200 group"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(71, 213, 166, 0.1)';
+                    e.currentTarget.style.borderColor = 'rgba(71, 213, 166, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                  }}
                 >
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-success-10/20 group-hover:bg-success-10/30 flex items-center justify-center transition-colors">
-                      <BookOpen size={12} className="text-success-10" />
+                    <div className="w-6 h-6 rounded flex items-center justify-center transition-colors" style={{ background: 'rgba(71, 213, 166, 0.15)' }}>
+                      <BookOpen size={12} style={{ color: '#47d5a6' }} />
                     </div>
                     <span className="font-medium">View Studies</span>
                   </div>
