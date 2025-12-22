@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Logo from './Logo';
 
@@ -300,7 +301,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ isOpen, onClose, onSuccess })
                     className="mt-1 w-5 h-5 rounded border-warm-500 bg-surface-10 text-primary-0 focus:ring-primary-0 focus:ring-offset-0"
                   />
                   <label htmlFor="terms" className="text-sm text-warm-300 leading-relaxed">
-                    I consent to sharing my user data and medical information with ThriverHealth.Ai for personalized health recommendations. I understand my data will be used per the <span className="text-primary-0 hover:underline cursor-pointer">Terms of Service</span> and <span className="text-primary-0 hover:underline cursor-pointer">Privacy Policy</span>.
+                    I consent to sharing my user data and medical information with ThriverHealth.Ai for personalized health recommendations. I understand my data will be used per the <Link to="/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-primary-0 hover:underline" onClick={(e) => e.stopPropagation()}>Terms of Service</Link> and <Link to="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-primary-0 hover:underline" onClick={(e) => e.stopPropagation()}>Privacy Policy</Link>.
                   </label>
                 </div>
                 <button

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   Mic, 
   MicOff, 
@@ -29,6 +29,8 @@ const OnboardingWizard: React.FC = () => {
   const [journalEntry, setJournalEntry] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   
   // Extracted data from AI analysis
@@ -1158,6 +1160,37 @@ const OnboardingWizard: React.FC = () => {
                 </div>
               </div>
 
+              {/* Terms and Privacy Policy Acceptance */}
+              <div className="mb-8 p-5 rounded-xl border border-surface-30/30" style={{ background: 'rgba(255, 255, 255, 0.02)' }}>
+                <h3 className="text-lg font-semibold text-white mb-4">Legal Agreements</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3">
+                    <input
+                      type="checkbox"
+                      id="terms-onboarding"
+                      checked={termsAccepted}
+                      onChange={(e) => setTermsAccepted(e.target.checked)}
+                      className="mt-1 w-5 h-5 rounded border-warm-500 bg-surface-10 text-primary-0 focus:ring-primary-0 focus:ring-offset-0 cursor-pointer"
+                    />
+                    <label htmlFor="terms-onboarding" className="text-sm text-warm-300 leading-relaxed flex-1">
+                      I accept the <Link to="/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-primary-0 hover:underline cursor-pointer">Terms of Service</Link>
+                    </label>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <input
+                      type="checkbox"
+                      id="privacy-onboarding"
+                      checked={privacyAccepted}
+                      onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                      className="mt-1 w-5 h-5 rounded border-warm-500 bg-surface-10 text-primary-0 focus:ring-primary-0 focus:ring-offset-0 cursor-pointer"
+                    />
+                    <label htmlFor="privacy-onboarding" className="text-sm text-warm-300 leading-relaxed flex-1">
+                      I accept the <Link to="/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-primary-0 hover:underline cursor-pointer">Privacy Policy</Link>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
               <div className="flex gap-4">
                 <button
                   onClick={() => setStep('journal')}
@@ -1168,7 +1201,8 @@ const OnboardingWizard: React.FC = () => {
                 </button>
                 <button
                   onClick={saveProfile}
-                  className="btn-primary flex-1 flex items-center justify-center"
+                  disabled={!termsAccepted || !privacyAccepted}
+                  className="btn-primary flex-1 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
                 >
                   <Check size={20} className="mr-2" />
                   Confirm & Continue

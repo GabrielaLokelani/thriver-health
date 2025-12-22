@@ -28,6 +28,8 @@ import CreateTestimonial from './pages/CreateTestimonial';
 import Shop from './pages/Shop';
 import SocialNetwork from './pages/SocialNetwork';
 import Partners from './pages/Partners';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 
 const Navigation: React.FC = () => {
   const { isAuthenticated, user, signOut } = useAuth();
@@ -70,14 +72,14 @@ const Navigation: React.FC = () => {
         }}
       >
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-20">
+          <div className={`flex items-center justify-between ${isAuthenticated ? 'h-24' : 'h-20'}`}>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center space-x-4"
             >
               <Link to="/" className="flex items-center">
-                <Logo size="sm" showText={true} />
+                <Logo size={isAuthenticated ? "lg" : "sm"} showText={true} />
               </Link>
             </motion.div>
 
@@ -98,8 +100,7 @@ const Navigation: React.FC = () => {
               ))}
               
               {isAuthenticated && user ? (
-                <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-white/10">
-                  <span className="text-gray-500 text-sm">{user.name || user.email}</span>
+                <div className="flex items-center ml-4">
                   <button
                     onClick={handleLogout}
                     className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
@@ -166,6 +167,8 @@ const AppContent: React.FC = () => {
           <Route path="/partners" element={<Partners />} />
           <Route path="/create-testimonial" element={<ProtectedRoute><CreateTestimonial /></ProtectedRoute>} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
         </Routes>
       </main>
     </div>

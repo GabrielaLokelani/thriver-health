@@ -454,8 +454,8 @@ const LandingPage: React.FC = () => {
               <ul className="space-y-2 text-gray-500 text-sm">
                 <li><button className="hover:text-orange-400 transition-colors">Help Center</button></li>
                 <li><button className="hover:text-orange-400 transition-colors">Contact Us</button></li>
-                <li><button className="hover:text-orange-400 transition-colors">Privacy Policy</button></li>
-                <li><button className="hover:text-orange-400 transition-colors">Terms of Service</button></li>
+                <li><Link to="/privacy-policy" className="hover:text-orange-400 transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/terms-of-service" className="hover:text-orange-400 transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
             <div>
