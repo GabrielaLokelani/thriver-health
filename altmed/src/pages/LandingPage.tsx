@@ -7,6 +7,7 @@ import { loadDemoData } from '../utils/demoData';
 import SignUpModal from '../components/SignUpModal';
 import { useAuth } from '../hooks/useAuth';
 import Logo from '../components/Logo';
+import LogoHead from '../components/LogoHead';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -435,7 +436,7 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <Logo size="sm" showText={true} className="mb-4" />
+              <LogoHead size="md" className="mb-4" />
               <p className="text-gray-500 text-sm">
                 Your trusted source for alternative medicine knowledge and personalized health plans.
               </p>

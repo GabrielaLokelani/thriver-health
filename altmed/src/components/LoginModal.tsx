@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
-import Logo from './Logo';
+import LogoHead from './LogoHead';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -64,7 +64,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) =
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-center mb-6">
-              <Logo size="md" showText={true} />
+              <LogoHead size="md" />
             </div>
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl font-bold text-white">Welcome Back</h2>

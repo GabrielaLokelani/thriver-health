@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from './hooks/useAuth';
 import LoginModal from './components/LoginModal';
-import Logo from './components/Logo';
+import LogoHead from './components/LogoHead';
 import ProtectedRoute from './components/ProtectedRoute';
 import LandingPage from './pages/LandingPage';
 import OnboardingWizard from './pages/OnboardingWizard';
@@ -76,25 +76,33 @@ const Navigation: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex items-center space-x-4"
+              className="flex items-center space-x-3 flex-shrink-0 max-w-[50%]"
             >
-              <Link to="/" className="flex items-center">
-                <Logo size={isAuthenticated ? "lg" : "sm"} showText={true} />
+              <Link to="/" className="flex items-center space-x-3">
+                <img 
+                  src="/thriver-text.svg"
+                  alt="Thriver"
+                  height={isAuthenticated ? 36 : 32}
+                  width={isAuthenticated ? 180 : 160}
+                  style={{ objectFit: 'contain' }}
+                  className="flex-shrink-0"
+                />
+                <LogoHead size={isAuthenticated ? "md" : "sm"} />
               </Link>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="hidden md:flex items-center space-x-1"
+              className="hidden md:flex items-center space-x-1 flex-shrink-0 ml-4"
             >
               {(isAuthenticated ? authenticatedNavItems : publicNavItems).map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-200"
+                  className="flex items-center space-x-1.5 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-200 text-sm whitespace-nowrap"
                 >
-                  <item.icon size={18} />
+                  <item.icon size={16} />
                   <span>{item.label}</span>
                 </Link>
               ))}
