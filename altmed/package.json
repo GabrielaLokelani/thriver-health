@@ -11,7 +11,7 @@
     "@types/node": "^16.11.56",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
-    "aws-amplify": "^6.15.8",
+    "aws-amplify": "^6.15.9",
     "formik": "^2.4.2",
     "framer-motion": "^10.12.16",
     "lucide-react": "^0.263.1",
@@ -20,21 +20,30 @@
     "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",
     "recharts": "^2.6.2",
-    "typescript": "^4.7.4",
     "web-vitals": "^2.1.4",
     "yup": "^1.2.0"
   },
   "devDependencies": {
+    "@aws-amplify/backend": "^1.19.0",
+    "@aws-amplify/backend-cli": "^1.8.1",
+    "@aws-amplify/cli": "^14.2.3",
     "@tailwindcss/forms": "^0.5.4",
     "autoprefixer": "^10.4.14",
+    "aws-cdk-lib": "^2.216.0",
+    "constructs": "^10.4.4",
+    "esbuild": "^0.27.2",
     "postcss": "^8.4.24",
-    "tailwindcss": "^3.3.2"
+    "tailwindcss": "^3.3.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   },
   "scripts": {
     "start": "PORT=3004 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "amplify:deploy": "npx @aws-amplify/backend-cli sandbox --once",
+    "amplify:watch": "npx @aws-amplify/backend-cli sandbox"
   },
   "eslintConfig": {
     "extends": [

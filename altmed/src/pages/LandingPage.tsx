@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Shield, Users, TrendingUp, BookOpen, Zap, Sparkles, Bot, User, Check } from 'lucide-react';
-import PlaceholderImage from '../components/PlaceholderImage';
 import { loadDemoData } from '../utils/demoData';
 import SignUpModal from '../components/SignUpModal';
 import { useAuth } from '../hooks/useAuth';
@@ -118,7 +117,20 @@ const LandingPage: React.FC = () => {
                   boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 132, 0, 0.1)'
                 }}
               >
-                <PlaceholderImage category="treatment" size="large" className="w-full" alt="Alternative Medicine Research" />
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-auto"
+                  style={{
+                    display: 'block',
+                    objectFit: 'cover'
+                  }}
+                >
+                  <source src="/family-video.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
             </motion.div>
           </div>

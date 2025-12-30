@@ -29,3 +29,4 @@ const LogoHead: React.FC<LogoHeadProps> = ({ className = '', size = 'md' }) => {
 
 export default LogoHead;
 
+
