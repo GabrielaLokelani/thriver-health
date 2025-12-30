@@ -59,7 +59,7 @@ const LandingPage: React.FC = () => {
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                Help yourself thrive through disease
+                HELP YOURSELF THRIVE THROUGH DISEASE
                 <span 
                   className="block mt-2"
                   style={{
@@ -68,7 +68,7 @@ const LandingPage: React.FC = () => {
                     WebkitTextFillColor: 'transparent'
                   }}
                 >
-                  to reclaim your health
+                  TO RECLAIM YOUR HEALTH
                 </span>
               </h1>
               <p className="text-lg text-gray-400 mb-8 leading-relaxed max-w-xl">
